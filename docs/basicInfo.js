@@ -31,7 +31,9 @@ module.exports = {
         "version": "1.0.0",
 
         "tags": [
-            ''
+            'EndPoints [PACIENTE]',
+            'EndPoints [PSICOPEDAGOGO]',
+            'EndPoints [RESPONSÁVEL]'
         ]
     }
 }
