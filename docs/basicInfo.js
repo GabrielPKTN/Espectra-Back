@@ -19,7 +19,7 @@ module.exports = {
                 "github": "https://github.com/GabrielPKTN"
             },
             {
-                "name": "Maria Cecília",
+                "name": "Maria Cecilia",
                 "github": "https://github.com/mariacecilia-01"
             },
             {
@@ -34,5 +34,4 @@ module.exports = {
             ''
         ]
     }
-
 }
