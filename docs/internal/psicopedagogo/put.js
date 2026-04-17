@@ -1,10 +1,20 @@
 const { psicopedagogoCreate } = require("../../components/psicopedagogo");
 
 module.exports = {
-    post: {
+    put: {
         tag: ["EndPoints [PSICOPEDAGOGOS]"],
-        description: 'Cadastra um novo Psicopedagogo no sistema.',
-        operationId: 'inserirPsicopedagogo',
+        description: 'Atualiza dados de um Psicopedagogo no sistema.',
+        operationId: 'atualizarPsicopedagogo',
+        parameters: [{
+            name: "id",
+            in: "path",
+            description: "ID do psicopedagogo",
+            required: true,
+            schema: {
+                type: "int",
+                format: "int64"
+            }
+        }],
         requestBody: {
             content: {
                 "application/json": {
@@ -20,7 +30,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/psicopedagogo"
+                            $ref: "#/components/schemas/success_update"
                         }
                     }
                 }
