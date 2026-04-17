@@ -1,26 +1,27 @@
 const { psicopedagogoCreate } = require("../../components/psicopedagogo");
 
 module.exports = {
-    post: {
+    get: {
         tag: ["EndPoints [PSICOPEDAGOGOS]"],
-        description: 'Cadastra um novo Psicopedagogo no sistema.',
-        operationId: 'inserirPsicopedagogo',
-        requestBody: {
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/psicopedagogoCreate"
-                    }
-                }
+        description: 'Retorna um Psicopedagogo do sistema pelo ID.',
+        operationId: 'listarPsicopedagogoId',
+        parameters: [{
+            name: "id",
+            in: "path",
+            description: "ID do psicopedagogo",
+            required: true,
+            schema: {
+                type: "int",
+                format: "int64"
             }
-        },
+        }],
         responses: {
             200: {
                 description: "Requisição bem sucedida",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/psicopedagogo"
+                            $ref: "#/components/schemas/psicopedagogoGet"
                         }
                     }
                 }
@@ -41,16 +42,6 @@ module.exports = {
                     "application/json": {
                         schema: {
                             $ref: "#/components/schemas/error404"
-                        }
-                    }
-                }
-            },
-            415: {
-                description: "Tipos de dados inválidos.",
-                content: {
-                    "appplication/json": {
-                         schema: {
-                            $ref: "#/components/schemas/error415"
                         }
                     }
                 }

@@ -1,26 +1,37 @@
 const { psicopedagogoCreate } = require("../../components/psicopedagogo");
 
 module.exports = {
-    post: {
+    get: {
         tag: ["EndPoints [PSICOPEDAGOGOS]"],
-        description: 'Cadastra um novo Psicopedagogo no sistema.',
-        operationId: 'inserirPsicopedagogo',
-        requestBody: {
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/psicopedagogoCreate"
-                    }
-                }
+        description: 'Busca o Psicopedagogo no sistema para efetuar o login.',
+        operationId: 'listarPsicopedagogoId',
+        parameters: [{
+            name: "email",
+            in: "query",
+            description: "Email do psicopedagogo",
+            required: true,
+            schema: {
+                type: "int",
+                format: "int64"
             }
         },
+        {
+            name: "senha",
+            in: "query",
+            description: "Senha do psicopedagogo",
+            required: true,
+            schema: {
+                type: "int",
+                format: "int64"
+            }
+        }],
         responses: {
             200: {
                 description: "Requisição bem sucedida",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/psicopedagogo"
+                            $ref: "#/components/schemas/login"
                         }
                     }
                 }
@@ -41,16 +52,6 @@ module.exports = {
                     "application/json": {
                         schema: {
                             $ref: "#/components/schemas/error404"
-                        }
-                    }
-                }
-            },
-            415: {
-                description: "Tipos de dados inválidos.",
-                content: {
-                    "appplication/json": {
-                         schema: {
-                            $ref: "#/components/schemas/error415"
                         }
                     }
                 }
