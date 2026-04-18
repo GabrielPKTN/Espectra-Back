@@ -58,11 +58,11 @@ Commits pequenos e frequentes.
 4. git commit -m "feat: Adiciona CRUD de psicopedagogo"
 5. git push -u origin backend
 
-**CUIDADO!!!**
-O PR é organizado; Não tem problema um PR ter 5 commits, o que tem problema é criar vários PR's.
-Podemos ter o PR "Adicionando documentação de EndPoints." e dentro dele commits como "doc: Adiciona Adiciona documentação do endpoint psicopedagogo, como pede a issue #1, ainda incompleto".
+**CUIDADO!!!** <br>
+O PR é não é bagunça! Não tem problema um PR ter 5 commits, o que tem problema é criar vários PR's.<br>
+Podemos ter o PR "Adicionando documentação de EndPoints." e dentro dele commits como "doc: Adiciona documentação do endpoint psicopedagogo, como pede a issue #1, ainda incompleto".    
 
-Támbem cuidado com os merges para não prejudicar o trabalho do amiguinho; Lembrando que **VOCÊ** em nenhuma hipótese, **NUNCA**, é o reviewer do próprio PR, isso não existe. Caso eu pegue isso acontecendo, será anotado como mal desempenho 🙂
+Também cuidado com os merges para não prejudicar o trabalho do amiguinho; Lembrando que **VOCÊ** em nenhuma hipótese, **NUNCA**, é o reviewer do próprio PR, isso não existe. Caso eu pegue isso acontecendo, será anotado como mal desempenho 🙂
 
 ## Repositórios
 
