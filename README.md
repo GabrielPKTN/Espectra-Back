@@ -48,19 +48,31 @@ Commits pequenos e frequentes.
 [Convetional Commits](https://github.com/iuricode/padroes-de-commits)
 
 **Caso esteja fazendo alterações na documentação do backend:**
-1. git switch documentacao-swagger
+1. git switch develop
+2. git pull
+3. git switch -c doc/swagger-psicopedagogo
 
 **Caso esteja fazendo alterações no código do backend:**
-1. git switch backend
+1. git switch develop
+2. git pull
+3. git switch -c feature/crud-psicopedagogo
 
-2. Realize as alterações necessárias
-3. git add .
-4. git commit -m "feat: Adiciona CRUD de psicopedagogo"
-5. git push -u origin backend
+4. Realize as alterações necessárias
+5. git add .
+6. git commit -m "feat: Adiciona model psicopedagogo"
+7. git push -u origin feat/crud-psicopedagogo
+8. Abra o GitHub → New Pull Request
+   base: develop ← compare: feature/crud-psicopedagogo
+9. Adicione um reviewer e descreva o que foi feito
+10. Aguarde aprovação antes de mergear
 
 **CUIDADO!!!** <br>
-O PR é não é bagunça! Não tem problema um PR ter 5 commits, o que tem problema é criar vários PR's.<br>
-Podemos ter o PR "Adicionando documentação de EndPoints." e dentro dele commits como "doc: Adiciona documentação do endpoint psicopedagogo, como pede a issue #1, ainda incompleto".    
+O PR é não é bagunça! 1 PR = 1 BRANCH<br>
+- PR deve ter foco único - Uma feature, uma correção.<br>
+- Descreva o que foi feito, por que e como testar.<br>
+- Nunca seja reviewer do próprio PR.<br>
+- Revise o PR do colega com cuidado.<br>
+- PR pequeno é bem revisado; PR grande níguém revisa direito <br>
 
 Também cuidado com os merges para não prejudicar o trabalho do amiguinho; Lembrando que **VOCÊ** em nenhuma hipótese, **NUNCA**, é o reviewer do próprio PR, isso não existe. Caso eu pegue isso acontecendo, será anotado como mal desempenho 🙂
 
