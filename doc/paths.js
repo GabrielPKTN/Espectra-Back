@@ -1,4 +1,4 @@
-const routesInternal = require('./internal')
+const routesInternal = require('./internal/index.js')
 
 module.exports = {
     ...routesInternal
