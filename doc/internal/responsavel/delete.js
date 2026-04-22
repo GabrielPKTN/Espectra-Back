@@ -1,6 +1,6 @@
 module.exports = {
     delete: {
-        tags: ['EndPoints [RESPONSÁVEL]'],
+        tags: ['EndPoints [RESPONSAVEL]'],
         description: "Exclui um responsável baseado no seu Id",
         operationId: "deletarResponsavel",
         parameters: [{

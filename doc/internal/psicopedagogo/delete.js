@@ -1,10 +1,8 @@
-const { psicopedagogoCreate } = require("../../components/psicopedagogo");
-
 module.exports = {
-    put: {
+    delete: {
         tags: ["EndPoints [PSICOPEDAGOGO]"],
-        description: 'Atualiza dados de um Psicopedagogo no sistema.',
-        operationId: 'atualizarPsicopedagogo',
+        description: 'Deleta um psicopedagogo pelo ID',
+        operationId: 'deletePsicopedagogo',
         parameters: [{
             name: "id",
             in: "path",
@@ -15,22 +13,13 @@ module.exports = {
                 format: "int64"
             }
         }],
-        requestBody: {
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/psicopedagogoCreate"
-                    }
-                }
-            }
-        },
         responses: {
             200: {
                 description: "Requisição bem sucedida",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/success_update"
+                            $ref: "#/components/schemas/success_delete"
                         }
                     }
                 }
@@ -51,16 +40,6 @@ module.exports = {
                     "application/json": {
                         schema: {
                             $ref: "#/components/schemas/error404"
-                        }
-                    }
-                }
-            },
-            415: {
-                description: "Tipos de dados inválidos.",
-                content: {
-                    "appplication/json": {
-                         schema: {
-                            $ref: "#/components/schemas/error415"
                         }
                     }
                 }

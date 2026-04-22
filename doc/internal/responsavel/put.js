@@ -1,5 +1,5 @@
 module.exports = {
-    post: {
+    put: {
         tags: ['EndPoints [RESPONSÁVEL]'],
         description: "Atualiza um responsável no sistema",
         operationId: "atualizarResponsavel",

@@ -1,13 +1,13 @@
 const psicopedagogo     = require('./psicopedagogo.js')
 const responsavel       = require('./responsavel.js')
-// const paciente          = require('./paciente.js')
+const paciente          = require('./paciente.js')
 
 module.exports = {
     components: {
         schemas: {
             ...psicopedagogo,
             ...responsavel,
-            // ...paciente,
+            ...paciente,
 
             success_delete: {
                 type: "object",
@@ -109,7 +109,7 @@ module.exports = {
                     }
                 }
             },
-            error500_controller: {
+            error500: {
                 type: "object",
                 properties: {
                     status: {
@@ -124,28 +124,8 @@ module.exports = {
                     },
                     message: {
                         type: "string",
-                        description: "Não foi possível processar a requisição devido a erros internos no servidor (CONTROLLER)!!!",
-                        example: "Não foi possível processar a requisição devido a erros internos no servidor (CONTROLLER)!!!"
-                    }       
-                }
-            },
-            error500_model: {
-                type: "object",
-                properties: {
-                    status: {
-                        type: "boolean",
-                        description: "false",
-                        example: "false"
-                    },
-                    status_code: {
-                        type: "int",
-                        description: "500",
-                        example: "500"
-                    },
-                    message: {
-                        type: "string",
-                        description: "Não foi possível processar a requisição devido a erros internos no servidor (MODELAGEM DE DADOS)!!!",
-                        example: "Não foi possível processar a requisição devido a erros internos no servidor (MODELAGEM DE DADOS)!!!"
+                        description: "Não foi possível processar a requisição devido a erros internos no servidor",
+                        example: "Não foi possível processar a requisição devido a erros internos no servidor"
                     }       
                 }
             },
@@ -168,28 +148,7 @@ module.exports = {
                         example: "Não foi possível processar a requisição, pois o tipo de dados enviado no corpo deve ser JSON!!!"
                     }       
                 }
-            },
-            error500_relatinal_insertion: {
-                type: "object",
-                properties: {
-                    status: {
-                        type: "boolean",
-                        description: "false",
-                        example: "false"
-                    },
-                    status_code: {
-                        type: "int",
-                        description: "500",
-                        example: "500"
-                    },
-                    message: {
-                        type: "string",
-                        description: "A requisição do item principal foi processada com sucesso, porém houveram problemas ao inserir dados na tabela de relação!!!",
-                        example: "A requisição do item principal foi processada com sucesso, porém houveram problemas ao inserir dados na tabela de relação!!!"
-                    }       
-                }
             }
-
         }
     }
 }

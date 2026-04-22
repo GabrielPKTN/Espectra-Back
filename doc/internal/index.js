@@ -1,7 +1,7 @@
-const reponsavel      = require('./responsavel')
-const psicopedagogo   = require('./psicopedagogo')
+const psicopedagogo   = require('./psicopedagogo/index.js')
+// const reponsavel      = require('./responsavel')
 
 module.exports = {
     ...psicopedagogo,
-    ...responsavel
+    // ...reponsavel
 }

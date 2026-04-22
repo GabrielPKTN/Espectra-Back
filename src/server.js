@@ -32,6 +32,7 @@ app.use(cors({
 // Middleware para permitir JSON no body
 app.use(express.json());
 
+console.log("configuração carregada: \n", swaggerDocument);
 //EndPoint da documentação
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 

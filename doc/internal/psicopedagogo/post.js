@@ -2,7 +2,7 @@ const { psicopedagogoCreate } = require("../../components/psicopedagogo");
 
 module.exports = {
     post: {
-        tag: ["EndPoints [PSICOPEDAGOGOS]"],
+        tags: ["EndPoints [PSICOPEDAGOGO]"],
         description: 'Cadastra um novo Psicopedagogo no sistema.',
         operationId: 'inserirPsicopedagogo',
         requestBody: {

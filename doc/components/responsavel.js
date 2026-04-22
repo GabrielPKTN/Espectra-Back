@@ -1,5 +1,3 @@
-const { login } = require("./psicopedagogo");
-
 module.exports = {
     responsavel: {
         type: 'object',

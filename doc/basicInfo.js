@@ -33,7 +33,7 @@ module.exports = {
         "tags": [
             'EndPoints [PACIENTE]',
             'EndPoints [PSICOPEDAGOGO]',
-            'EndPoints [RESPONSÁVEL]'
+            'EndPoints [RESPONSAVEL]'
         ]
     }
 }

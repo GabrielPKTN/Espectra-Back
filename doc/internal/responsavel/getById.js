@@ -1,6 +1,6 @@
 module.exports = {
     get: {
-        tags: ['EndPoints [RESPONSÁVEL]'],
+        tags: ['EndPoints [RESPONSAVEL]'],
         description: "Retorna um responsável baseado no seu Id",
         operationId: "listarResponsavelPorId",
         parameters: [{

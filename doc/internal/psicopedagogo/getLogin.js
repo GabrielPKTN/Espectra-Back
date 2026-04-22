@@ -2,7 +2,7 @@ const { psicopedagogoCreate } = require("../../components/psicopedagogo");
 
 module.exports = {
     get: {
-        tag: ["EndPoints [PSICOPEDAGOGOS]"],
+        tags: ["EndPoints [PSICOPEDAGOGO]"],
         description: 'Busca o Psicopedagogo no sistema para efetuar o login.',
         operationId: 'listarPsicopedagogoId',
         parameters: [{
@@ -31,7 +31,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/login"
+                            $ref: "#/components/schemas/psicopedagogoGet"
                         }
                     }
                 }
