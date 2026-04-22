@@ -1,4 +1,3 @@
-
 module.exports = {
     put: {
         tags: ['EndPoints [PACIENTES]'],
@@ -8,7 +7,7 @@ module.exports = {
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schema/pacientePost"
+                        $ref: "#/components/schemas/pacientePut"
                     }
                 }
             }
@@ -19,7 +18,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/pacienteGet"
+                            $ref: "#/components/schemas/success_update"
                         }
                     }
                 }
@@ -29,7 +28,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/error400"
+                            $ref: "#/components/schemas/error400"
                         }
                     }
                 }
@@ -39,7 +38,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/error404"
+                            $ref: "#/components/schemas/error404"
                         }
                     }
                 }
@@ -49,7 +48,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/error415"
+                            $ref: "#/components/schemas/error415"
                         }
                     }
                 }
@@ -59,7 +58,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/error500_controller"
+                            $ref: "#/components/schemas/error500_controller"
                         }
                     }
                 }
@@ -71,7 +70,7 @@ module.exports = {
                         schema: {
                             "application/json": {
                                 schema: {
-                                    $ref: "#/components/schema/error500_model"
+                                    $ref: "#/components/schemas/error500"
                                 }
                             }
                         }

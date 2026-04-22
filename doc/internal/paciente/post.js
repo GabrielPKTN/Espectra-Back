@@ -1,6 +1,6 @@
 module.exports = {
     post: {
-        tag: ["EndPoints [PACIENTES]"],
+        tags: ["EndPoints [PACIENTES]"],
         description: 'Cadastra um novo Paciente no sistema.',
         operationId: 'inserirPaciente',
         requestBody: {
@@ -53,22 +53,12 @@ module.exports = {
                     }
                 }
             },
-            500: {
-                description: "Não foi possível processar a requisição por erros internos da Controller",
-                content: {
-                    "application/json": {
-                        schema: {
-                            $ref: "#/components/schemas/error500_controller"
-                        }
-                    }
-                }
-            },
              500: {
-                description: "Não foi possível processar a requisição por erros internos da Model",
+                description: "Erros Internos",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/error500_model"
+                            $ref: "#/components/schemas/error500"
                         }
                     }
                 }
