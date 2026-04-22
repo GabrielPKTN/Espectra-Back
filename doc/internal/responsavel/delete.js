@@ -20,7 +20,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/responsableGet"
+                            $ref: "#/components/schema/responsavelGet"
                         }
                     }
                 }

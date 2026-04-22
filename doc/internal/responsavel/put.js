@@ -7,7 +7,7 @@ module.exports = {
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schema/responsableUpdate"
+                        $ref: "#/components/schema/responsavelCreate"
                     }
                 }
             }
