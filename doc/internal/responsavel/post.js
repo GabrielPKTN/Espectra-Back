@@ -7,7 +7,7 @@ module.exports = {
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schema/responsableCreate"
+                        $ref: "#/components/schema/responsavelCreate"
                     }
                 }
             }
@@ -19,7 +19,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/responsableGet"
+                            $ref: "#/components/schema/responsavelGet"
                         }
                     }
                 }
