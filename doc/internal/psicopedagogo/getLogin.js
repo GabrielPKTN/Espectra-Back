@@ -4,7 +4,7 @@ module.exports = {
     get: {
         tags: ["EndPoints [PSICOPEDAGOGO]"],
         description: 'Busca o Psicopedagogo no sistema para efetuar o login.',
-        operationId: 'listarPsicopedagogoId',
+        operationId: 'loginPsicopedagogo',
         parameters: [{
             name: "email",
             in: "query",

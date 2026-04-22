@@ -39,6 +39,7 @@ module.exports = {
             }
         }
     },
+    
     psicopedagogoGet: {
         type: 'object',
         properties: {
@@ -60,11 +61,12 @@ module.exports = {
             "pacientes": {
                 "type": "array",
                 "items": {
-                    $ref: "#/components/schemas/paciente"
+                    $ref: "#/components/schemas/pacienteGet"
                 }
             }
         }
     },
+    
     psicopedagogoCreate: {
         type: 'object',
         properties: {
@@ -93,6 +95,28 @@ module.exports = {
                 "description": "password",
                 "example": "Ju_10-77"
             }
+        }
+    },
+
+    //Get para o array de paciente
+    pacienteGetPsicopedagogo: {
+        type: 'object',
+        properties: {
+            "id": {
+                "type": "int",
+                "description": "id",
+                "example": 1
+            },
+            "nome": {
+                "type": "string",
+                "description": "name",
+                "example": "Julia Nogueira Silva"
+            },
+            "telefone": {
+                "type": "string",
+                "description": "phone_number",
+                "example": "(11) 91245-5476"
+            },
         }
     }
 }

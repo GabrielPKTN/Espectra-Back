@@ -7,6 +7,11 @@ module.exports = {
                 "description": "id",
                 "example": 1
             },
+            "foto": {
+                "type": "string",
+                "description": "photo",
+                "example": "http://azure.blob.img"
+            },
             "nome": {
                 "type": "string",
                 "description": "name",
@@ -80,13 +85,13 @@ module.exports = {
             "psicopedagogo": {
                 "type": "array",
                 "items": {
-                    $ref: "#/components/schemas/psicopedagogo"
+                    $ref: "#/components/schemas/pacienteGetPsicopedagogo"
                 }
             },
             "responsaveis": {
                 "type": "array",
                 "items": {
-                    $ref: "#/components/schemas/responsavel"
+                    $ref: "#/components/schemas/pacienteGetResponsavel"
                 }
             }
         }
