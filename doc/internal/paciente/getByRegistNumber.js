@@ -1,16 +1,15 @@
 module.exports = {
     get: {
         tag: ["EndPoints [PACIENTES]"],
-        description: 'Retorna um Paciente do sistema pelo ID.',
-        operationId: 'listarPacienteId',
+        description: 'Retorna um Paciente do sistema pelo número de registro.',
+        operationId: 'listarPacienteNumeroRegistro',
         parameters: [{
-            name: "id",
+            name: "numero_registro",
             in: "path",
-            description: "ID do paciente",
+            description: "Número de Registro do paciente",
             required: true,
             schema: {
-                type: "int",
-                format: "int64"
+                type: "string",
             }
         }],
         responses: {
