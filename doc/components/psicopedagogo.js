@@ -1,5 +1,3 @@
-const login = require("../internal/psicopedagogo/login");
-
 module.exports = {
     psicopedagogo: {
         type: 'object',

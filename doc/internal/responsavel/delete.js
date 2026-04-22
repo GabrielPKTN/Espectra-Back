@@ -1,5 +1,5 @@
 module.exports = {
-    get: {
+    delete: {
         tags: ['EndPoints [RESPONSÁVEL]'],
         description: "Exclui um responsável baseado no seu Id",
         operationId: "deletarResponsavel",
