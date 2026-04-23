@@ -7,7 +7,7 @@ module.exports = {
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schemas/responsavelCreate"
+                        $ref: "#/components/schemas/responsavelContent"
                     }
                 }
             }

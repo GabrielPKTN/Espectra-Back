@@ -1,17 +1,22 @@
 const deleteResponsavel    = require('./delete.js')
 const getById              = require('./getById.js')
+const getPerfil            = require('./getPerfil.js')
 const post                 = require('./post.js')
 const put                  = require('./put.js')
 
 module.exports = {
     
     "/v1/espectra/responsavel/": {
-        ...post
+        ...post,
+    },
+
+    "/v1/espectra/responsavel?id={id}": {
+        ...getPerfil
     },
 
     "/v1/espectra/responsavel/{id}": {
         ...getById,
-        ...put,
+        ...put
     },
 
     "/v1/espectra/responsavel/{id}/?senha={senha}": {

@@ -1,11 +1,11 @@
 module.exports = {
     get: {
         tags: ['EndPoints [RESPONSAVEL]'],
-        description: "Retorna dados da home de um responsável pelo id",
-        operationId: "listarResponsavelPorId",
+        description: "Retorna o perfil do responsável pelo id",
+        operationId: "retornaPerfilResponsavel",
         parameters: [{
             name: "id",
-            in: "path",
+            in: "query",
             description: "Id do Responsável",
             required: true,
             schema: {
@@ -20,7 +20,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/responsavelHome"
+                            $ref: "#/components/schemas/responsavel"
                         }
                     }
                 }
