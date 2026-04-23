@@ -54,11 +54,6 @@ module.exports = {
                 "type": "string",
                 "description": "email",
                 "example": "seuemail@gmai.com"
-            },
-            "senha": {
-                "type": "string",
-                "description": "password",
-                "example": "senha1234@"
             }
         }
     },
