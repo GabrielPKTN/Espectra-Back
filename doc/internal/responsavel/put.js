@@ -1,6 +1,6 @@
 module.exports = {
     put: {
-        tags: ['EndPoints [RESPONSÁVEL]'],
+        tags: ['EndPoints [RESPONSAVEL]'],
         description: "Atualiza um responsável no sistema",
         operationId: "atualizarResponsavel",
         requestBody: {
@@ -65,7 +65,7 @@ module.exports = {
                 }
             },
             500: {
-                description: "Não foi possível processar a requisição por erros internos da Model",
+                description: "Não foi possível processar a requisição por erros internos",
                 content: {
                     "appkication/json": {
                         schema: {
