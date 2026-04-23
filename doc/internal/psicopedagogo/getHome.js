@@ -1,34 +1,36 @@
 module.exports = {
-    put: {
+    get: {
         tags: ["EndPoints [PSICOPEDAGOGO]"],
-        description: 'Atualiza dados de um Psicopedagogo no sistema.',
-        operationId: 'atualizarPsicopedagogo',
+        description: 'Retorna dados da home do psicopedagogo ao efetuar o login',
+        operationId: 'retornaHomePsicopedagogoId',
         parameters: [{
-            name: "id",
-            in: "path",
-            description: "ID do psicopedagogo",
+            name: "email",
+            in: "query",
+            description: "email",
             required: true,
             schema: {
                 type: "int",
                 format: "int64"
             }
-        }],
-        requestBody: {
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/psicopedagogoPut"
-                    }
-                }
+        },
+        {
+            name: "senha",
+            in: "query",
+            description: "senha",
+            required: true,
+            schema: {
+                type: "int",
+                format: "int64"
             }
         },
+    ],
         responses: {
             200: {
                 description: "Requisição bem sucedida",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/success_update"
+                            $ref: "#/components/schemas/psicopedagogoHome"
                         }
                     }
                 }
@@ -49,16 +51,6 @@ module.exports = {
                     "application/json": {
                         schema: {
                             $ref: "#/components/schemas/error404"
-                        }
-                    }
-                }
-            },
-            415: {
-                description: "Tipos de dados inválidos.",
-                content: {
-                    "appplication/json": {
-                         schema: {
-                            $ref: "#/components/schemas/error415"
                         }
                     }
                 }

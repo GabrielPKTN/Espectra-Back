@@ -1,8 +1,8 @@
 module.exports = {
     put: {
         tags: ["EndPoints [PSICOPEDAGOGO]"],
-        description: 'Atualiza dados de um Psicopedagogo no sistema.',
-        operationId: 'atualizarPsicopedagogo',
+        description: 'Atualiza senha de um psicopedagogo no sistema.',
+        operationId: 'atualizarSenhaPsicopedagogo',
         parameters: [{
             name: "id",
             in: "path",
@@ -12,16 +12,18 @@ module.exports = {
                 type: "int",
                 format: "int64"
             }
-        }],
-        requestBody: {
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/psicopedagogoPut"
-                    }
-                }
-            }
         },
+        {
+            name: "senha",
+            in: "query",
+            description: "senha",
+            required: true,
+            schema: {
+                type: "int",
+                format: "int64"
+            }
+        }
+    ],
         responses: {
             200: {
                 description: "Requisição bem sucedida",

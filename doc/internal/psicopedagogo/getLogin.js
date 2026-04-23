@@ -1,24 +1,12 @@
-const { psicopedagogoCreate } = require("../../components/psicopedagogo");
-
 module.exports = {
     get: {
         tags: ["EndPoints [PSICOPEDAGOGO]"],
-        description: 'Busca o Psicopedagogo no sistema para efetuar o login.',
-        operationId: 'loginPsicopedagogo',
+        description: 'Retorna o ID para efetuar o login',
+        operationId: 'retornaId',
         parameters: [{
-            name: "email",
+            name: "id",
             in: "query",
-            description: "Email do psicopedagogo",
-            required: true,
-            schema: {
-                type: "int",
-                format: "int64"
-            }
-        },
-        {
-            name: "senha",
-            in: "query",
-            description: "Senha do psicopedagogo",
+            description: "id",
             required: true,
             schema: {
                 type: "int",
@@ -31,7 +19,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/psicopedagogoGet"
+                            $ref: "#/components/schemas/psicopedagogoId"
                         }
                     }
                 }
