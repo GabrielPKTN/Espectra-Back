@@ -3,7 +3,7 @@ const paciente        = require('./paciente')
 const responsavel     = require('./responsavel')
 
 module.exports = {
-    ...psicopedagogo,
-    ...paciente,
+    // ...psicopedagogo,
+    // ...paciente,
     ...responsavel
 }

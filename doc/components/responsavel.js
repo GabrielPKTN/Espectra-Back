@@ -63,7 +63,7 @@ module.exports = {
         }
     },
 
-    responsavelContent: {
+    responsavelPost: {
         type: 'object',
         properties: {
             "nome": {
