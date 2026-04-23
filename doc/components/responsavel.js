@@ -1,32 +1,5 @@
 module.exports = {
 
-    responsavelHome: {
-        type: 'object',
-        properties: {
-            "id": {
-                "type": "int",
-                "description": "id",
-                "example": 1
-            },
-            "nome": {
-                "type": "string",
-                "description": "name",
-                "example": "Nicolas dos Santos Durão"
-            },
-            "foto": {
-                "type": "string",
-                "description": "photo",
-                "example": "http://azure.blob.img"
-            },
-            "familiar": {
-                "type": "array",
-                "items": {
-                    $ref: "#/components/schemas/familiarResponsavel"
-                }
-            }
-        }
-    },
-
     responsavel: {
         type: 'object',
         properties: {
@@ -58,6 +31,33 @@ module.exports = {
         }
     },
 
+    responsavelHome: {
+        type: 'object',
+        properties: {
+            "id": {
+                "type": "int",
+                "description": "id",
+                "example": 1
+            },
+            "nome": {
+                "type": "string",
+                "description": "name",
+                "example": "Nicolas dos Santos Durão"
+            },
+            "foto": {
+                "type": "string",
+                "description": "photo",
+                "example": "http://azure.blob.img"
+            },
+            "familiar": {
+                "type": "array",
+                "items": {
+                    $ref: "#/components/schemas/familiarResponsavel"
+                }
+            }
+        }
+    },
+
     responsavelPost: {
         type: 'object',
         properties: {
@@ -85,6 +85,17 @@ module.exports = {
                 "type": "string",
                 "description": "password",
                 "example": "senha1234@"
+            }
+        }
+    },
+
+    responsavelId: {
+        type: 'object',
+        properties: {
+            "id": {
+                "type": "int",
+                "description": "id",
+                "example": 1
             }
         }
     },

@@ -1,6 +1,7 @@
 const deleteResponsavel    = require('./delete.js')
 const getById              = require('./getById.js')
 const getHome              = require('./getHome.js')
+const loginResponsavel     = require('./getLogin.js')
 const post                 = require('./post.js')
 const put                  = require('./put.js')
 
@@ -21,6 +22,10 @@ module.exports = {
 
     "/v1/espectra/responsavel/{id}/?senha={senha}": {
         ...deleteResponsavel
+    },
+
+    "/v1/espectra/responsavel/?email={email}&senha={senha}": {
+        ...loginResponsavel
     }
 
 }
