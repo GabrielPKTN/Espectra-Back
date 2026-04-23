@@ -4,15 +4,26 @@ module.exports = {
         description: 'Retorna o ID para efetuar o login',
         operationId: 'retornaId',
         parameters: [{
-            name: "id",
+            name: "email",
             in: "query",
-            description: "id",
+            description: "email",
             required: true,
             schema: {
                 type: "int",
                 format: "int64"
             }
-        }],
+        },
+        {
+            name: "senha",
+            in: "query",
+            description: "senha",
+            required: true,
+            schema: {
+                type: "int",
+                format: "int64"
+            }
+        }
+    ],
         responses: {
             200: {
                 description: "Requisição bem sucedida",
