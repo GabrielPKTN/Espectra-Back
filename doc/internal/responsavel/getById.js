@@ -2,7 +2,7 @@ module.exports = {
     get: {
         tags: ['EndPoints [RESPONSAVEL]'],
         description: "Retorna perfil do responsável pelo id",
-        operationId: "retornaPerfilId",
+        operationId: "retornaPerfilResponsavelId",
         parameters: [{
             name: "id",
             in: "path",
