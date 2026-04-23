@@ -2,7 +2,7 @@ const { psicopedagogoCreate } = require("../../components/psicopedagogo");
 
 module.exports = {
     put: {
-        tag: ["EndPoints [PSICOPEDAGOGOS]"],
+        tags: ["EndPoints [PSICOPEDAGOGO]"],
         description: 'Atualiza dados de um Psicopedagogo no sistema.',
         operationId: 'atualizarPsicopedagogo',
         parameters: [{

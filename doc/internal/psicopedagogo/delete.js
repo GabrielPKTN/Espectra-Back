@@ -1,15 +1,16 @@
 module.exports = {
-    get: {
-        tag: ["EndPoints [PACIENTES]"],
-        description: 'Retorna um Paciente do sistema pelo número de registro.',
-        operationId: 'listarPacienteNumeroRegistro',
+    delete: {
+        tags: ["EndPoints [PSICOPEDAGOGO]"],
+        description: 'Deleta um psicopedagogo pelo ID',
+        operationId: 'deletePsicopedagogo',
         parameters: [{
-            name: "numero_registro",
+            name: "id",
             in: "path",
-            description: "Número de Registro do paciente",
+            description: "ID do psicopedagogo",
             required: true,
             schema: {
-                type: "string",
+                type: "int",
+                format: "int64"
             }
         }],
         responses: {
@@ -18,13 +19,13 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/pacienteGet"
+                            $ref: "#/components/schemas/success_delete"
                         }
                     }
                 }
             },
             400: {
-                 description: "Campo inválido",
+                description: "Campo inválido",
                 content: {
                     "application/json": {
                         schema: {

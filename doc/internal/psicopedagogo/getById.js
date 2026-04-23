@@ -1,8 +1,6 @@
-const { psicopedagogoCreate } = require("../../components/psicopedagogo");
-
 module.exports = {
     get: {
-        tag: ["EndPoints [PSICOPEDAGOGOS]"],
+        tags: ["EndPoints [PSICOPEDAGOGO]"],
         description: 'Retorna um Psicopedagogo do sistema pelo ID.',
         operationId: 'listarPsicopedagogoId',
         parameters: [{
@@ -21,7 +19,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/psicopedagogoGet"
+                            $ref: "#/components/schemas/psicopedagogo"
                         }
                     }
                 }

@@ -1,6 +1,6 @@
 module.exports = {
     post: {
-        tags: ['EndPoints [RESPONSÁVEL]'],
+        tags: ['EndPoints [RESPONSAVEL]'],
         description: "Cadastra um responsável no sistema",
         operationId: "inserirResponsavel",
         requestBody: {

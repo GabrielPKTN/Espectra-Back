@@ -1,6 +1,6 @@
 module.exports = {
     get: {
-        tag: ["EndPoints [PACIENTES]"],
+        tags: ["EndPoints [PACIENTES]"],
         description: 'Retorna um Paciente do sistema pelo ID.',
         operationId: 'listarPacienteId',
         parameters: [{

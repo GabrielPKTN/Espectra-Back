@@ -1,5 +1,3 @@
-const { login } = require("./psicopedagogo");
-
 module.exports = {
     responsavel: {
         type: 'object',
@@ -115,6 +113,28 @@ module.exports = {
                 "description": "password",
                 "example": "senha1234@"
             }
+        }
+    },
+
+    //Get para o array de paciente
+    pacienteGetResponsavel: {
+        type: 'object',
+        properties: {
+            "id": {
+                "type": "int",
+                "description": "id",
+                "example": 1
+            },
+            "nome": {
+                "type": "string",
+                "description": "name",
+                "example": "Nicolas dos Santos Durao"
+            },
+            "telefone": {
+                "type": "string",
+                "description": "phone_number",
+                "example": "(11) 11111-1111"
+            },
         }
     }
 }

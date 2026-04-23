@@ -3,9 +3,9 @@ const components = require('./components')
 const paths = require('./paths')
 
 module.exports = {
-    paths: {
-        ...basicInfo,
-        ...components,
-        ...paths
-    }
+    
+    ...basicInfo,
+    ...paths,
+    ...components
+
 }

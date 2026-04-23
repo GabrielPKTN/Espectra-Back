@@ -1,5 +1,58 @@
 module.exports = {
+
     paciente: {
+        type: 'object',
+        properties: {
+            "id": {
+                "type": "int",
+                "description": "id",
+                "example": 1
+            },
+            "foto": {
+                "type": "string",
+                "description": "photo",
+                "example": "http://azure.blob.img"
+            },
+            "nome": {
+                "type": "string",
+                "description": "name",
+                "example": "Mario Augusto Ramos"
+            },
+            "data_nascimento": {
+                "type": "string",
+                "description": "birth_date",
+                "example": "2010-08-12"
+            },
+            "idade": {
+                "type": "int",
+                "description": "years",
+                "example": "12"
+            },
+             "diagnostico": {
+                "type": "string",
+                "description": "diagnostico",
+                "example": "Autismo e TDAH"
+            },
+            "serie_escolar": {
+                "type": "string",
+                "description": "diagnostico",
+                "example": "2º Série"
+            },
+            "grau_suporte": {
+                "type": "string",
+                "description": "diagnostico",
+                "example": "Grau 3"
+            },
+            "psicopedagogo": {
+                "type": "array",
+                "items": {
+                    $ref: "#/components/schemas/psicopedagogo"
+                }
+            }
+        }
+    },
+
+    pacienteGet: {
         type: 'object',
         properties: {
             "id": {
@@ -12,97 +65,63 @@ module.exports = {
                 "description": "name",
                 "example": "Mario Augusto Ramos"
             },
-            "data_nascimento": {
+            "foto": {
                 "type": "string",
-                "description": "birth_date",
-                "example": "2010-08-12"
-            },
-             "diagnostico": {
-                "type": "string",
-                "description": "diagnostico",
-                "example": "Autismo e TDAH"
-            },
-            "serie_escolar": {
-                "type": "array",
-                "items": {
-                    $ref: "#/components/schemas/serie_escolar"
-                }
-            },
-            "grau_suporte": {
-                "type": "array",
-                "items": {
-                    $ref: "#/components/schemas/grau_suporte"
-                }
-            },
-            "psicopedagogo": {
-                "type": "array",
-                "items": {
-                    $ref: "#/components/schemas/psicopedagogo"
-                }
-            }
-        }
-    },
-    pacienteGet: {
-        type: 'object',
-        properties: {
-              "id": {
-                "type": "int",
-                "description": "id",
-                "example": 1
-            },
-            "nome": {
-                "type": "string",
-                "description": "name",
-                "example": "Mario Augusto Ramos"
+                "description": "photo",
+                "example": "http://azure.blob.img"
             },
             "data_nascimento": {
                 "type": "string",
                 "description": "birth_date",
                 "example": "1977-10-24"
             },
+            "idade": {
+                "type": "int",
+                "description": "id",
+                "example": "12"
+            },
              "diagnostico": {
                 "type": "string",
                 "description": "diagnostico",
                 "example": "Autismo e TDAH"
             },
             "serie_escolar": {
-                "type": "array",
-                "items": {
-                    $ref: "#/components/schemas/serie_escolar"
-                }
+                "type": "string",
+                "description": "diagnostico",
+                "example": "2º Série"
             },
             "grau_suporte": {
-                "type": "array",
-                "items": {
-                    $ref: "#/components/schemas/grau_suporte"
-                }
+                "type": "string",
+                "description": "diagnostico",
+                "example": "Grau 3"
             },
             "psicopedagogo": {
                 "type": "array",
                 "items": {
-                    $ref: "#/components/schemas/psicopedagogo"
+                    $ref: "#/components/schemas/pacienteGetPsicopedagogo"
                 }
             },
             "responsaveis": {
                 "type": "array",
                 "items": {
-                    $ref: "#/components/schemas/responsavel"
+                    $ref: "#/components/schemas/pacienteGetResponsavel"
                 }
             }
         }
     },
+
     pacientePost: {
         type: 'object',
         properties: {
-             "id": {
-                "type": "int",
-                "description": "id",
-                "example": 1
-            },
             "nome": {
                 "type": "string",
                 "description": "name",
                 "example": "Mario Augusto Ramos"
+            },
+            "foto": {
+                "type": "string",
+                "description": "photo",
+                "example": "http://azure.blob.img"
             },
             "data_nascimento": {
                 "type": "string",
@@ -114,24 +133,58 @@ module.exports = {
                 "description": "diagnostico",
                 "example": "Autismo e TDAH"
             },
-            "serie_escolar_id": {
-                "type": "array",
-                "items": {
-                    $ref: "#/components/schemas/serie_escolar_id"
-                }
+            "id_serie_escolar": {
+                "type": "int",
+                "description": "id_psicopedagogo",
+                "example": "1"
             },
-            "grau_suporte_id": {
-                "type": "array",
-                "items": {
-                    $ref: "#/components/schemas/grau_suporte_id"
-                }
+            "id_grau_suporte": {
+                "type": "int",
+                "description": "id_psicopedagogo",
+                "example": "1"
             },
-            "psicopedagogo_id": {
-                "type": "array",
-                "items": {
-                    $ref: "#/components/schemas/psicopedagogo/login"
-                }
+            "id_responsavel": {
+                "type": "int",
+                "description": "id_responsavel",
+                "example": "1"
             }
+        }
+    },
+
+    //componente para atualizar o paciente
+    pacientePut: {
+        type: 'object',
+        properties: {
+            "nome": {
+                "type": "string",
+                "description": "name",
+                "example": "Mario Augusto Ramos"
+            },
+            "foto": {
+                "type": "string",
+                "description": "photo",
+                "example": "http://azure.blob.img"
+            },
+            "data_nascimento": {
+                "type": "string",
+                "description": "birth_date",
+                "example": "1977-10-24"
+            },
+             "diagnostico": {
+                "type": "string",
+                "description": "diagnostico",
+                "example": "Autismo e TDAH"
+            },
+            "id_serie_escolar": {
+                "type": "int",
+                "description": "id_psicopedagogo",
+                "example": "1"
+            },
+            "id_grau_suporte": {
+                "type": "int",
+                "description": "id_psicopedagogo",
+                "example": "1"
+            },
         }
     }
 }

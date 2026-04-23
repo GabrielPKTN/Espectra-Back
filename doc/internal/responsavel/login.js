@@ -1,7 +1,7 @@
 
 module.exports = {
     get: {
-        tag: ["EndPoints [RESPONSÁVEL]"],
+        tag: ["EndPoints [RESPONSAVEL]"],
         description: 'Busca o Responsável no sistema para efetuar o login.',
         operationId: 'listarResponsavelId',
         parameters: [{
