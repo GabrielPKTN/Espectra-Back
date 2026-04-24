@@ -1,6 +1,6 @@
 module.exports = {
     post: {
-        tag: ["EndPoints [TENTATIVAS]"],
+        tag: ["EndPoints [TENTATIVA]"],
         description: 'Cadastra uma nova Tentativa no sistema.',
         operationId: 'inserirTentativa',
         requestBody: {
@@ -54,35 +54,16 @@ module.exports = {
                 }
             },
             500: {
-                description: "Não foi possível processar a requisição por erros internos da Controller",
+                description: "Erros Internos",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/error500_controller"
-                        }
-                    }
-                }
-            },
-            500: {
-                description: "Não foi possível processar a requisição por erros internos da Model",
-                content: {
-                    "application/json": {
-                        schema: {
-                            $ref: "#/components/schemas/error500_model"
-                        }
-                    }
-                }
-            },
-             500: {
-                description: "Não foi possível processar a requisição por erros na inserção de dados em tabelas relacionais",
-                content: {
-                    "application/json": {
-                        schema: {
-                            $ref: "#/components/schemas/error500_relatinal_insertion"
+                            $ref: "#/components/schemas/error500"
                         }
                     }
                 }
             }
+        
         }
     }
 }

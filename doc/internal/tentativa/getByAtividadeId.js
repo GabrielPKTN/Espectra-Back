@@ -1,7 +1,7 @@
 module.exports = { 
     get: {
         tag: ["EndPoints [TENTATIVA]"],
-        description: 'Retorna uma tentativa do sistema pelo ID.',
+        description: 'Retorna uma tentativa do sistema filtrando pelo ID da Atividade.',
         operationId: 'listarTentativaId',
         parameters: [{
             name: "id",
