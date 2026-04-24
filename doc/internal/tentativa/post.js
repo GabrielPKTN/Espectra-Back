@@ -1,31 +1,30 @@
 module.exports = {
-    get: {
-        tags: ["EndPoints [PACIENTE]"],
-        description: 'Retorna um Paciente do sistema pelo ID.',
-        operationId: 'listarPacienteId',
-        parameters: [{
-            name: "id",
-            in: "path",
-            description: "ID do paciente",
-            required: true,
-            schema: {
-                type: "int",
-                format: "int64"
+    post: {
+        tags: ["EndPoints [TENTATIVA]"],
+        description: 'Cadastra uma nova Tentativa no sistema.',
+        operationId: 'inserirTentativa',
+        requestBody: {
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/tentativaPost"
+                    }
+                }
             }
-        }],
+        },
         responses: {
             200: {
                 description: "Requisição bem sucedida",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/paciente"
+                            $ref: "#/components/schemas/tentativa"
                         }
                     }
                 }
             },
             400: {
-                 description: "Campo inválido",
+                description: "Campo inválido",
                 content: {
                     "application/json": {
                         schema: {
@@ -34,12 +33,22 @@ module.exports = {
                     }
                 }
             },
-            404: {
+             404: {
                 description: "Não encontrado",
                 content: {
                     "application/json": {
                         schema: {
                             $ref: "#/components/schemas/error404"
+                        }
+                    }
+                }
+            },
+             415: {
+                description: "Tipos de dados inválidos.",
+                content: {
+                    "appplication/json": {
+                         schema: {
+                            $ref: "#/components/schemas/error415"
                         }
                     }
                 }
@@ -54,6 +63,7 @@ module.exports = {
                     }
                 }
             }
+        
         }
     }
 }

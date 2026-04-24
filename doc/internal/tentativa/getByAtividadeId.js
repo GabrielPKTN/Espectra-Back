@@ -1,12 +1,12 @@
-module.exports = {
+module.exports = { 
     get: {
-        tags: ["EndPoints [PACIENTE]"],
-        description: 'Retorna um Paciente do sistema pelo ID.',
-        operationId: 'listarPacienteId',
+        tags: ["EndPoints [TENTATIVA]"],
+        description: 'Retorna uma tentativa do sistema filtrando pelo ID da Atividade.',
+        operationId: 'listarTentativaId',
         parameters: [{
             name: "id",
             in: "path",
-            description: "ID do paciente",
+            description: "ID da atividade",
             required: true,
             schema: {
                 type: "int",
@@ -19,7 +19,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/paciente"
+                            $ref: "#/components/schemas/tentativa"
                         }
                     }
                 }
