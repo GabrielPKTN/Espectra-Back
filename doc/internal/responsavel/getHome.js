@@ -1,29 +1,18 @@
 module.exports = {
-    delete: {
+    get: {
         tags: ['EndPoints [RESPONSAVEL]'],
-        description: "Exclui um responsável baseado no seu Id",
-        operationId: "deletarResponsavel",
+        description: "Retorna home do responsável pelo id",
+        operationId: "retornaPerfilResponsavel",
         parameters: [{
             name: "id",
-            in: "path",
+            in: "query",
             description: "Id do Responsável",
             required: true,
             schema: {
                 type: "int",
                 format: "int64"
             }
-        },
-        {
-            name: "senha",
-            in: "query",
-            description: "senha",
-            required: true,
-            schema: {
-                type: "int",
-                format: "int64"
-            }
-        }
-    ],
+        }],
 
         responses: {
             200: {
@@ -31,7 +20,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/success_delete"
+                            $ref: "#/components/schemas/responsavelHome"
                         }
                     }
                 }

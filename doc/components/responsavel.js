@@ -1,4 +1,5 @@
 module.exports = {
+
     responsavel: {
         type: 'object',
         properties: {
@@ -6,6 +7,11 @@ module.exports = {
                 "type": "int",
                 "description": "id",
                 "example": 1
+            },
+            "foto": {
+                "type": "string",
+                "description": "photo",
+                "example": "http://azure.blob.img"
             },
             "nome": {
                 "type": "string",
@@ -26,18 +32,14 @@ module.exports = {
                 "type": "string",
                 "description": "email",
                 "example": "seuemail@gmai.com"
-            },
-            "senha": {
-                "type": "string",
-                "description": "password",
-                "example": "senha1234@"
             }
         }
     },
-    responsavelGet: {
+
+    responsavelHome: {
         type: 'object',
         properties: {
-             "id": {
+            "id": {
                 "type": "int",
                 "description": "id",
                 "example": 1
@@ -47,45 +49,21 @@ module.exports = {
                 "description": "name",
                 "example": "Nicolas dos Santos Durão"
             },
-            "data_nascimento": {
+            "foto": {
                 "type": "string",
-                "description": "birth_date",
-                "example": "2008-06-16"
+                "description": "photo",
+                "example": "http://azure.blob.img"
             },
-            "telefone": {
-                "type": "string",
-                "description": "telephone",
-                "example": "(11) 11111-1111"
-            },
-            "email": {
-                "type": "string",
-                "description": "email",
-                "example": "seuemail@gmail.com"
-            },
-            "senha": {
-                "type": "string",
-                "description": "password",
-                "example": "senha1234@"
-            },
-            "paciente": {
+            "familiar": {
                 "type": "array",
                 "items": {
-                    $ref: "#/components/schemas/paciente"
+                    $ref: "#/components/schemas/familiarResponsavel"
                 }
             }
         }
     },
-    login: {
-        type: 'object',
-          properties: {
-            "id_responsavel": {
-                "type": "int",
-                "description": "id",
-                "example": 1
-            }
-        }
-    },
-    responsavelCreate: {
+
+    responsavelPost: {
         type: 'object',
         properties: {
             "nome": {
@@ -109,6 +87,59 @@ module.exports = {
                 "example": "seuemail@gmail.com"
             },
              "senha": {
+                "type": "string",
+                "description": "password",
+                "example": "senha1234@"
+            }
+        }
+    },
+
+    responsavelId: {
+        type: 'object',
+        properties: {
+            "id": {
+                "type": "int",
+                "description": "id",
+                "example": 1
+            }
+        }
+    },
+    
+    responsavelPut: {
+        type: 'object',
+        properties: {
+            "nome": {
+                "type": "string",
+                "description": "name",
+                "example": "Nicolas dos Santos Durao"
+            },
+            "foto": {
+                "type": "string",
+                "description": "name",
+                "example": "Nicolas dos Santos Durao"
+            },
+            "data_nascimento": {
+                "type": "string",
+                "description": "birth_date",
+                "example": "2008-06-16"
+            },
+            "telefone": {
+                "type": "string",
+                "description": "telephone",
+                "example": "(11) 11111-1111"
+            },
+             "email": {
+                "type": "string",
+                "description": "email",
+                "example": "seuemail@gmail.com"
+            },
+        }
+    },
+
+    responsavelPutSenha: {
+        type: 'object',
+        properties: {
+            "senha": {
                 "type": "string",
                 "description": "password",
                 "example": "senha1234@"

@@ -1,8 +1,8 @@
 module.exports = {
     get: {
         tags: ['EndPoints [RESPONSAVEL]'],
-        description: "Retorna um responsável baseado no seu Id",
-        operationId: "listarResponsavelPorId",
+        description: "Retorna perfil do responsável pelo id",
+        operationId: "retornaPerfilResponsavelId",
         parameters: [{
             name: "id",
             in: "path",
@@ -20,7 +20,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/responsavelGet"
+                            $ref: "#/components/schemas/responsavel"
                         }
                     }
                 }
@@ -30,7 +30,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/error400"
+                            $ref: "#/components/schemas/error400"
                         }
                     }
                 }
@@ -40,31 +40,17 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/error404"
+                            $ref: "#/components/schemas/error404"
                         }
                     }
                 }
             },
             500: {
-                description: "Não foi possível processar a requisição por erros internos da Controller",
+                description: "Não foi possível processar a requisição por erros internos",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/error500_controller"
-                        }
-                    }
-                }
-            },
-            500: {
-                description: "Não foi possível processar a requisição por erros internos da Model",
-                content: {
-                    "appkication/json": {
-                        schema: {
-                            "application/json": {
-                                schema: {
-                                    $ref: "#/components/schema/error500_model"
-                                }
-                            }
+                            $ref: "#/components/schemas/error500"
                         }
                     }
                 }

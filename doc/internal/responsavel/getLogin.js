@@ -1,12 +1,12 @@
 module.exports = {
-    delete: {
-        tags: ['EndPoints [RESPONSAVEL]'],
-        description: "Exclui um responsável baseado no seu Id",
-        operationId: "deletarResponsavel",
+    get: {
+        tags: ["EndPoints [RESPONSAVEL]"],
+        description: 'Retorna o ID de responsavel para efetuar o login',
+        operationId: 'retornaIdResponsavel',
         parameters: [{
-            name: "id",
-            in: "path",
-            description: "Id do Responsável",
+            name: "email",
+            in: "query",
+            description: "email",
             required: true,
             schema: {
                 type: "int",
@@ -24,14 +24,13 @@ module.exports = {
             }
         }
     ],
-
         responses: {
             200: {
                 description: "Requisição bem sucedida",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/success_delete"
+                            $ref: "#/components/schemas/responsavelId"
                         }
                     }
                 }
@@ -47,7 +46,7 @@ module.exports = {
                 }
             },
             404: {
-                description: "O Id informado não foi encontrado",
+                description: "Não encontrado",
                 content: {
                     "application/json": {
                         schema: {
@@ -57,7 +56,7 @@ module.exports = {
                 }
             },
             500: {
-                description: "Não foi possível processar a requisição por erros internos",
+                description: "Erros Internos",
                 content: {
                     "application/json": {
                         schema: {
