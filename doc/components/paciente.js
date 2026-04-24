@@ -190,7 +190,7 @@ module.exports = {
             "numero_registro": {
                 "type": "string",
                 "description": "numero de resgistro",
-                "example": "Grau 3"
+                "example": "2026040001"
             },
             "reponsavel": {
                 "type": "array",
@@ -248,7 +248,7 @@ module.exports = {
             "numero_registro": {
                 "type": "string",
                 "description": "numero de resgistro",
-                "example": "Grau 3"
+                "example": "2026040001"
             },
             "reponsavel": {
                 "type": "array",
