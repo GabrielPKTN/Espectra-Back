@@ -1,5 +1,5 @@
 module.exports = {
-    post: {
+    put: {
         tags: ['EndPoints [ATIVIDADE]'],
         description: "Edita uma atividade personalizada no sistema.",
         operationId: "inserirAtividadePersonalizada",
@@ -19,7 +19,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/responsavel"
+                            $ref: "#/components/schemas/atividade_personalizada"
                         }
                     }
                 }
