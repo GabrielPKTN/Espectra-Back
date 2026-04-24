@@ -12,7 +12,18 @@ module.exports = {
                 type: "int",
                 format: "int64"
             }
-        }],
+        },
+        {
+            name: "senha",
+            in: "query",
+            description: "senha",
+            required: true,
+            schema: {
+                type: "int",
+                format: "int64"
+            }
+        }
+    ],
 
         responses: {
             200: {
