@@ -1,6 +1,6 @@
 module.exports = {
     post: {
-        tags: ["EndPoints [PACIENTES]"],
+        tags: ["EndPoints [PACIENTE]"],
         description: 'Cadastra um novo Paciente no sistema.',
         operationId: 'inserirPaciente',
         requestBody: {
