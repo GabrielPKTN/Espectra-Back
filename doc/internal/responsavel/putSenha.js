@@ -1,13 +1,12 @@
-
 module.exports = {
-    get: {
-        tag: ["EndPoints [RESPONSAVEL]"],
-        description: 'Busca o Responsável no sistema para efetuar o login.',
-        operationId: 'listarResponsavelId',
+    put: {
+        tags: ['EndPoints [RESPONSAVEL]'],
+        description: "Atualiza a senha de um responsável no sistema",
+        operationId: "atualizarSenhaResponsavel",
         parameters: [{
-            name: "email",
-            in: "query",
-            description: "Email do responsavel",
+            name: "id",
+            in: "path",
+            description: "Id do Responsável",
             required: true,
             schema: {
                 type: "int",
@@ -17,20 +16,29 @@ module.exports = {
         {
             name: "senha",
             in: "query",
-            description: "Senha do responsavel",
+            description: "senha",
             required: true,
             schema: {
                 type: "int",
                 format: "int64"
             }
         }],
+        requestBody: {
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/responsavelPutSenha"
+                    }
+                }
+            }
+        },
         responses: {
             200: {
                 description: "Requisição bem sucedida",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/login"
+                            $ref: "#/components/schemas/success_update"
                         }
                     }
                 }
@@ -46,7 +54,7 @@ module.exports = {
                 }
             },
             404: {
-                description: "Não encontrado",
+                description: "O Id informado não foi encontrado",
                 content: {
                     "application/json": {
                         schema: {
@@ -55,8 +63,18 @@ module.exports = {
                     }
                 }
             },
+            415: {
+                description: "Tipos de dados inválidos",
+                content: {
+                    "application/json": {
+                        schema: {
+                            $ref: "#/components/schemas/error415"
+                        }
+                    }
+                }
+            },
             500: {
-                description: "Erros Internos",
+                description: "Não foi possível processar a requisição por erros internos da Controller",
                 content: {
                     "application/json": {
                         schema: {

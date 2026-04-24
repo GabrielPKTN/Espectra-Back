@@ -7,7 +7,7 @@ module.exports = {
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schema/responsavelCreate"
+                        $ref: "#/components/schemas/responsavelPost"
                     }
                 }
             }
@@ -19,7 +19,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/responsavelGet"
+                            $ref: "#/components/schemas/responsavel"
                         }
                     }
                 }
@@ -29,7 +29,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/error400"
+                            $ref: "#/components/schemas/error400"
                         }
                     }
                 }
@@ -39,7 +39,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/error404"
+                            $ref: "#/components/schemas/error404"
                         }
                     }
                 }
@@ -49,31 +49,17 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/error415"
+                            $ref: "#/components/schemas/error415"
                         }
                     }
                 }
             },
             500: {
-                description: "Não foi possível processar a requisição por erros internos da Controller",
+                description: "Não foi possível processar a requisição por erros internos",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schema/error500_controller"
-                        }
-                    }
-                }
-            },
-            500: {
-                description: "Não foi possível processar a requisição por erros internos da Model",
-                content: {
-                    "appkication/json": {
-                        schema: {
-                            "application/json": {
-                                schema: {
-                                    $ref: "#/components/schema/error500_model"
-                                }
-                            }
+                            $ref: "#/components/schemas/error500"
                         }
                     }
                 }
