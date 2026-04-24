@@ -1,6 +1,6 @@
 module.exports = { 
     get: {
-        tag: ["EndPoints [TENTATIVA]"],
+        tags: ["EndPoints [TENTATIVA]"],
         description: 'Retorna uma tentativa do sistema pelo ID.',
         operationId: 'listarTentativaId',
         parameters: [{

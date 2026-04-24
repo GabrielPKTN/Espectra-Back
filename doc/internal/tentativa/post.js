@@ -1,6 +1,6 @@
 module.exports = {
     post: {
-        tag: ["EndPoints [TENTATIVA]"],
+        tags: ["EndPoints [TENTATIVA]"],
         description: 'Cadastra uma nova Tentativa no sistema.',
         operationId: 'inserirTentativa',
         requestBody: {
