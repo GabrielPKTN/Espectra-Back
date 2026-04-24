@@ -1,11 +1,11 @@
 module.exports = {
     get: {
         tags: ["EndPoints [PSICOPEDAGOGO]"],
-        description: 'Retorna um Psicopedagogo do sistema pelo ID.',
-        operationId: 'listarPsicopedagogoId',
+        description: 'Retorna o perfil do psicopedagogo pelo id',
+        operationId: 'retornaPerfilId',
         parameters: [{
             name: "id",
-            in: "path",
+            in: "query",
             description: "ID do psicopedagogo",
             required: true,
             schema: {

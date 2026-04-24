@@ -1,7 +1,7 @@
 module.exports = {
     delete: {
         tags: ["EndPoints [PSICOPEDAGOGO]"],
-        description: 'Deleta um psicopedagogo pelo ID',
+        description: 'Deleta um psicopedagogo pelo ID e senha',
         operationId: 'deletePsicopedagogo',
         parameters: [{
             name: "id",
@@ -12,7 +12,18 @@ module.exports = {
                 type: "int",
                 format: "int64"
             }
-        }],
+        },
+        {
+            name: "senha",
+            in: "query",
+            description: "senha",
+            required: true,
+            schema: {
+                type: "int",
+                format: "int64"
+            }
+        }
+    ],
         responses: {
             200: {
                 description: "Requisição bem sucedida",

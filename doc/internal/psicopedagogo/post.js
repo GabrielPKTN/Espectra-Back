@@ -1,5 +1,3 @@
-const { psicopedagogoCreate } = require("../../components/psicopedagogo");
-
 module.exports = {
     post: {
         tags: ["EndPoints [PSICOPEDAGOGO]"],
@@ -9,7 +7,7 @@ module.exports = {
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schemas/psicopedagogoCreate"
+                        $ref: "#/components/schemas/psicopedagogoPost"
                     }
                 }
             }

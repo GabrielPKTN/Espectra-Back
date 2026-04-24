@@ -1,12 +1,12 @@
 module.exports = {
-    get: {
+    put: {
         tags: ["EndPoints [PSICOPEDAGOGO]"],
-        description: 'Retorna o ID para efetuar o login',
-        operationId: 'retornaId',
+        description: 'Atualiza senha de um psicopedagogo no sistema.',
+        operationId: 'atualizarSenhaPsicopedagogo',
         parameters: [{
-            name: "email",
-            in: "query",
-            description: "email",
+            name: "id",
+            in: "path",
+            description: "ID do psicopedagogo",
             required: true,
             schema: {
                 type: "int",
@@ -22,15 +22,23 @@ module.exports = {
                 type: "int",
                 format: "int64"
             }
-        }
-    ],
+        }],
+        requestBody: {
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/psicopedagogoPutSenha"
+                    }
+                }
+            }
+        },
         responses: {
             200: {
                 description: "Requisição bem sucedida",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/psicopedagogoId"
+                            $ref: "#/components/schemas/success_update"
                         }
                     }
                 }
@@ -51,6 +59,16 @@ module.exports = {
                     "application/json": {
                         schema: {
                             $ref: "#/components/schemas/error404"
+                        }
+                    }
+                }
+            },
+            415: {
+                description: "Tipos de dados inválidos.",
+                content: {
+                    "appplication/json": {
+                         schema: {
+                            $ref: "#/components/schemas/error415"
                         }
                     }
                 }

@@ -1,36 +1,25 @@
 module.exports = {
     get: {
         tags: ["EndPoints [PSICOPEDAGOGO]"],
-        description: 'Retorna o ID para efetuar o login',
-        operationId: 'retornaId',
+        description: 'Retorna dados da home do psicopedagogo ao efetuar o login',
+        operationId: 'retornaHomePsicopedagogoId',
         parameters: [{
-            name: "email",
+            name: "id",
             in: "query",
-            description: "email",
+            description: "id",
             required: true,
             schema: {
                 type: "int",
                 format: "int64"
             }
-        },
-        {
-            name: "senha",
-            in: "query",
-            description: "senha",
-            required: true,
-            schema: {
-                type: "int",
-                format: "int64"
-            }
-        }
-    ],
+        }],
         responses: {
             200: {
                 description: "Requisição bem sucedida",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/psicopedagogoId"
+                            $ref: "#/components/schemas/psicopedagogoHome"
                         }
                     }
                 }
