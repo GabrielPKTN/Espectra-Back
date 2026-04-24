@@ -100,6 +100,36 @@ module.exports = {
         }
     },
     
+    responsavelPut: {
+        type: 'object',
+        properties: {
+            "nome": {
+                "type": "string",
+                "description": "name",
+                "example": "Nicolas dos Santos Durao"
+            },
+            "foto": {
+                "type": "string",
+                "description": "name",
+                "example": "Nicolas dos Santos Durao"
+            },
+            "data_nascimento": {
+                "type": "string",
+                "description": "birth_date",
+                "example": "2008-06-16"
+            },
+            "telefone": {
+                "type": "string",
+                "description": "telephone",
+                "example": "(11) 11111-1111"
+            },
+             "email": {
+                "type": "string",
+                "description": "email",
+                "example": "seuemail@gmail.com"
+            },
+        }
+    },
 
     responsavelGet: {
         type: 'object',
