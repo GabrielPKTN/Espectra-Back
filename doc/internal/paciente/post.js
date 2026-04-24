@@ -12,7 +12,7 @@ module.exports = {
                 }
             }
         },
-        resonses: {
+        responses: {
             200: {
                 description: "Requisição bem sucedida",
                 content: {
