@@ -45,57 +45,10 @@ module.exports = {
                 "description": "diagnostico",
                 "example": "Grau 3"
             },
-            "psicopedagogo": {
-                "type": "array",
-                "items": {
-                    $ref: "#/components/schemas/psicopedagogo"
-                }
-            }
-        }
-    },
-
-    pacienteGet: {
-        type: 'object',
-        properties: {
-            "id": {
-                "type": "int",
-                "description": "id",
-                "example": 1
-            },
-            "nome": {
+            "numero_registro": {
                 "type": "string",
-                "description": "name",
-                "example": "Mario Augusto Ramos"
-            },
-            "foto": {
-                "type": "string",
-                "description": "photo",
-                "example": "http://azure.blob.img"
-            },
-            "data_nascimento": {
-                "type": "string",
-                "description": "birth_date",
-                "example": "1977-10-24"
-            },
-            "idade": {
-                "type": "int",
-                "description": "id",
-                "example": "12"
-            },
-             "diagnostico": {
-                "type": "string",
-                "description": "diagnostico",
-                "example": "Autismo e TDAH"
-            },
-            "serie_escolar": {
-                "type": "string",
-                "description": "diagnostico",
-                "example": "2º Série"
-            },
-            "grau_suporte": {
-                "type": "string",
-                "description": "diagnostico",
-                "example": "Grau 3"
+                "description": "numero de resgistro",
+                "example": "2026040001"
             },
             "psicopedagogo": {
                 "type": "array",

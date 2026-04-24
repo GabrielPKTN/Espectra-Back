@@ -19,7 +19,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/pacienteGet"
+                            $ref: "#/components/schemas/paciente"
                         }
                     }
                 }
