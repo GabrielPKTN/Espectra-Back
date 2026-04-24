@@ -111,7 +111,7 @@ module.exports = {
                 "description": "email",
                 "example": "julianogueira77@gmail.com"
             },
-             "senha": {
+            "senha": {
                 "type": "string",
                 "description": "password",
                 "example": "Ju_10-77"
@@ -126,6 +126,17 @@ module.exports = {
                 "type": "int",
                 "description": "id",
                 "example": 1
+            }
+        }
+    },
+
+    psicopedagogoPutSenha: {
+        type: 'object',
+        properties: {
+            "senha": {
+                "type": "string",
+                "description": "password",
+                "example": "Ju_10-77"
             }
         }
     },

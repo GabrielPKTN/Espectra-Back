@@ -22,8 +22,16 @@ module.exports = {
                 type: "int",
                 format: "int64"
             }
-        }
-    ],
+        }],
+        requestBody: {
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/psicopedagogoPutSenha"
+                    }
+                }
+            }
+        },
         responses: {
             200: {
                 description: "Requisição bem sucedida",
