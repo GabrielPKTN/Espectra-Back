@@ -106,6 +106,57 @@ module.exports = {
         }
     },
 
+    pacienteGet: {
+        type: 'object',
+        properties: {
+            "id": {
+                "type": "int",
+                "description": "id",
+                "example": 1
+            },
+            "foto": {
+                "type": "string",
+                "description": "photo",
+                "example": "http://azure.blob.img"
+            },
+            "nome": {
+                "type": "string",
+                "description": "name",
+                "example": "Mario Augusto Ramos"
+            },
+            "data_nascimento": {
+                "type": "string",
+                "description": "birth_date",
+                "example": "2010-08-12"
+            },
+            "idade": {
+                "type": "int",
+                "description": "years",
+                "example": "12"
+            },
+             "diagnostico": {
+                "type": "string",
+                "description": "diagnostico",
+                "example": "Autismo e TDAH"
+            },
+            "serie_escolar": {
+                "type": "string",
+                "description": "série escolar",
+                "example": "2º Série"
+            },
+            "grau_suporte": {
+                "type": "string",
+                "description": "grau de suporte",
+                "example": "Grau 3"
+            },
+            "numero_registro": {
+                "type": "string",
+                "description": "numero de resgistro",
+                "example": "2026040001"
+            }
+        }
+    },
+
     //componente para atualizar o paciente
     pacientePut: {
         type: 'object',
