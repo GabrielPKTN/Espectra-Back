@@ -8,6 +8,11 @@ module.exports = {
                 "description": "id",
                 "example": 1
             },
+            "foto": {
+                "type": "string",
+                "description": "photo",
+                "example": "http://azure.blob.img"
+            },
             "nome": {
                 "type": "string",
                 "description": "name",
