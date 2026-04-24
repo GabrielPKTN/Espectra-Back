@@ -1,5 +1,6 @@
 const responsavel = require("./responsavel");
 
+
 module.exports = {
 
     paciente: {
@@ -49,6 +50,12 @@ module.exports = {
                 "type": "string",
                 "description": "numero de resgistro",
                 "example": "2026040001"
+            },
+            "grafico": {
+                "type": "array",
+                "items": {
+                    $ref: "#/components/schemas/pacienteGetGrafico"
+                }
             },
             "psicopedagogo": {
                 "type": "array",

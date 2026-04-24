@@ -2,6 +2,7 @@ const psicopedagogo     = require('./psicopedagogo.js')
 const responsavel       = require('./responsavel.js')
 const paciente          = require('./paciente.js')
 const tentativa         = require('./tentativa.js')
+const grafico          = require('./grafico.js')
 
 module.exports = {
     components: {
@@ -10,6 +11,7 @@ module.exports = {
             ...responsavel,
             ...paciente,
             ...tentativa,
+            ...grafico,
 
             success_delete: {
                 type: "object",
