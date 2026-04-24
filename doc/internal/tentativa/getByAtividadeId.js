@@ -1,12 +1,12 @@
 module.exports = { 
     get: {
-        tag: ["EndPoints [TENTATIVA]"],
+        tags: ["EndPoints [TENTATIVA]"],
         description: 'Retorna uma tentativa do sistema filtrando pelo ID da Atividade.',
         operationId: 'listarTentativaId',
         parameters: [{
             name: "id",
             in: "path",
-            description: "ID da tentativa",
+            description: "ID da atividade",
             required: true,
             schema: {
                 type: "int",

@@ -39,11 +39,6 @@ module.exports = {
     tentativaPost: {
         type: 'object',
         properties: {
-            "id": {
-                "type": "int",
-                "description": "id",
-                "example": 1
-            },
             "resultado": {
                 "type": "boolean",
                 "description": "result",
