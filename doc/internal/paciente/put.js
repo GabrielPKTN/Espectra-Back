@@ -1,6 +1,6 @@
 module.exports = {
     put: {
-        tags: ['EndPoints [PACIENTES]'],
+        tags: ['EndPoints [PACIENTE]'],
         description: "Atualiza um paciente no sistema",
         operationId: "atualizarPaciente",
         requestBody: {

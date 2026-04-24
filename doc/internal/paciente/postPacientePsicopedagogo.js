@@ -1,16 +1,24 @@
 module.exports = {
-    get: {
+    post: {
         tags: ["EndPoints [PACIENTE]"],
-        description: 'Retorna um Paciente do sistema pelo ID.',
-        operationId: 'listarPacienteId',
+        description: 'Cadastra relação entre paciente e psicopedagogo',
+        operationId: 'inserirRelacaoPacientePsicopedagogo',
         parameters: [{
-            name: "id",
-            in: "path",
-            description: "ID do paciente",
+            name: "id_paciente",
+            in: "query",
+            description: "id do paciente",
             required: true,
             schema: {
                 type: "int",
-                format: "int64"
+            }
+        },
+        {
+            name: "id_psicopedagogo",
+            in: "query",
+            description: "id do psicopedagogo",
+            required: true,
+            schema: {
+                type: "int",
             }
         }],
         responses: {
@@ -25,7 +33,7 @@ module.exports = {
                 }
             },
             400: {
-                 description: "Campo inválido",
+                description: "Campo inválido",
                 content: {
                     "application/json": {
                         schema: {
@@ -34,7 +42,7 @@ module.exports = {
                     }
                 }
             },
-            404: {
+             404: {
                 description: "Não encontrado",
                 content: {
                     "application/json": {
@@ -44,7 +52,17 @@ module.exports = {
                     }
                 }
             },
-            500: {
+             415: {
+                description: "Tipos de dados inválidos.",
+                content: {
+                    "appplication/json": {
+                         schema: {
+                            $ref: "#/components/schemas/error415"
+                        }
+                    }
+                }
+            },
+             500: {
                 description: "Erros Internos",
                 content: {
                     "application/json": {

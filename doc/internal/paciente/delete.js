@@ -1,6 +1,6 @@
 module.exports = {
     delete: {
-        tags: ["EndPoints [PACIENTES]"],
+        tags: ["EndPoints [PACIENTE]"],
         description: "Exclui um paciente baseado no seu Id",
         operationId: "deletarPaciente",
         parameters: [{
