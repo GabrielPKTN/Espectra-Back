@@ -4,6 +4,7 @@ const paciente          = require('./paciente.js')
 const atividade_personalizada = require('./atividade_personalizada.js')
 const atividade_portage = require('./atividade_portage.js')
 const tentativa         = require('./tentativa.js')
+const grafico          = require('./grafico.js')
 
 module.exports = {
     components: {
@@ -14,6 +15,7 @@ module.exports = {
             ...atividade_personalizada,
             ...atividade_portage,
             ...tentativa,
+            ...grafico,
 
             success_delete: {
                 type: "object",
