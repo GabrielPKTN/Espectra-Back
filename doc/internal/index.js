@@ -10,6 +10,6 @@ module.exports = {
     ...paciente,
     ...reponsavel,
     ...atividade_personalizada,
-    ...atividade_portage
+    ...atividade_portage,
     ...tentativa
 }
