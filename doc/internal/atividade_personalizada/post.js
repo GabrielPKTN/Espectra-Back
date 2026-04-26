@@ -1,6 +1,6 @@
 module.exports = {
     post: {
-        tags: ['EndPoints [ATIVIDADE]'],
+        tags: ['EndPoints [ATIVIDADE PERSONALIZADA]'],
         description: "Cadastra uma atividade personalizada no sistema.",
         operationId: "inserirAtividadePersonalizada",
         requestBody: {

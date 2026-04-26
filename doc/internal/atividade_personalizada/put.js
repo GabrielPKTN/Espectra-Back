@@ -1,6 +1,6 @@
 module.exports = {
     put: {
-        tags: ['EndPoints [ATIVIDADE]'],
+        tags: ['EndPoints [ATIVIDADE PERSONALIZADA]'],
         description: "Edita uma atividade personalizada no sistema.",
         operationId: "inserirAtividadePersonalizada",
         requestBody: {

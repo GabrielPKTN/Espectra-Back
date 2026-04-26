@@ -1,6 +1,6 @@
 module.exports = {
     get: {
-        tags: ["EndPoints [ATIVIDADE]"],
+        tags: ["EndPoints [ATIVIDADE PERSONALIZADA]"],
         description: 'Retorna todas as atividades personalizadas cadastradas no sistema.',
         operationId: 'listarAtividadesPersonalizadas',
         responses: {

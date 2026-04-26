@@ -1,6 +1,6 @@
 module.exports = {
     delete: {
-        tags: ['EndPoints [ATIVIDADE]'],
+        tags: ['EndPoints [ATIVIDADE PERSONALIZADA]'],
         description: "Exclui uma atividade personalizada baseada no seu Id",
         operationId: "deletarAtividadePersonalizada",
         parameters: [{
