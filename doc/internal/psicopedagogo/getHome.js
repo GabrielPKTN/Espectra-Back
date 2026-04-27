@@ -6,7 +6,7 @@ module.exports = {
         parameters: [{
             name: "id",
             in: "query",
-            description: "id",
+            description: "ID do psicopedagogo",
             required: true,
             schema: {
                 type: "int",
