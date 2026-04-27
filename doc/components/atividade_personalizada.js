@@ -21,11 +21,6 @@ module.exports = {
                 "type": "int",
                 "description": "id_psychopedagogue",
                 "example": 1
-            },
-            "id_atividade": {
-                "type": "int",
-                "description": "id_activity",
-                "example": 1
             }
         }
     },
