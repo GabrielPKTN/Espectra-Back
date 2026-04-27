@@ -6,6 +6,7 @@ const atividade_personalizada = require('./atividade_personalizada.js')
 const atividade_portage       = require('./atividade_portage.js')
 const tentativa               = require('./tentativa.js')
 const grafico                 = require('./grafico.js')
+const formulario              = require('./formulario.js')
 
 module.exports = {
     components: {
@@ -18,6 +19,7 @@ module.exports = {
             ...atividade_portage,
             ...tentativa,
             ...grafico,
+            ...formulario,
 
             success_delete: {
                 type: "object",

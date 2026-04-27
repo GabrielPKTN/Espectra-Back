@@ -37,7 +37,8 @@ module.exports = {
             'EndPoints [ATIVIDADE PORTAGE]',
             'EndPoints [ATIVIDADE PERSONALIZADA]',
             'EndPoints [ATIVIDADE]',
-            'EndPoints [TENTATIVA]'
+            'EndPoints [TENTATIVA]',
+            'EndPoints [FORMULARIO]'
         ]
     }
 }

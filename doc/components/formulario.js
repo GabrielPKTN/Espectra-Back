@@ -17,14 +17,21 @@ module.exports = {
         }
     },
 
+    arrayFormulario: {
+        type: 'object',
+        properties: {
+            "questoes": {
+                "type": 'array',
+                "items": {
+                    $ref: "#/components/schemas/formulario"
+                }   
+            }
+        }
+    },
+
     formularioPutAlternativa: {
         type: 'object',
         properties: {
-            "id_paciente": {
-                "type": "int",
-                "description": "id do paciente",
-                "example": 1
-            },
             "id_atividade_portage": {
                 "type": "int",
                 "description": "id da atividade-portage",
@@ -36,5 +43,17 @@ module.exports = {
                 "example": 1
             }
         }
-    }
+    },
+
+    arrayAlternativaFormulario: {
+        type: 'object',
+        properties: {
+            "respostas": {
+                "type": 'array',
+                "items": {
+                    $ref: "#/components/schemas/formularioPutAlternativa"
+                }   
+            }
+        }
+    },
 }
