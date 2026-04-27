@@ -2,7 +2,7 @@ module.exports = {
     get: {
         tags: ["EndPoints [TENTATIVA]"],
         description: 'Retorna tentativas do sistema filtrando pelo ID da Atividade.',
-        operationId: 'listarTentativaId',
+        operationId: 'listarTentativasIdAtividade',
         parameters: [{
             name: "id",
             in: "path",
@@ -19,7 +19,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/tentativa"
+                            $ref: "#/components/schemas/arrayTentativa"
                         }
                     }
                 }
