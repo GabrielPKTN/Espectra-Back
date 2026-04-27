@@ -23,15 +23,6 @@ module.exports = {
                 format: "int64"
             }
         }],
-        requestBody: {
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/responsavelPutSenha"
-                    }
-                }
-            }
-        },
         responses: {
             200: {
                 description: "Requisição bem sucedida",

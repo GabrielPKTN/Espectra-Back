@@ -3,6 +3,16 @@ module.exports = {
         tags: ['EndPoints [PACIENTE]'],
         description: "Atualiza um paciente no sistema",
         operationId: "atualizarPaciente",
+        parameters: [{
+            name: "id",
+            in: "query",
+            description: "ID do paciente",
+            required: true,
+            schema: {
+                type: "int",
+                format: "int64"
+            }
+        }],
         requestBody: {
             content: {
                 "application/json": {

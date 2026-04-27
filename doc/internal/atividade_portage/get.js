@@ -1,6 +1,6 @@
 module.exports = {
     get: {
-        tags: ["EndPoints [ATIVIDADE PORTAGE]"],
+        tags: ["EndPoints [ATIVIDADE]"],
         description: 'Retorna todas as atividades portage cadastradas no sistema.',
         operationId: 'listarAtividadesPortage',
         responses: {

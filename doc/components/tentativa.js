@@ -27,15 +27,29 @@ module.exports = {
                 "description": "nivel de auxilio",
                 "example": "auxílio parcial"
             },
-            "atividade_id": {
-                "type": "int",
-                "description": "id da atividade",
-                "example": 3
+            "atividade": {
+                "type": "array",
+                "items": {
+                    $ref: "#/components/schemas/atividade_personalizada"
+                }
             }
         }
     },
     
-   
+    arrayTentativa: {
+
+        type: 'object',
+        properties: {
+            "tentativas": {
+                "type": "array",
+                "items": {
+                    $ref: "#/components/schemas/tentativa"
+                }
+            }
+        }
+
+    },
+
     tentativaPost: {
         type: 'object',
         properties: {
@@ -62,7 +76,7 @@ module.exports = {
              "atividade_id": {
                 "type": "int",
                 "description": "id da atividade",
-                "example": 6                
+                "example": 1                
             },
         }
     }
