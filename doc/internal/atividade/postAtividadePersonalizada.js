@@ -1,25 +1,24 @@
 module.exports = {
-    put: {
-        tags: ['EndPoints [ATIVIDADE]'],
-        description: "Edita uma atividade personalizada no sistema.",
-        operationId: "inserirAtividadePersonalizada",
+    post: {
+        tags: ["EndPoints [ATIVIDADE]"],
+        description: 'Cadastra uma nova atividade tipo personalizada para o paciente.',
+        operationId: 'inserirAtividadeTipoPersonalizada',
         requestBody: {
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schemas/atividade_personalizadaPut"
+                        $ref: "#/components/schemas/atividadeTipoPersonalizadaPost"
                     }
                 }
             }
         },
-
         responses: {
             200: {
                 description: "Requisição bem sucedida",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/atividade_personalizada"
+                            $ref: "#/components/schemas/atividadeTipoPersonalizada"
                         }
                     }
                 }
@@ -34,8 +33,8 @@ module.exports = {
                     }
                 }
             },
-            404: {
-                description: "O Id informado não foi encontrado",
+             404: {
+                description: "Não encontrado",
                 content: {
                     "application/json": {
                         schema: {
@@ -44,18 +43,18 @@ module.exports = {
                     }
                 }
             },
-            415: {
-                description: "Tipos de dados inválidos",
+             415: {
+                description: "Tipos de dados inválidos.",
                 content: {
-                    "application/json": {
-                        schema: {
+                    "appplication/json": {
+                         schema: {
                             $ref: "#/components/schemas/error415"
                         }
                     }
                 }
             },
             500: {
-                description: "Não foi possível processar a requisição por erros internos",
+                description: "Erros Internos",
                 content: {
                     "application/json": {
                         schema: {
@@ -64,6 +63,7 @@ module.exports = {
                     }
                 }
             }
+        
         }
     }
 }

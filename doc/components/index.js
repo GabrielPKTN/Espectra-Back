@@ -1,10 +1,11 @@
-const psicopedagogo     = require('./psicopedagogo.js')
-const responsavel       = require('./responsavel.js')
-const paciente          = require('./paciente.js')
+const psicopedagogo           = require('./psicopedagogo.js')
+const responsavel             = require('./responsavel.js')
+const paciente                = require('./paciente.js')
+const atividade               = require('./atividade.js')
 const atividade_personalizada = require('./atividade_personalizada.js')
-const atividade_portage = require('./atividade_portage.js')
-const tentativa         = require('./tentativa.js')
-const grafico          = require('./grafico.js')
+const atividade_portage       = require('./atividade_portage.js')
+const tentativa               = require('./tentativa.js')
+const grafico                 = require('./grafico.js')
 
 module.exports = {
     components: {
@@ -12,6 +13,7 @@ module.exports = {
             ...psicopedagogo,
             ...responsavel,
             ...paciente,
+            ...atividade,
             ...atividade_personalizada,
             ...atividade_portage,
             ...tentativa,

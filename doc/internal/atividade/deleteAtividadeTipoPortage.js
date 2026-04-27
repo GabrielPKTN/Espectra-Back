@@ -1,20 +1,18 @@
 module.exports = {
     delete: {
-        tags: ['EndPoints [ATIVIDADE]'],
-        description: "Exclui uma atividade personalizada baseada no seu Id",
-        operationId: "deletarAtividadePersonalizada",
+        tags: ["EndPoints [ATIVIDADE]"],
+        description: "Exclui uma atividade do tipo portage baseado no seu Id",
+        operationId: "deletarAtividadeTipoPortage",
         parameters: [{
             name: "id",
             in: "path",
-            description: "Id da Atividade Personalizada",
+            description: "Id da atividade",
             required: true,
             schema: {
                 type: "int",
                 format: "int64"
             }
-        }
-    ],
-
+        }],
         responses: {
             200: {
                 description: "Requisição bem sucedida",
@@ -47,7 +45,7 @@ module.exports = {
                 }
             },
             500: {
-                description: "Não foi possível processar a requisição por erros internos",
+                description: "Não foi possível processar a requisição por erros internos da Controller",
                 content: {
                     "application/json": {
                         schema: {

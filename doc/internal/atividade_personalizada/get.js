@@ -1,15 +1,25 @@
 module.exports = {
     get: {
-        tags: ["EndPoints [ATIVIDADE]"],
-        description: 'Retorna todas as atividades personalizadas cadastradas no sistema.',
-        operationId: 'listarAtividadesPersonalizadas',
+        tags: ["EndPoints [ATIVIDADE PERSONALIZADA]"],
+        description: 'Retorna a atividade personalizada cadastrada pelo id de atividade.',
+        operationId: 'retornaAtividadePersonalizadaIdAtividade',
+        parameters: [{
+            name: "id",
+            in: "path",
+            description: "ID da atividade",
+            required: true,
+            schema: {
+                type: "int",
+                format: "int64"
+            }
+        }],
         responses: {
             200: {
                 description: "Requisição bem sucedida",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/atividade_personalizadaGet"
+                            $ref: "#/components/schemas/atividade_personalizada"
                         }
                     }
                 }

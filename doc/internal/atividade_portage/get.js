@@ -1,6 +1,6 @@
 module.exports = {
     get: {
-        tags: ["EndPoints [ATIVIDADE]"],
+        tags: ["EndPoints [ATIVIDADE PORTAGE]"],
         description: 'Retorna todas as atividades portage cadastradas no sistema.',
         operationId: 'listarAtividadesPortage',
         responses: {
@@ -9,7 +9,7 @@ module.exports = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/atividade_portageGet"
+                            $ref: "#/components/schemas/atividade_portage"
                         }
                     }
                 }

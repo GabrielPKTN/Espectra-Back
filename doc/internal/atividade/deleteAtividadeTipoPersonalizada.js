@@ -1,25 +1,25 @@
 module.exports = {
-    post: {
-        tags: ['EndPoints [ATIVIDADE]'],
-        description: "Cadastra uma atividade portage no sistema.",
-        operationId: "inserirAtividadePortage",
-        requestBody: {
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/atividade_portagePost"
-                    }
-                }
+    delete: {
+        tags: ["EndPoints [ATIVIDADE]"],
+        description: "Exclui uma atividade do tipo personalizada baseado no seu Id",
+        operationId: "deletarAtividadeTipoPersonalizada",
+        parameters: [{
+            name: "id",
+            in: "path",
+            description: "Id da atividade",
+            required: true,
+            schema: {
+                type: "int",
+                format: "int64"
             }
-        },
-
+        }],
         responses: {
             200: {
                 description: "Requisição bem sucedida",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/atividade_portagePost"
+                            $ref: "#/components/schemas/success_delete"
                         }
                     }
                 }
@@ -44,18 +44,8 @@ module.exports = {
                     }
                 }
             },
-            415: {
-                description: "Tipos de dados inválidos",
-                content: {
-                    "application/json": {
-                        schema: {
-                            $ref: "#/components/schemas/error415"
-                        }
-                    }
-                }
-            },
             500: {
-                description: "Não foi possível processar a requisição por erros internos",
+                description: "Não foi possível processar a requisição por erros internos da Controller",
                 content: {
                     "application/json": {
                         schema: {

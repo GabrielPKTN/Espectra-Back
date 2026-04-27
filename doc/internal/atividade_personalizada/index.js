@@ -1,16 +1,10 @@
-const deleteAtividadePersonalizada = require('./delete')
-const getAtividadePersonalizada = require('./get')
-const postAtividadePersonalizada = require('./post')
-const putAtividadePersonalizada = require('./put')
+const getAtividadePersonalizadaByAtividadeId = require('./get')
+
 
 module.exports = {
-    "/v1/espectra/atividade_personalizada/": {
-        ...getAtividadePersonalizada,
-        ...postAtividadePersonalizada
-    },
 
-    "/v1/espectra/atividade_personalizada/{id}": {
-        ...putAtividadePersonalizada,
-        ...deleteAtividadePersonalizada
+    "/v1/espectra/atividade_personalizada/{id_atividade}": {
+        ...getAtividadePersonalizadaByAtividadeId
     }
+
 }

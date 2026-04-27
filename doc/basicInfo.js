@@ -34,6 +34,8 @@ module.exports = {
             'EndPoints [PACIENTE]',
             'EndPoints [PSICOPEDAGOGO]',
             'EndPoints [RESPONSAVEL]',
+            'EndPoints [ATIVIDADE PORTAGE]',
+            'EndPoints [ATIVIDADE PERSONALIZADA]',
             'EndPoints [ATIVIDADE]',
             'EndPoints [TENTATIVA]'
         ]

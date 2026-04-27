@@ -15,16 +15,11 @@ module.exports = {
             "valor_meses": {
                 "type": "int",
                 "description": "value_months",
-                "example": "12 meses"
+                "example": 12
             },
             "id_psicopedagogo": {
                 "type": "int",
                 "description": "id_psychopedagogue",
-                "example": 1
-            },
-            "id_atividade": {
-                "type": "int",
-                "description": "id_activity",
                 "example": 1
             }
         }
