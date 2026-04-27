@@ -1,8 +1,8 @@
 module.exports = {
     delete: {
         tags: ["EndPoints [ATIVIDADE]"],
-        description: "Exclui uma atividade do tipo personalizada baseado no seu Id",
-        operationId: "deletarAtividadeTipoPersonalizada",
+        description: "Exclui uma atividade do tipo portage baseado no seu Id",
+        operationId: "deletarAtividadeTipoPortage",
         parameters: [{
             name: "id",
             in: "path",

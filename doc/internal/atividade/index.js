@@ -1,6 +1,7 @@
 const postAtividadeTipoPortage =  require('./postAtividadePortage')
 const postAtividadeTipoPersonalizada = require('./postAtividadePersonalizada')
 const deleteAtividadeTipoPersonalizada = require('./deleteAtividadeTipoPersonalizada')
+const deleteAtividadeTipoPortage = require('./deleteAtividadeTipoPortage')
 
 module.exports = {
     
@@ -12,9 +13,12 @@ module.exports = {
         ...postAtividadeTipoPersonalizada
     },
 
-    "v1/espectra/atividade_personalizada/{id_atividade_personalizada}": {
+    "v1/espectra/atividade_personalizada/{id_atividade}": {
         ...deleteAtividadeTipoPersonalizada
     },
 
+    "v1/espectra/atividade_portage/{id_atividade}": {
+        ...deleteAtividadeTipoPortage
+    }
 
 }
