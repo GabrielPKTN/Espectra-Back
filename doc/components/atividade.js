@@ -115,6 +115,21 @@ module.exports = {
                 "example": 22
             }
         }
-    }
+    },
 
+    atividadeTipoPersonalizadaPut: {
+        type: "object",
+        properties: {
+            "questao": {
+                "type": "string",
+                "description": "questao",
+                "example": "Conversar em rodas de amigos e colegas"
+            },
+            "valor_meses": {
+                "type": "int",
+                "description": "peso da atividade",
+                "example": 12
+            }
+        }
+    }
 }
