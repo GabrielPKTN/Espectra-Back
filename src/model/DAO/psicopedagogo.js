@@ -35,7 +35,20 @@ const getPsychopedagogueHomeById = async function(id) {
     }
 }
 
+const getPsychopedagogueByEmailAndPassword = async function(email, password) {
+    try {
+        await db.raw('SET @resposta = NULL')
+        await db.raw('CALL prc_login_psicopedagogo(?, ?, @resposta)', [email, password])
+        const result = await db.raw('SELECT @resposta AS resposta')
+
+        return JSON.parse(result[0][0].resposta)
+    } catch (error) {
+        return false
+    }
+}
+
 module.exports = {
     getPsychopedagogueById,
-    getPsychopedagogueHomeById
+    getPsychopedagogueHomeById,
+    getPsychopedagogueByEmailAndPassword
 }

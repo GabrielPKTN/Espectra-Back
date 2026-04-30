@@ -56,7 +56,31 @@ const listarHomePsicopedagogoPorId = async function(id) {
     }
 }
 
+const loginEmailSenhaPsicopedagogo = async function(email, password) {
+    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+
+    try {
+        if(!email === "" && email === null && email.length > 255){
+            let result = await psicopedagogoDAO.getPsychopedagogueByEmailAndPassword(email, password)
+
+            if(result){
+                MESSAGES.defaultHeader.status = MESSAGES.successRequest.status
+                MESSAGES.defaultHeader.status_code = MESSAGES.successRequest.status_code
+                MESSAGES.defaultHeader.itens.psicopedagogo = result.data
+                return MESSAGES.defaultHeader
+            }
+
+            return MESSAGES.errorNotFound
+        }
+        
+        return MESSAGES.errorRequiredFields
+    } catch (error) {
+        return MESSAGES.errorInternalServerController
+    }
+}
+
 module.exports = {
     listarPsicopedagogoPorId,
-    listarHomePsicopedagogoPorId
+    listarHomePsicopedagogoPorId,
+    loginEmailSenhaPsicopedagogo
 }

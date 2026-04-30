@@ -19,4 +19,9 @@ router.get("/home/:id", async(req, res) => {
     res.status(result.status_code).json(result)
 })
 
+router.get("/email/:email/senha/:password", async(req, res) => {
+    let result = await controllerPsicopedagogo.loginEmailSenhaPsicopedagogo(req.params.email, req.params.password)
+    res.status(result.status_code).json(result)
+})
+
 module.exports = router
