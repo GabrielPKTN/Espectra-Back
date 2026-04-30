@@ -32,6 +32,31 @@ const listarPsicopedagogoPorId = async function(id) {
     }
 }
 
+const listarHomePsicopedagogoPorId = async function(id) {
+    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+
+    try {
+        if(!isNaN(id) && id > 0){
+            let result = await psicopedagogoDAO.getPsychopedagogueHomeById(id)
+
+            if(result){
+                MESSAGES.defaultHeader.status = MESSAGES.successRequest.status
+                MESSAGES.defaultHeader.status_code = MESSAGES.successRequest.status_code
+                MESSAGES.defaultHeader.itens.psicopedagogo = result.data
+                return MESSAGES.defaultHeader
+            }
+
+            return MESSAGES.errorNotFound
+        }
+
+        MESSAGES.errorRequiredFields.message += "{Id inválido!}"
+        return MESSAGES.errorRequiredFields
+    } catch (error) {
+        return MESSAGES.errorInternalServerController
+    }
+}
+
 module.exports = {
-    listarPsicopedagogoPorId
+    listarPsicopedagogoPorId,
+    listarHomePsicopedagogoPorId
 }

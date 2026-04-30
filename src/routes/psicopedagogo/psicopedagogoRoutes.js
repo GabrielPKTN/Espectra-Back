@@ -14,4 +14,9 @@ router.get("/:id", async(req, res) => {
     res.status(result.status_code).json(result)
 })
 
+router.get("/home/:id", async(req, res) => {
+    let result = await controllerPsicopedagogo.listarHomePsicopedagogoPorId(req.params.id)
+    res.status(result.status_code).json(result)
+})
+
 module.exports = router

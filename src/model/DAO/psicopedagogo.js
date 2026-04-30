@@ -23,6 +23,19 @@ const getPsychopedagogueById = async function(id) {
     }
 }
 
+const getPsychopedagogueHomeById = async function(id) {
+    try {
+        await db.raw('SET @resposta = NULL')
+        await db.raw('CALL prc_buscar_psicopedagogo_home(?, @resposta)', [id])
+        const result = await db.raw('SELECT @resposta as resposta')
+
+        return JSON.parse(result[0][0].resposta)
+    } catch (error) {
+        return false
+    }
+}
+
 module.exports = {
-    getPsychopedagogueById
+    getPsychopedagogueById,
+    getPsychopedagogueHomeById
 }
