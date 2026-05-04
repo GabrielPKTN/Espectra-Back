@@ -57,25 +57,17 @@ const listarHomePsicopedagogoPorId = async function(id) {
 }
 
 const loginEmailSenhaPsicopedagogo = async function(email, password) {
-    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
-
     try {
-        if(!email === "" && email === null && email.length > 255){
-            let result = await psicopedagogoDAO.getPsychopedagogueByEmailAndPassword(email, password)
+        if(typeof email === "string" && email.trim() !== "" && email.length <= 255 && 
 
-            if(result){
-                MESSAGES.defaultHeader.status = MESSAGES.successRequest.status
-                MESSAGES.defaultHeader.status_code = MESSAGES.successRequest.status_code
-                MESSAGES.defaultHeader.itens.psicopedagogo = result.data
-                return MESSAGES.defaultHeader
-            }
-
-            return MESSAGES.errorNotFound
+            typeof password === "string" && password.trim() !== "" && password.length <= 150
+        ){
+            return await psicopedagogoDAO.getPsychopedagogueByEmailAndPassword(email, password)
         }
         
-        return MESSAGES.errorRequiredFields
+        return defaultMessages.errorRequiredFields
     } catch (error) {
-        return MESSAGES.errorInternalServerController
+        return defaultMessages.errorInternalServerController
     }
 }
 

@@ -41,9 +41,15 @@ const getPsychopedagogueByEmailAndPassword = async function(email, password) {
         await db.raw('CALL prc_login_psicopedagogo(?, ?, @resposta)', [email, password])
         const result = await db.raw('SELECT @resposta AS resposta')
 
-        return JSON.parse(result[0][0].resposta)
+        const resposta = result[0][0].resposta
+
+        if(!resposta){
+            return null
+        }
+
+        return typeof resposta === "string" ? JSON.parse(resposta) : resposta
     } catch (error) {
-        return false
+        return null
     }
 }
 
