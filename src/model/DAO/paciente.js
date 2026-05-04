@@ -23,10 +23,10 @@ const selectPatientById = async function(id){
         const message = result[0].msg
 
         // A mensagem está vindo como String, aqui estou validando o tipo da mensagem e convertendo para JSON
-        const parsedMessage = typeof message === String ? JSON.parse(message) : message
-        
+        const parsedMessage = typeof(message) === "string" ? JSON.parse(message) : message
+       
         // Valida o status da mensagem
-        if(parsedMessage.status == true)
+        if(parsedMessage)
             return parsedMessage
         else 
             return false
@@ -40,9 +40,9 @@ const selectPatientById = async function(id){
 const selectPatientByRegistNumber = async function(registNumber){
     try {
         const result = await db('tb_paciente').where('numero_registro', '=', registNumber).select('*')
-
+        
         if(Array.isArray(result))
-            return true
+            return result
         else
             return false
 
@@ -73,9 +73,9 @@ const insertPatient = async function(patient){
 
         const message = result[0].msg
 
-        const parsedMessage = typeof message === String ? JSON.parse(message) : message
+        const parsedMessage = typeof message === "string" ? JSON.parse(message) : message
 
-        if(parsedMessage.status == true)
+        if(parsedMessage)
             return parsedMessage
         else
             return false
@@ -95,9 +95,9 @@ const insertPatientPsychopedagogue = async function(idPatient, idPsychopedagogue
 
         const message = result[0].msg
 
-        const parsedMessage = typeof message === String ? JSON.parse(message) : message
+        const parsedMessage = typeof message === "string" ? JSON.parse(message) : message
 
-        if(parsedMessage.status == true)
+        if(parsedMessage)
             return parsedMessage
         else
             return false
@@ -117,9 +117,9 @@ const insertPatientResponsable = async function(idPatient, idResponsable){
 
         const message = result[0].msg
 
-        const parsedMessage = typeof message === String ? JSON.parse(message) : message
+        const parsedMessage = typeof message === "string" ? JSON.parse(message) : message
         
-        if(parsedMessage.status == true)
+        if(parsedMessage)
             return parsedMessage
         else
             return false
@@ -148,9 +148,9 @@ const updatePatient = async function(patient){
 
         const message = result[0].msg
 
-        const parsedMessage = typeof message === String ? JSON.parse(message) : message
+        const parsedMessage = typeof message === "string" ? JSON.parse(message) : message
         
-        if(parsedMessage.status == true)
+        if(parsedMessage)
             return parsedMessage
         else
             return false
@@ -169,20 +169,20 @@ const deletePatiente = async function(id) {
 
         const message = result[0].msg
 
-        const parsedMessage = typeof message === String ? JSON.parse(message) : message
+        const parsedMessage = typeof message === "string" ? JSON.parse(message) : message
         console.log(parsedMessage)
 
-        if(parsedMessage.status == true)
+        if(parsedMessage)
             return parsedMessage
         else
             return false
 
     }catch(error){
-        console.log(error)
         return false
     }
 
 }
+
 
 module.exports = {
     selectPatientById,
