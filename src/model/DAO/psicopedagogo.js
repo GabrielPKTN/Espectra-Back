@@ -67,13 +67,25 @@ const setInsertPsychopedagogue = async function(photo, name, birthDate, telephon
     }
 }
 
-const setUpdatePsychopedagogue = async function() {
-    
+const setUpdatePsychopedagogue = async function(id, photo, name, birthDate, telephone) {
+    try {
+        await db.raw('SET @resposta = NULL')
+        await db.raw('CALL prc_atualizar_psicopedagogo(?, ?, ?, ?, ?, @resposta)', [id, photo, name, birthDate, telephone])
+        const result = await db.raw('SELECT @resposta as resposta')
+
+        const resposta = result[0][0].resposta
+
+        return typeof resposta === "string" ? JSON.parse(resposta) : resposta
+    } catch (error) {
+        console.log(error)
+        return false
+    }
 }
 
 module.exports = {
     getPsychopedagogueById,
     getPsychopedagogueHomeById,
     getPsychopedagogueByEmailAndPassword,
-    setInsertPsychopedagogue
+    setInsertPsychopedagogue,
+    setUpdatePsychopedagogue
 }

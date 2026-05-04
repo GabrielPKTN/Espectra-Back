@@ -30,4 +30,11 @@ router.post("/", async(req, res) => {
     res.status(result.status_code).json(result)
 })
 
+router.put("/:id", async(req, res) => {
+    const {photo, name, birthDate, telephone} = req.body
+    const id = req.params.id
+    let result = await controllerPsicopedagogo.atualizarPsicopedagogo(id, photo, name, birthDate, telephone)
+    res.status(result.status_code).json(result)
+})
+
 module.exports = router

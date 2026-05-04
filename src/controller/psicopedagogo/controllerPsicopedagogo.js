@@ -81,9 +81,28 @@ const inserirPsicopedagogo = async function(photo, name, birthDate, telephone, e
     }
 }
 
+const atualizarPsicopedagogo = async function(id, photo, name, birthDate, telephone) {
+    try {
+        if(
+            typeof id && !isNaN(id) && Number(id) > 0 &&
+            typeof photo === "string" && photo.trim() !== "" && photo.length <= 255 &&
+            typeof name === "string" && name.trim() !== "" && name.length <= 150 &&
+            typeof birthDate === "string" && birthDate.trim() !== "" &&
+            typeof telephone === "string" && telephone.trim() !== "" && telephone.length <= 20
+        ){
+            return await psicopedagogoDAO.setUpdatePsychopedagogue(id, photo, name, birthDate, telephone)
+        }
+
+        return defaultMessages.errorRequiredFields
+    } catch (error) {
+        return defaultMessages.errorInternalServerController
+    }
+}
+
 module.exports = {
     listarPsicopedagogoPorId,
     listarHomePsicopedagogoPorId,
     loginEmailSenhaPsicopedagogo,
-    inserirPsicopedagogo
+    inserirPsicopedagogo,
+    atualizarPsicopedagogo
 }
