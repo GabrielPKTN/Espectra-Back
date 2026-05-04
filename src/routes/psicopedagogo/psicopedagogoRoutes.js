@@ -37,4 +37,11 @@ router.put("/:id", async(req, res) => {
     res.status(result.status_code).json(result)
 })
 
+router.put("/:id/senha/:password", async(req, res) => {
+    const {email, newPassword} = req.body
+    const id = req.params.id
+    let result = await controllerPsicopedagogo.atualizarSenhaPsicopedagogo(id, email, newPassword)
+    res.status(result.status_code).json(result)
+})
+
 module.exports = router
