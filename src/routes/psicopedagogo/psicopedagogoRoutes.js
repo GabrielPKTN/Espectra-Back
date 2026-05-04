@@ -24,6 +24,10 @@ router.get("/email/:email/senha/:password", async(req, res) => {
     res.status(result.status_code).json(result)
 })
 
-
+router.post("/", async(req, res) => {
+    const {photo, name, birthDate, telephone, email, password} = req.body
+    let result = await controllerPsicopedagogo.inserirPsicopedagogo(photo, name, birthDate, telephone, email, password)
+    res.status(result.status_code).json(result)
+})
 
 module.exports = router

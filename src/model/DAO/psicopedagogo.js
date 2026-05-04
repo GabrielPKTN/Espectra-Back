@@ -53,8 +53,27 @@ const getPsychopedagogueByEmailAndPassword = async function(email, password) {
     }
 }
 
+const setInsertPsychopedagogue = async function(photo, name, birthDate, telephone, email, password) {
+    try {
+        await db.raw('SET @msg = NULL')
+        await db.raw('CALL procedure_adicionar_psicopedagogo(?, ?, ?, ?, ?, ?, @msg)', [photo, name, birthDate, telephone, email, password])
+        const result = await db.raw('SELECT @msg AS resposta')
+
+        const resposta = result[0][0].resposta
+
+        return typeof resposta === "string" ? JSON.parse(resposta) : resposta
+    } catch (error) {
+        return false
+    }
+}
+
+const setUpdatePsychopedagogue = async function() {
+    
+}
+
 module.exports = {
     getPsychopedagogueById,
     getPsychopedagogueHomeById,
-    getPsychopedagogueByEmailAndPassword
+    getPsychopedagogueByEmailAndPassword,
+    setInsertPsychopedagogue
 }

@@ -37,16 +37,7 @@ const listarHomePsicopedagogoPorId = async function(id) {
 
     try {
         if(!isNaN(id) && id > 0){
-            let result = await psicopedagogoDAO.getPsychopedagogueHomeById(id)
-
-            if(result){
-                MESSAGES.defaultHeader.status = MESSAGES.successRequest.status
-                MESSAGES.defaultHeader.status_code = MESSAGES.successRequest.status_code
-                MESSAGES.defaultHeader.itens.psicopedagogo = result.data
-                return MESSAGES.defaultHeader
-            }
-
-            return MESSAGES.errorNotFound
+            return await psicopedagogoDAO.getPsychopedagogueHomeById(id)
         }
 
         MESSAGES.errorRequiredFields.message += "{Id inválido!}"
@@ -71,8 +62,28 @@ const loginEmailSenhaPsicopedagogo = async function(email, password) {
     }
 }
 
+const inserirPsicopedagogo = async function(photo, name, birthDate, telephone, email, password) {
+    try {
+        if(
+            typeof photo === "string" && photo.trim() !== "" && photo.length <= 255 &&
+            typeof name === "string" && name.trim() !== "" && name.length <= 150 &&
+            typeof birthDate === "string" && birthDate.trim() !== "" &&
+            typeof telephone === "string" && telephone.trim() !== "" && telephone.length <= 20 &&
+            typeof email === "string" && email.trim() !== "" && email.length <= 255 && 
+            typeof password === "string" && password.trim() !== "" && password.length <= 150
+    ){
+        return await psicopedagogoDAO.setInsertPsychopedagogue(photo, name, birthDate, telephone, email, password)
+    }
+
+    return defaultMessages.errorRequiredFields
+    } catch (error) {
+        return defaultMessages.errorInternalServerController
+    }
+}
+
 module.exports = {
     listarPsicopedagogoPorId,
     listarHomePsicopedagogoPorId,
-    loginEmailSenhaPsicopedagogo
+    loginEmailSenhaPsicopedagogo,
+    inserirPsicopedagogo
 }
