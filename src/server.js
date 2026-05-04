@@ -35,6 +35,10 @@ app.use(express.json());
 //EndPoint da documentação
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
+const patientRoutes = require('./routes/paciente/pacienteRoutes.js')
+
+app.use("/v1/espectra/paciente", patientRoutes)
+
 app.listen(PORT, () => {
     console.log(`Se você está vendo isso, comemore!\nAPI rodando na porta: ${PORT}`)
 })

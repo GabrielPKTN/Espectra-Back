@@ -5,6 +5,7 @@
  * Versão: 1.0
  **********************************************************************************************/
 
+const e = require('express')
 const patientDAO = require('../../model/DAO/paciente.js')
 const defaultMessages = require('../modulo/defaultMessages.js')
 
@@ -65,3 +66,28 @@ const getPatientByRegistNumber = async function(registNumber){
     }
 }
 
+const setPatient = async function(patient) {
+    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+
+    try {
+        
+    } catch (error) {
+         return MESSAGES.errorInternalServer //500
+    }
+}
+
+const validatePatient = function(patient){
+    if(patient.nome == '' || patient.nome == null || patient.nome == undefined){
+        MESSAGES.errorRequiredFields.message += ' [Nome Inválido]' 
+        return MESSAGES.errorRequiredFields //400
+
+    }else if(patient.data_nascimento == '' || patient.data_nascimento == null || patient.data_nascimento == undefined){
+
+    }
+
+} 
+
+module.exports = {
+    getPatientById,
+    getPatientByRegistNumber
+}
