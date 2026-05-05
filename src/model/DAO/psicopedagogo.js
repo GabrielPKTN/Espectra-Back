@@ -97,11 +97,28 @@ const setUpdatePasswordPsychopedagogue = async function(id, email, newPassword) 
     }
 }
 
+const setDeletePsychopedagogue = async function(id) {
+    try {
+        await db.raw('SET SQL_SAFE_UPDATES = 0')
+        await db.raw('SET @resposta = NULL')
+        await db.raw('CALL prc_delete_psicopedagogo(?, @resposta)', [id])
+        const result = await db.raw('SELECT @resposta AS resposta')
+
+        const resposta = result[0][0].resposta
+
+        return typeof resposta === "string" ? JSON.parse(resposta) : resposta
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
 module.exports = {
     getPsychopedagogueById,
     getPsychopedagogueHomeById,
     getPsychopedagogueByEmailAndPassword,
     setInsertPsychopedagogue,
     setUpdatePsychopedagogue,
-    setUpdatePasswordPsychopedagogue
+    setUpdatePasswordPsychopedagogue,
+    setDeletePsychopedagogue
 }

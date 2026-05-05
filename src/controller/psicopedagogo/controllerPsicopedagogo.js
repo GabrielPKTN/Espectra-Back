@@ -115,11 +115,16 @@ const atualizarSenhaPsicopedagogo = async function(id, email, newPassword) {
     }
 }
 
+const deletarPsicopedagogo = async function(id) {
+    
+}
+
 module.exports = {
     listarPsicopedagogoPorId,
     listarHomePsicopedagogoPorId,
     loginEmailSenhaPsicopedagogo,
     inserirPsicopedagogo,
     atualizarPsicopedagogo,
-    atualizarSenhaPsicopedagogo
+    atualizarSenhaPsicopedagogo,
+    deletarPsicopedagogo
 }

@@ -44,4 +44,10 @@ router.put("/:id/senha/:password", async(req, res) => {
     res.status(result.status_code).json(result)
 })
 
+router.delete("/:id", async(req, res) => {
+    const id = req.params.id
+    let result = await controllerPsicopedagogo.deletarPsicopedagogo(id)
+    res.status(result.status_code).json(result)
+})
+
 module.exports = router
