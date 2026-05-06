@@ -18,7 +18,7 @@ module.exports = {
         ...deletePaciente
     },
 
-    "/v1/espectra/paciente/{register_number}": {
+    "/v1/espectra/paciente/?numero_registro={register_number}": {
         ...getByRegisterNumber
     },
 
