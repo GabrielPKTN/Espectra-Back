@@ -116,7 +116,17 @@ const atualizarSenhaPsicopedagogo = async function(id, email, newPassword) {
 }
 
 const deletarPsicopedagogo = async function(id) {
-    
+    try {
+        if(
+            typeof id && !isNaN(id) && Number(id) > 0
+        ){
+            return await psicopedagogoDAO.setDeletePsychopedagogue(id)
+        }
+
+        return defaultMessages.errorRequiredFields
+    } catch (error) {
+        return defaultMessages.errorInternalServerController
+    }
 }
 
 module.exports = {
