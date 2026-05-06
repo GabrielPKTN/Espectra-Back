@@ -179,13 +179,8 @@ const setUpdatePatient = async function(patient, id, contentType) {
                 
                 if(resultPatient.status_code){
                     
-                    if(resultPatient.status_code == 200){         
-                        return resultPatient.data //200
-                    }
-                    else{
-                        return resultPatient  //404
-                    }
-
+                    return resultPatient  //404
+                
                 }else{
                     return MESSAGES.errorInternalServer //500
                 }
