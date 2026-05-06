@@ -10,17 +10,21 @@ const router = express.Router()
 const controllerPsicopedagogo = require("../../controller/psicopedagogo/controllerPsicopedagogo.js")
 
 router.get("/:id", async(req, res) => {
-    let result = await controllerPsicopedagogo.listarPsicopedagogoPorId(req.params.id)
+    const id = req.params.id
+    let result = await controllerPsicopedagogo.listarPsicopedagogoPorId(id)
     res.status(result.status_code).json(result)
 })
 
 router.get("/home/:id", async(req, res) => {
-    let result = await controllerPsicopedagogo.listarHomePsicopedagogoPorId(req.params.id)
+    const id = req.params.id
+    let result = await controllerPsicopedagogo.listarHomePsicopedagogoPorId(id)
     res.status(result.status_code).json(result)
 })
 
 router.get("/email/:email/senha/:password", async(req, res) => {
-    let result = await controllerPsicopedagogo.loginEmailSenhaPsicopedagogo(req.params.email, req.params.password)
+    const email = req.params.email
+    const password = req.params.password
+    let result = await controllerPsicopedagogo.loginEmailSenhaPsicopedagogo(email, password)
     res.status(result.status_code).json(result)
 })
 
