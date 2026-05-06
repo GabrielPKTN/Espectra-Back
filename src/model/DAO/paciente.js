@@ -149,7 +149,7 @@ const updatePatient = async function(patient){
         const message = result[0].msg
 
         const parsedMessage = typeof message === "string" ? JSON.parse(message) : message
-        
+
         if(parsedMessage)
             return parsedMessage
         else
