@@ -38,6 +38,34 @@ const listarFormularioPorPacienteId = async function(id) {
     }
 }
 
+const listarRespostasFormularioPorPacienteId = async function(id, resposta) {
+    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+
+    try {
+        if(!isNaN(id) && Number(id) > 0 &&
+            typeof resposta === "string" && resposta.trim() !== "" && resposta.length <= 20
+        ){
+            let result = await formularioDAO.getResponseFormByFilter(id, resposta)
+
+            if(result){
+                MESSAGES.defaultHeader.status = MESSAGES.successRequest.status
+                MESSAGES.defaultHeader.status_code = MESSAGES.successRequest.status_code
+                MESSAGES.defaultHeader.itens.formulario = result
+
+                return MESSAGES.defaultHeader
+            }
+
+            return MESSAGES.errorNotFound
+        }
+
+        return MESSAGES.errorRequiredFields
+    } catch (error) {
+        console.log(error)
+        return MESSAGES.errorInternalServerController
+    }
+}
+
 module.exports = {
-    listarFormularioPorPacienteId
+    listarFormularioPorPacienteId,
+    listarRespostasFormularioPorPacienteId
 }

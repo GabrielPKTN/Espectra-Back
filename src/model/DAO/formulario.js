@@ -20,6 +20,31 @@ const getFormByIdPatient = async function(id) {
     }
 }
 
+const getResponseFormByFilter = async function(id, resposta) {
+    try {
+        let sql = `SELECT * FROM vw_resposta_formulario_paciente_id WHERE id_paciente = ?`
+        let params = [id]
+
+        if(resposta === 'null'){
+            sql += ` AND resposta IS NULL`
+        } else {
+            sql += ` AND resposta = ?`
+            params.push(resposta)
+        }
+
+        const result = await db.raw(sql, params)
+
+        if(Array.isArray(result[0]) && result[0].length > 0)
+            return result[0]
+        else
+            return false
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+} 
+
 module.exports = {
-    getFormByIdPatient
+    getFormByIdPatient,
+    getResponseFormByFilter
 }

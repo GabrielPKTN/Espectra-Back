@@ -15,4 +15,11 @@ router.get("/:id", async(req, res) => {
     res.status(result.status_code).json(result)
 })
 
+router.get("/:id/:resposta", async(req, res) => {
+    const id = req.params.id
+    const resposta = req.params.resposta
+    let result = await controllerFormulario.listarRespostasFormularioPorPacienteId(id, resposta)
+    res.status(result.status_code).json(result)
+})
+
 module.exports = router
