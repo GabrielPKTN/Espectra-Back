@@ -22,14 +22,50 @@ const getAttemptById = async function(id) {
 
 const getAttemptByActivityId = async function(id) {
     try {
+         const result = await db('tb_tentativa').where('id_atividade', '=', id).select('*')
         
+        if(Array.isArray(result))
+            return result
+        else
+            return false
+
     } catch (error) {
-        
+        return false
     }
 }
 
-//getAttemptById(17).then(result => console.log(result))
+const insertAttempt = async function(attempt) {
+     try {
+
+        await db.raw(
+            'CALL prc_inserir_tentativa(?, ?, ?, ?, ?, @msg)', 
+            [
+                attempt.tipo_aplicacao_id, 
+                attempt.atividade_id, 
+                attempt.resultado, 
+                attempt.observacao, 
+                attempt.data
+            ]
+        )
+
+        const [result] = await db.raw('SELECT @msg as msg')
+
+        const message = result[0].msg
+
+        const parsedMessage = typeof message === "string" ? JSON.parse(message) : message
+
+        if(parsedMessage)
+            return parsedMessage
+        else
+            return false
+
+    } catch (error) {
+        return false
+    }
+}
 
 module.exports = {
-    getAttemptById
+    getAttemptById,
+    getAttemptByActivityId,
+    insertAttempt
 }
