@@ -22,4 +22,11 @@ router.get("/:id/:resposta", async(req, res) => {
     res.status(result.status_code).json(result)
 })
 
+router.put("/:id", async(req, res) => {
+    const idForm = req.params.id
+    const {idActivityPortage, idResponse} = req.body
+    let result = await controllerFormulario.atualizarRespostasFormulario(idForm, idActivityPortage, idResponse)
+    res.status(result.status_code).json(result)
+})
+
 module.exports = router

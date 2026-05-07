@@ -44,7 +44,23 @@ const getResponseFormByFilter = async function(id, resposta) {
     }
 } 
 
+const setUpdateResponseForm = async function(idForm, idActivityPortage, idResponse) {
+    try {
+        await db.raw('SET @resposta = NULL')
+        await db.raw('CALL prc_atualizar_respostas_formulario(?, ?, ?, @resposta)', [idForm, idActivityPortage, idResponse])
+        const result = await db.raw('SELECT @resposta AS resposta')
+
+        const resposta = result[0][0].resposta
+
+        return typeof resposta === "string" ? JSON.parse(resposta) : resposta
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
 module.exports = {
     getFormByIdPatient,
-    getResponseFormByFilter
+    getResponseFormByFilter,
+    setUpdateResponseForm
 }

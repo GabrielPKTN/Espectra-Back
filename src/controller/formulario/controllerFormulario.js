@@ -65,7 +65,36 @@ const listarRespostasFormularioPorPacienteId = async function(id, resposta) {
     }
 }
 
+const atualizarRespostasFormulario = async function(idForm, idActivityPortage, idResponse) {
+    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+
+    try {
+        if(!isNaN(idForm) && Number(idForm) > 0 &&
+            !isNaN(idActivityPortage) && Number(idActivityPortage) > 0 &&
+            !isNaN(idResponse) && Number(idResponse) > 0
+        ){
+            let result = await formularioDAO.setUpdateResponseForm(idForm, idActivityPortage, idResponse)
+
+            if(result){
+                MESSAGES.defaultHeader.status = MESSAGES.successRequest.status
+                MESSAGES.defaultHeader.status_code = MESSAGES.successRequest.status_code
+                MESSAGES.defaultHeader.itens.formulario = result
+
+                return MESSAGES.defaultHeader
+            }
+
+            return MESSAGES.errorNotFound
+        }
+
+        return MESSAGES.errorRequiredFields
+    } catch (error) {
+        console.log(error)
+        return MESSAGES.errorInternalServerController
+    }
+}
+
 module.exports = {
     listarFormularioPorPacienteId,
-    listarRespostasFormularioPorPacienteId
+    listarRespostasFormularioPorPacienteId,
+    atualizarRespostasFormulario
 }
