@@ -5,7 +5,7 @@ module.exports = {
         operationId: 'listarPacienteNumeroRegistro',
         parameters: [{
             name: "numero_registro",
-            in: "path",
+            in: "query",
             description: "Número de Registro do paciente",
             required: true,
             schema: {

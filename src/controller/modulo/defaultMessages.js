@@ -44,10 +44,17 @@ const errorRequiredFields = {
     message: "Não foi possível processar a requisição pois campos obrigatórios não foram preenchidos ou estão incorretos."
 }
 
+const errorInternalServer = {
+    status: false,
+    status_code: 500,
+    message: "Não foi possível processar a requisição devido a erros internos no servidor"
+}
+
 module.exports = {
     defaultHeader,
     successRequest,
     errorNotFound,
     errorInternalServerController,
-    errorRequiredFields
+    errorRequiredFields,
+    errorInternalServer
 }
