@@ -5,7 +5,7 @@
  * Versão: 1.0
  ********************************************************************************/
 
-const formularioDAO = require("../../model/DAO/formulario.js")
+const formularioDAO = require("../../model/DAO/formulario/formulario.js")
 const defaultMessages = require("../modulo/defaultMessages.js")
 
 const listarFormularioPorPacienteId = async function(id) {

@@ -5,7 +5,7 @@
  * Versão: 1.0
  ******************************************************************************/
 
-const db = require("../../database/db")
+const db = require("../../../database/db")
 
 const getPsychopedagogueById = async function(id) {
     try {
