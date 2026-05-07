@@ -5,7 +5,7 @@
  * Versão: 1.0
  ********************************************************************************/
 
-const psicopedagogoDAO = require("../../model/DAO/psicopedagogo.js")
+const psicopedagogoDAO = require("../../model/DAO//psicopedagogo/psicopedagogo.js")
 const defaultMessages = require("../modulo/defaultMessages.js")
 
 const listarPsicopedagogoPorId = async function(id) {
