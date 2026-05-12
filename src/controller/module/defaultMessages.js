@@ -62,7 +62,7 @@ const ERROR_MULTI_STATUS = {
 const ERROR_CONFLICT = {
     status: false,
     status_code: 409,
-    message: 'Dados de inseção foram encontrados já cadastrados!!!'
+    message: 'Dados de inserção foram encontrados já cadastrados!!!'
 }
 
 const ERROR_NOT_FOUND = {
