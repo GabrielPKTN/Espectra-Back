@@ -5,7 +5,7 @@
  * Versão: 1.0
  **********************************************************************************************/
 
-const patientDAO = require('../../model/DAO/paciente.js')
+const patientDAO = require('../model/DAO/paciente.js')
 const defaultMessages = require('../modulo/defaultMessages.js')
 
 const getPatientById = async function(id) {

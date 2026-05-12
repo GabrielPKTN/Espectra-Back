@@ -113,7 +113,7 @@ const getUsuarioLogin = async function (email, senha)  {
         
         } else {
 
-            if (objectParse.status_code != 404) {
+            if (objectParse.status_code != 200) {
                 return objectParse.status_code
             } else {
                 return objectParse.data
@@ -227,7 +227,7 @@ const updateUsuario = async function (id, usuario) {
 }
 
 const updateUsuarioSenha = async function (id, senha) {
-    
+
     try {
         
         sql = 'CALL prc_atualiza_senha_usuario(?, ?, @resultUpdateSenhaUsuario)'
@@ -239,11 +239,11 @@ const updateUsuarioSenha = async function (id, senha) {
             ]
         )
 
-        const resultExec = await database.raw('SELECT @resultUpdateUsuario')
+        const resultExec = await database.raw('SELECT @resultUpdateSenhaUsuario')
         const result = await database.raw('SELECT @resultHome')
 
         const requestObject = resultExec[0][0]
-        const jsonRequestString = requestObject['@resultUpdateUsuario']
+        const jsonRequestString = requestObject['@resultUpdateSenhaUsuario']
 
         const requestParse = JSON.parse(jsonRequestString)
 
@@ -274,7 +274,7 @@ const updateUsuarioSenha = async function (id, senha) {
 }
 
 const deleteUsuario = async function (id, senha) {
-    
+
     try {
         
         sql = 'CALL prc_deleta_usuario(?, ?, @resultDeleteUsuario)'
@@ -300,4 +300,15 @@ const deleteUsuario = async function (id, senha) {
         return false
     }
 
+}
+
+module.exports = {
+    getUsuario,
+    getHomeUsuario,
+    getRedefinicaoSenha,
+    getUsuarioLogin,
+    postUsuario,
+    updateUsuarioSenha,
+    updateUsuario,
+    deleteUsuario
 }

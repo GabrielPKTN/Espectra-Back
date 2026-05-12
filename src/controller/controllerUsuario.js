@@ -7,7 +7,7 @@
  **********************************************************************************************/
 
 const usuarioDAO = require('../model/DAO/usuario.js')
-const defaultMessages = require('../module/defaultMessages.js')
+const defaultMessages = require('./module/defaultMessages.js')
 
 // getUsuario
 const getUsuario = async (id) => {
@@ -28,6 +28,7 @@ const getUsuario = async (id) => {
 
                     MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_REQUEST.message
                     MESSAGES.DEFAULT_HEADER.items       = result
                     
                     return MESSAGES.DEFAULT_HEADER //200
@@ -67,6 +68,7 @@ const getHomeUsuario = async (id) => {
 
                     MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_REQUEST.message
                     MESSAGES.DEFAULT_HEADER.items       = result
                     
                     return MESSAGES.DEFAULT_HEADER //200
@@ -106,9 +108,10 @@ const getRedefinicaoSenha = async (email) => {
 
                     MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
-                    MESSAGES.DEFAULT_HEADER.items       = result
+                    MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_REQUEST.message
+                    delete MESSAGES.DEFAULT_HEADER.items
                     
-                    return MESSAGES.DEFAULT_HEADER //200
+                    return MESSAGES.SUCCESS_REQUEST //200
 
                 }
 
@@ -127,34 +130,41 @@ const getRedefinicaoSenha = async (email) => {
 }
 
 // getUsuarioLogin
-const getUsuarioLogin = async (email, senha) => {
+const getUsuarioLogin = async (dados, contentType) => {
 
     MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
     try {
-        
-        if(isNaN(email) && email.length > 0 && email != "" && email != null) {
 
-            if(isNaN(senha) && senha.length > 0 && senha != "" && senha != null) {
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-                result = await usuarioDAO.getUsuarioLogin(email, senha)
+            if(isNaN(dados.email) && dados.email.length > 0 && dados.email != "" && dados.email != null) {
 
-                if(result) {
+                if(isNaN(dados.senha) && dados.senha.length > 0 && dados.senha != "" && dados.senha != null) {
 
-                    if (result == 404) {
-                        return MESSAGES.ERROR_NOT_FOUND //404
+                    result = await usuarioDAO.getUsuarioLogin(dados.email, dados.senha)
+
+                    if(result) {
+
+                        if (result == 404) {
+                            return MESSAGES.ERROR_NOT_FOUND //404
+                        } else {
+                            
+                            MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_REQUEST.status
+                            MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                            MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_REQUEST.message
+                            MESSAGES.DEFAULT_HEADER.items       = result
+                            
+                            return MESSAGES.DEFAULT_HEADER //200
+
+                        }
+
                     } else {
-                        
-                        MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_REQUEST.status
-                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
-                        MESSAGES.DEFAULT_HEADER.items       = result
-                        
-                        return MESSAGES.DEFAULT_HEADER //200
-
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
                     }
 
                 } else {
-                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
+                    return MESSAGES.ERROR_REQUIRED_FIELDS //400
                 }
 
             } else {
@@ -162,7 +172,7 @@ const getUsuarioLogin = async (email, senha) => {
             }
 
         } else {
-            return MESSAGES.ERROR_REQUIRED_FIELDS //400
+            return MESSAGES.ERROR_CONTENT_TYPE //415
         }
 
     } catch (error) {
@@ -173,6 +183,8 @@ const getUsuarioLogin = async (email, senha) => {
 
 // postUsuario
 const postUsuario = async (usuario, contentType) => {
+
+    MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
     try {
         
@@ -194,6 +206,7 @@ const postUsuario = async (usuario, contentType) => {
 
                         MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_CREATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_CREATED_ITEM.message
                         MESSAGES.DEFAULT_HEADER.items       = result
 
                         return MESSAGES.DEFAULT_HEADER //201
@@ -231,7 +244,7 @@ const updateUsuario = async (id, usuario, contentType) => {
 
             if(!isNaN(id) && id > 0 && id != "" && id != null) {
 
-                result = usuarioDAO.updateUsuario(id, usuario)
+                result = await usuarioDAO.updateUsuario(id, usuario)
 
                 if(result) {
 
@@ -240,9 +253,10 @@ const updateUsuario = async (id, usuario, contentType) => {
                     } else if (result == 409) {
                         return MESSAGES.ERROR_CONFLICT
                     } else {
-
+                        
                         MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_UPDATE_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATE_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_UPDATE_ITEM.message
                         MESSAGES.DEFAULT_HEADER.items       = result
 
                         return MESSAGES.DEFAULT_HEADER //200
@@ -268,34 +282,100 @@ const updateUsuario = async (id, usuario, contentType) => {
 }
 
 // updateUsuarioSenha
-const updateUsuarioSenha = async (id, senha) => {
+const updateUsuarioSenha = async (dados, contentType) => {
+    
 
+    MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+    
     try {
         
-        if(!isNaN(id) && id > 0 && id != "" && id != null) {
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+            
+            if(!isNaN(dados.id) && dados.id > 0 && dados.id != "" && dados.id != null) {
+                
+                if(isNaN(dados.senha) && dados.senha.length > 0 && dados.senha != "" && dados.senha != null) {
+                    
+                    result = await usuarioDAO.updateUsuarioSenha(dados.id, dados.senha)
+                    
+                    if(result) {
 
-            if(isNaN(senha) && senha.length > 0 && senha != "" && senha != null) {
+                        if(result == 404) {
 
-                result = await usuarioDAO.updateUsuarioSenha(id, senha)
+                            return MESSAGES.ERROR_NOT_FOUND //404
 
-                if(result) {
+                        } else {
 
-                    if(result == 404) {
+                            MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_UPDATE_ITEM.status
+                            MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATE_ITEM.status_code
+                            MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_UPDATE_ITEM.message
+                            MESSAGES.DEFAULT_HEADER.items       = result
 
-                        return MESSAGES.ERROR_NOT_FOUND //404
+                            return MESSAGES.DEFAULT_HEADER //200
+
+                        }
 
                     } else {
-
-                        MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_UPDATE_ITEM.status
-                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATE_ITEM.status_code
-                        MESSAGES.DEFAULT_HEADER.items       = result
-
-                        return MESSAGES.DEFAULT_HEADER //200
-
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
                     }
 
                 } else {
-                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                    return MESSAGES.ERROR_REQUIRED_FIELDS //400
+                }
+
+            } else {
+                return MESSAGES.ERROR_REQUIRED_FIELDS //400
+            }
+
+
+        } else {
+            return MESSAGES.ERROR_CONTENT_TYPE //415
+        }
+
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
+    }
+
+}
+
+// deleteUsuario
+const deleteUsuario = async (dados, contentType) => {
+
+    MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+
+    try {
+
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+
+
+            if(!isNaN(dados.id) && dados.id > 0 && dados.id != "" && dados.id != null) {
+
+                if(isNaN(dados.senha) && dados.senha.length > 0 && dados.senha != "" && dados.senha != null) {
+
+                    result = usuarioDAO.deleteUsuario(dados.id, dados.senha)
+
+                    if(result) {
+
+                        if(result == 404) {
+                            return MESSAGES.ERROR_NOT_FOUND //404
+                        } else if(result == 401) {
+                            return MESSAGES.ERROR_NON_AUTHORIZED //401
+                        } else {
+
+                            MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_DELETE.status
+                            MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_DELETE.status_code
+                            MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_DELETE.message
+                            delete MESSAGES.DEFAULT_HEADER.items
+
+                            return MESSAGES.DEFAULT_HEADER //200
+
+                        }
+
+                    } else {
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                    }
+
+                } else {
+                    return MESSAGES.ERROR_REQUIRED_FIELDS //400
                 }
 
             } else {
@@ -303,56 +383,11 @@ const updateUsuarioSenha = async (id, senha) => {
             }
 
         } else {
-            return MESSAGES.ERROR_REQUIRED_FIELDS //400
+            return MESSAGES.ERROR_CONTENT_TYPE //415
         }
 
     } catch (error) {
-        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
-    }
-
-}
-
-// deleteUsuario
-const deleteUsuario = async (id, senha) => {
-
-    try {
-        
-         if(!isNaN(id) && id > 0 && id != "" && id != null) {
-
-            if(isNaN(senha) && senha.length > 0 && senha != "" && senha != null) {
-
-                result = usuarioDAO.deleteUsuario(id, senha)
-
-                if(result) {
-
-                    if(result == 404) {
-                        return MESSAGES.ERROR_NOT_FOUND //404
-                    } else if(result == 401) {
-                        return MESSAGES.ERROR_NON_AUTHORIZED //401
-                    } else {
-
-                        MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_DELETE.status
-                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_DELETE.status_code
-                        MESSAGES.DEFAULT_HEADER.items       = result
-
-                        return MESSAGES.DEFAULT_HEADER //200
-
-                    }
-
-                } else {
-                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
-                }
-
-            } else {
-                return MESSAGES.ERROR_REQUIRED_FIELDS //400
-            }
-
-         } else {
-            return MESSAGES.ERROR_REQUIRED_FIELDS //400
-         }
-
-    } catch (error) {
-        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 
 }
@@ -420,5 +455,18 @@ const validateUserUpdate = (usuario) => {
     } else {
         return false
     }
+
+}
+
+module.exports = {
+
+    getUsuario,
+    getHomeUsuario,
+    getRedefinicaoSenha,
+    updateUsuarioSenha,
+    getUsuarioLogin,
+    postUsuario,
+    updateUsuario,
+    deleteUsuario
 
 }
