@@ -1,7 +1,8 @@
 /***********************************************************************************************
- * Objetivo: Arquivo responsável pela manipulação de dados entre App e a Model de Tentativa
- * Data: 07/04/2026
- * Autores: Enzo Carrilho
+ * Objetivo: Arquivo da camada de controle responsável pela validação
+ * de dados da tabela de usuário do banco de dados.
+ * Data: 12/05/2026
+ * Autores: Gabriel Lacerda Correia
  * Versão: 1.0
  **********************************************************************************************/
 
