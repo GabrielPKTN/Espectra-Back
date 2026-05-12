@@ -77,6 +77,12 @@ const ERROR_REQUIRED_FIELDS = {
     message: 'Não foi possível processar a requisição pois existem campos obrigatórios que devem ser encaminhados, e atendidos conforme documentação!!!'
 }
 
+const ERROR_NON_AUTHORIZED = {
+    status: false,
+    status_code: 401,
+    message: 'Não foi possível processar a requisição pois faltam credenciais válidas!!!'
+}
+
 const ERROR_INTERNAL_SERVER_CONTROLLER = {
     status: false,
     status_code: 500,
