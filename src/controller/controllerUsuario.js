@@ -351,7 +351,7 @@ const deleteUsuario = async (dados, contentType) => {
 
                 if(isNaN(dados.senha) && dados.senha.length > 0 && dados.senha != "" && dados.senha != null) {
 
-                    result = usuarioDAO.deleteUsuario(dados.id, dados.senha)
+                    result = await usuarioDAO.deleteUsuario(dados.id, dados.senha)
 
                     if(result) {
 
@@ -359,6 +359,8 @@ const deleteUsuario = async (dados, contentType) => {
                             return MESSAGES.ERROR_NOT_FOUND //404
                         } else if(result == 401) {
                             return MESSAGES.ERROR_NON_AUTHORIZED //401
+                        } else if(result == 207) {
+                            return MESSAGES.ERROR_MULTI_STATUS //207
                         } else {
 
                             MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_DELETE.status
