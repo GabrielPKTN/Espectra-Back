@@ -9,6 +9,8 @@
 const usuarioDAO = require('../model/DAO/usuario.js')
 const defaultMessages = require('./module/defaultMessages.js')
 
+const JWT = require('../middleware/middlewareJWT.js')
+
 // getUsuario
 const getUsuario = async (id) => {
 
@@ -149,10 +151,15 @@ const getUsuarioLogin = async (dados, contentType) => {
                         if (result == 404) {
                             return MESSAGES.ERROR_NOT_FOUND //404
                         } else {
-                            
+
+                            // Gera o token
+                            let tokenUser = await JWT.createJWT(result.id)
+
                             MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_REQUEST.status
                             MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                             MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_REQUEST.message
+                            //Adiciona o token no item retornado
+                            MESSAGES.DEFAULT_HEADER.token       = tokenUser
                             MESSAGES.DEFAULT_HEADER.items       = result
                             
                             return MESSAGES.DEFAULT_HEADER //200
@@ -176,6 +183,7 @@ const getUsuarioLogin = async (dados, contentType) => {
         }
 
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 
@@ -204,9 +212,14 @@ const postUsuario = async (usuario, contentType) => {
                         return MESSAGES.ERROR_NOT_FOUND //404
                     } else {
 
+                        // Gera o token
+                        let tokenUser = await JWT.createJWT(result.id)
+
                         MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_CREATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_CREATED_ITEM.message
+                        //Adiciona o token no item retornado
+                        MESSAGES.DEFAULT_HEADER.token       = tokenUser
                         MESSAGES.DEFAULT_HEADER.items       = result
 
                         return MESSAGES.DEFAULT_HEADER //201

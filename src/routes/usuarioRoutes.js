@@ -1,7 +1,6 @@
 /**********************************************************************
- * Objetivo: Arquivo responsável pelo direcionamento de dados para a 
- * controller dos logs
- * Data: 09/12/2025
+ * Objetivo: Arquivo responsável pela rotas de usuário
+ * Data: 12/05/2026
  * Developer: Gabriel Lacerda
  * Versão: 1.0.0
  *********************************************************************/
@@ -15,8 +14,10 @@ const bodyParser = require('body-parser')    // Responsável por gerenciar a che
 
 const bodyParserJSON = bodyParser.json()
 
+const JWT = require('./auth/authUser.js')
+
 // getUsuario
-router.get('/:id', cors(), async (req, res) => {
+router.get('/:id', JWT.verifyJWT, cors(), async (req, res) => {
 
     const userId = req.params.id
 
@@ -28,7 +29,7 @@ router.get('/:id', cors(), async (req, res) => {
 })
 
 // getHomeUsuario
-router.get('/home/:id', cors(), async (req, res) => {
+router.get('/home/:id', JWT.verifyJWT, cors(), async (req, res) => {
 
     const userId = req.params.id
     
@@ -78,7 +79,7 @@ router.post('/', cors(), bodyParserJSON, async (req, res) => {
 })
 
 // updateUsuario
-router.put('/:id', cors(), bodyParserJSON, async (req, res) => {
+router.put('/:id', JWT.verifyJWT, cors(), bodyParserJSON, async (req, res) => {
 
     const userId = req.params.id
     const contentType = req.headers['content-type']
@@ -92,7 +93,7 @@ router.put('/:id', cors(), bodyParserJSON, async (req, res) => {
 })
 
 // updateUsuarioSenha
-router.put('/', cors(), bodyParserJSON, async (req, res) => {
+router.put('/', JWT.verifyJWT, cors(), bodyParserJSON, async (req, res) => {
 
     const dadosBody = req.body
     const contentType = req.headers['content-type']
@@ -105,7 +106,7 @@ router.put('/', cors(), bodyParserJSON, async (req, res) => {
 })
 
 // deleteUsuario
-router.delete('/', cors(), bodyParserJSON, async (req, res) => {
+router.delete('/', JWT.verifyJWT, cors(), bodyParserJSON, async (req, res) => {
     
     const dadosBody = req.body
     const contentType = req.headers['content-type']
