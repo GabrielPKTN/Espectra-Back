@@ -4,192 +4,178 @@
  * Data: 30/04/2026
  * Developer: Enzo Carrilho e Nicolas dos Santos
  * Versão: 1.0.0
+ * Data: 12/05/2026
+ * Developer: Gabriel Lacerda Correia
+ * Versão: 1.0.0
  ***************************************************************************************/
 
 
-const db = require("../../database/db.js")
+const database = require("../../database/db.js")
 
-// Retorna dados do Paciente pelo ID
-const selectPatientById = async function(id){
+const getPacienteById = async function (id) {
+
     try {
-
-        // Chama a procedure do BD
-        await db.raw('CALL prc_buscar_paciente_completo(?, @msg)', [id])
         
-        // faz o SELECT no OUT (@msg) da Procedure
-        const [result] = await db.raw('SELECT @msg as msg')
+        sql = 'CALL prc_buscar_paciente_completo(?, @resultPaciente)'
 
-        // armazerna a mensagem do resultado
-        const message = result[0].msg
-
-        // A mensagem está vindo como String, aqui estou validando o tipo da mensagem e convertendo para JSON
-        const parsedMessage = typeof(message) === "string" ? JSON.parse(message) : message
-       
-        // Valida o status da mensagem
-        if(parsedMessage)
-            return parsedMessage
-        else 
-            return false
-
-    } catch (error) {
-        return false
-    }
-}
-
-// Retorna dados do Paciente pelo Número de Registro
-const selectPatientByRegistNumber = async function(registNumber){
-    try {
-        const result = await db('tb_paciente').where('numero_registro', '=', registNumber).select('*')
-        
-        if(Array.isArray(result))
-            return result
-        else
-            return false
-
-    } catch (error) {
-        return false
-    }
-
-}
-
-// Insere um novo Paciente no BD
-const insertPatient = async function(patient){
-    try {
-
-        await db.raw(
-            'CALL prc_adicionar_paciente(?, ?, ?, ?, ?, ?, ?, @msg)', 
-            [
-                patient.nome, 
-                patient.foto, 
-                patient.data_nascimento, 
-                patient.diagnostico, 
-                patient.id_serie_escolar, 
-                patient.id_grau_suporte, 
-                patient.id_responsavel
-            ]
+        const exec = await database.raw(
+            sql,[id]
         )
 
-        const [result] = await db.raw('SELECT @msg as msg')
+        const result = await database.raw('SELECT @resultPaciente')
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@resultPaciente']
+        const objectParse = JSON.parse(jsonObjectString)
 
-        const message = result[0].msg
+        if(objectParse != 200) {
+            return objectParse.status_code
+        } else {
+            return objectParse.data
+        }
 
-        const parsedMessage = typeof message === "string" ? JSON.parse(message) : message
-
-        if(parsedMessage)
-            return parsedMessage
-        else
-            return false
 
     } catch (error) {
         return false
     }
-}
-
-// Insere um novo Psicopedagogo para um Paciente
-const insertPatientPsychopedagogue = async function(idPatient, idPsychopedagogue) {
-    try{
-
-        await db.raw('CALL prc_inserir_relacao_psicopedagogo_paciente(?, ?, @msg)', [idPatient, idPsychopedagogue])
-
-        const [result] = await db.raw('SELECT @msg as msg')
-
-        const message = result[0].msg
-
-        const parsedMessage = typeof message === "string" ? JSON.parse(message) : message
-
-        if(parsedMessage)
-            return parsedMessage
-        else
-            return false
-
-    } catch(error){ 
-        return false
-    }    
     
 }
 
-// Insere uma nova relação de Paciente e Responsável
-const insertPatientResponsable = async function(idPatient, idResponsable){
+const postPaciente = async function (paciente) {
+    
     try {
-        await db.raw('CALL prc_inserir_relacao_responsavel_paciente(?, ?, @msg)', [idPatient, idResponsable])
-
-        const [result] = await db.raw('SELECT @msg as msg')
-
-        const message = result[0].msg
-
-        const parsedMessage = typeof message === "string" ? JSON.parse(message) : message
         
-        if(parsedMessage)
-            return parsedMessage
-        else
-            return false
-        
-    } catch (error) {
-        return false
-    }
-}
+        sql = 'CALL prc_adicionar_paciente(?,?,?,?,?,?,?,? @resultInsertPaciente)'
 
-// Atualiza dados do Paciente no BD
-const updatePatient = async function(patient){
-    try {
-        await db.raw(
-            'CALL prc_atualizar_paciente(?, ?, ?, ?, ?, ?, ?, @msg)', 
-            [
-                patient.id,
-                patient.nome, 
-                patient.foto, 
-                patient.data_nascimento, 
-                patient.diagnostico, 
-                patient.id_serie_escolar, 
-                patient.id_grau_suporte, 
+        const exec = await database.raw(
+            sql,[
+                paciente.foto,
+                paciente.nome,
+                paciente.arrayIdsDiagnostico,
+                paciente.cpf,
+                paciente.data_nascimento,
+                paciente.id_serie_escolar,
+                paciente.id_grau_suporte,
+                paciente.id_responsavel
             ]
         )
-        const [result] = await db.raw('SELECT @msg as msg')
 
-        const message = result[0].msg
+        const resultExec            = await database.raw('@resultInsertPaciente')
+        const requestObject         = resultExec[0][0]
+        const jsonRequestString     = requestObject['@resultInsertPaciente']
+        const requestParse          = JSON.parse(jsonRequestString)
 
-        const parsedMessage = typeof message === "string" ? JSON.parse(message) : message
+        const result            = await database.raw('SELECT @resultPaciente')
+        const resultBanco       = result[0][0]
+        const jsonObjectString  = resultBanco['@resultPaciente']
+        const objectParse       = JSON.parse(jsonObjectString)
 
-        if(parsedMessage)
-            return parsedMessage
-        else
-            return false
+        if (requestParse.status_code != 200) {
+            return requestParse.status_code
+        
+        } else {
+
+            if (objectParse.status_code != 200) {
+                return objectParse.status_code
+            } else {
+                return objectParse.data
+            }
+
+        }
 
     } catch (error) {
         return false
     }
+
 }
 
-// Exclui um Paciente/Familiar do BD
-const deletePatiente = async function(id) {
-    try{
-        await db.raw('CALL proc_delete_familiar(?, @msg)', [id])
+const putPaciente = async function (id, paciente) {
+    
+    try {
+        
+        sql = 'CALL prc_atualizar_paciente(?,?,?,?,?,?,?,? @resultUpdatePaciente)'
 
-        const [result] = await db.raw('SELECT @msg as msg')
+        const exec = await database.raw(
+            sql,[
+                paciente.id,
+                paciente.nome,
+                paciente.foto,
+                paciente.data_nascimento,
+                paciente.arrayIdsDiagnostico,
+                paciente.cpf,
+                paciente.id_serie_escolar,
+                paciente.id_grau_suporte
+            ]
+        )
 
-        const message = result[0].msg
+        const resultExec            = await database.raw('@resultUpdatePaciente')
+        const requestObject         = resultExec[0][0]
+        const jsonRequestString     = requestObject['@resultUpdatePaciente']
+        const requestParse          = JSON.parse(jsonRequestString)
 
-        const parsedMessage = typeof message === "string" ? JSON.parse(message) : message
-        console.log(parsedMessage)
+        const result            = await database.raw('SELECT @resultPaciente')
+        const resultBanco       = result[0][0]
+        const jsonObjectString  = resultBanco['@resultPaciente']
+        const objectParse       = JSON.parse(jsonObjectString)
 
-        if(parsedMessage)
-            return parsedMessage
-        else
-            return false
+        if (requestParse.status_code != 200) {
+            return requestParse.status_code
+        
+        } else {
 
-    }catch(error){
+            if (objectParse.status_code != 200) {
+                return objectParse.status_code
+            } else {
+                return objectParse.data
+            }
+
+        }
+
+    } catch (error) {
         return false
     }
 
 }
 
+const deletePaciente = async function (id_paciente, id_usuario) {
 
-module.exports = {
-    selectPatientById,
-    selectPatientByRegistNumber,
-    insertPatient,
-    insertPatientPsychopedagogue,
-    insertPatientResponsable,
-    updatePatient,
-    deletePatiente
+    try {
+        
+        sql = 'CALL proc_delete_paciente(?,?, @resultDeletePaciente)'
+
+        const exec = await database.raw(
+            sql,[id_usuario, id_paciente]
+        )
+
+        const result = await database.raw('SELECT @resultDeletePaciente')
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@resultDeletePaciente']
+        const objectParse = JSON.parse(jsonObjectString)
+
+        return objectParse.status_code
+
+    } catch (error) {
+        return false
+    }
+    
+}
+
+const getPacienteByCpf = async function (cpf) {
+    
+    sql = 'CALL prc_retorna_paciente_pelo_cpf(?, @returnPacienteCpf)'
+
+        const exec = await database.raw(
+            sql,[cpf]
+        )
+
+        const result = await database.raw('SELECT @returnPacienteCpf')
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@returnPacienteCpf']
+        const objectParse = JSON.parse(jsonObjectString)
+
+        if(objectParse != 200) {
+            return objectParse.status_code
+        } else {
+            return objectParse.data
+        }
+
 }
