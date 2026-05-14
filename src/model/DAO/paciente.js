@@ -88,19 +88,59 @@ const postPaciente = async function (paciente) {
 
 }
 
-const putPaciente = async function (id, paciente) {
+const postPacienteUsuario = async function (id_usuario, id_paciente) {
+
+    try {
+        
+        sql = 'CALL prc_inserir_relacao_usuario_paciente(?,?, @resultInsertRelation)'
+
+        const exec = await database.raw(
+            sql,[id_paciente, id_usuario]
+        )
+
+        const resultExec            = await database.raw('@resultInsertRelation')
+        const requestObject         = resultExec[0][0]
+        const jsonRequestString     = requestObject['@resultInsertRelation']
+        const requestParse          = JSON.parse(jsonRequestString)
+
+        const result            = await database.raw('SELECT @resultPaciente')
+        const resultBanco       = result[0][0]
+        const jsonObjectString  = resultBanco['@resultPaciente']
+        const objectParse       = JSON.parse(jsonObjectString)
+
+        if (requestParse.status_code != 200) {
+            return requestParse.status_code
+        
+        } else {
+
+            if (objectParse.status_code != 200) {
+                return objectParse.status_code
+            } else {
+                return objectParse.data
+            }
+
+        }
+
+    } catch (error) {
+        return false
+    }
+    
+}
+
+const putPaciente = async function (id_usuario, paciente) {
     
     try {
         
-        sql = 'CALL prc_atualizar_paciente(?,?,?,?,?,?,?,? @resultUpdatePaciente)'
+        sql = 'CALL prc_atualizar_paciente(?,?,?,?,?,?,?,?,? @resultUpdatePaciente)'
 
         const exec = await database.raw(
             sql,[
+                id_usuario,
                 paciente.id,
                 paciente.nome,
                 paciente.foto,
                 paciente.data_nascimento,
-                paciente.arrayIdsDiagnostico,
+                paciente.diagnostico,
                 paciente.cpf,
                 paciente.id_serie_escolar,
                 paciente.id_grau_suporte
@@ -183,6 +223,7 @@ const getPacienteByCpf = async function (cpf) {
 module.exports = {
     getPacienteById,
     postPaciente,
+    postPacienteUsuario,
     putPaciente,
     deletePaciente,
     getPacienteByCpf
