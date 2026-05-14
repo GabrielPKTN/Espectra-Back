@@ -6,7 +6,7 @@
  * Versão: 1.0.0
  * Data: 12/05/2026
  * Developer: Gabriel Lacerda Correia
- * Versão: 1.0.0
+ * Versão: 2.0.0
  ***************************************************************************************/
 
 
@@ -50,7 +50,7 @@ const postPaciente = async function (paciente) {
             sql,[
                 paciente.foto,
                 paciente.nome,
-                paciente.arrayIdsDiagnostico,
+                paciente.diagnostico,
                 paciente.cpf,
                 paciente.data_nascimento,
                 paciente.id_serie_escolar,
@@ -178,4 +178,12 @@ const getPacienteByCpf = async function (cpf) {
             return objectParse.data
         }
 
+}
+
+module.exports = {
+    getPacienteById,
+    postPaciente,
+    putPaciente,
+    deletePaciente,
+    getPacienteByCpf
 }

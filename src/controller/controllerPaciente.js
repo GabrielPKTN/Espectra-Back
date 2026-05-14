@@ -3,306 +3,179 @@
  * Data: 30/04/2026
  * Autores: Enzo Carrilho
  * Versão: 1.0
+ * Data: 12/05/2026
+ * Developer: Gabriel Lacerda Correia
+ * Versão: 2.0
  **********************************************************************************************/
 
-const patientDAO = require('../model/DAO/paciente.js')
-const defaultMessages = require('../modulo/defaultMessages.js')
+const pacienteDAO = require('../model/DAO/paciente.js')
+const defaultMessages = require('./module/defaultMessages.js')
 
-const getPatientById = async function(id) {
-    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+//getPacienteById
+const getPacienteById = async (id) => {
 
+    MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+    
     try {
-
-        if(!isNaN(id) && id != '' && id > 0){
-            let resultPatient = await patientDAO.selectPatientById(id)
-            
-            if(resultPatient){
-                const patient = resultPatient.data
-                
-                if(patient != null){
-                    return patient //200
-
-                }else{
-                    return MESSAGES.errorNotFound //404
-                }
-
-            }else{
-                return MESSAGES.errorInternalServer//500
-            }
-
-        }else{
-            MESSAGES.errorRequiredFields.message += ' [ID Inválido]'
-            return MESSAGES.errorRequiredFields //400
-        }
         
-    } catch (error) {
-        return MESSAGES.errorInternalServer //500
-    }
-}
+        if(!isNaN(id) && id > 0 && id != "" && id != null) {
 
-const getPatientByRegistNumber = async function(registNumber){
-    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+            result = await pacienteDAO.getPacienteById(id)
 
-    try {
-        if(!isNaN(registNumber) && registNumber != '' && registNumber.length == 10){
-            let resultPatient = await patientDAO.selectPatientByRegistNumber(registNumber)
+            if(result) {
 
-            if(resultPatient){
-                
-                if(resultPatient != null && resultPatient.length > 0)
-                    return resultPatient[0]
-            }else{
-               return MESSAGES.errorInternalServer //500
-            }
+                if (result == 404) {
+                    return MESSAGES.ERROR_NOT_FOUND //404
+                } else {
 
-        }else{
-            MESSAGES.errorRequiredFields.message += ' [Número de Registro Inválido]' 
-            return MESSAGES.errorRequiredFields //400
-        }
-
-    } catch (error) {
-        return MESSAGES.errorInternalServer //500
-    }
-}
-
-const setPatient = async function(patient, contentType) {
-    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
-
-    try {
-
-        if(String(contentType).toUpperCase() == 'APPLICATION/JSON'){
-            let validate = await validatePatient(patient)
-            
-            if(!validate){
-                let resultPatient = await patientDAO.insertPatient(patient)
-
-                if(resultPatient.status_code){
+                    MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_REQUEST.message
+                    MESSAGES.DEFAULT_HEADER.items       = result
                     
-                    if(resultPatient.status_code == 200){         
-                        return resultPatient.data //200
-                    }
-                    else{
-                        return resultPatient  // 400 | 409
-                    }
+                    return MESSAGES.DEFAULT_HEADER //200
 
-                }else{
-                    return MESSAGES.errorInternalServer //500
                 }
 
-            }else{
-                return validate //400
+            } else {
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
             }
-        }else{
-            return MESSAGES.errorContentType //415
+
+        } else {
+            return MESSAGES.ERROR_REQUIRED_FIELDS //400
         }
-        
+
     } catch (error) {
-         return MESSAGES.errorInternalServer //500
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
+
 }
 
-const setPatientPsychopedagogue = async function(patientID, psychopedagogueID) {
-     let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+//postPaciente
+const postPaciente = async (paciente, contentType) => {
 
-     try {
-        if(!isNaN(patientID) && !isNaN(psychopedagogueID) && patientID != '' &&  psychopedagogueID != '' && patientID > 0 && psychopedagogueID > 0){
-            
-            let resultPatient = await patientDAO.insertPatientPsychopedagogue(patientID, psychopedagogueID)
-            
-
-            if(resultPatient.status_code){
-                if(resultPatient.status_code == 200){
-                    return resultPatient.data
-
-                }else{
-                    return resultPatient //404 409
-                }
-
-            }else{
-                return MESSAGES.errorInternalServer //500
-            }
-
-        }else{
-             MESSAGES.errorRequiredFields.message += ' [ID Inválido]'
-            return MESSAGES.errorRequiredFields //400
-        }
-
-     } catch (error) {
-        return MESSAGES.errorInternalServer //500
-     }
-}
-
-const setPatientResponsable = async function(patientID, responsableID) {
-     let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
-
-     try {
-        if(!isNaN(patientID) && !isNaN(responsableID) && patientID != '' &&  responsableID != '' && patientID > 0 && responsableID > 0){
-            
-            let resultPatient = await patientDAO.insertPatientResponsable(patientID, responsableID)
-            
-
-            if(resultPatient.status_code){
-                if(resultPatient.status_code == 200){
-                    return resultPatient.data
-
-                }else{
-                    return resultPatient //404 409
-                }
-
-            }else{
-                return MESSAGES.errorInternalServer //500
-            }
-
-        }else{
-             MESSAGES.errorRequiredFields.message += ' [ID Inválido]'
-            return MESSAGES.errorRequiredFields //400
-        }
-
-     } catch (error) {
-        return MESSAGES.errorInternalServer //500
-     }
-}
-
-const setUpdatePatient = async function(patient, id, contentType) {
-    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
-
+    MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+    
     try {
+        
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-        if(String(contentType).toUpperCase() == 'APPLICATION/JSON'){
-            let validate = await validateUpdatePatient(patient)
-            
+            const validar = validatePacientePost(paciente)
 
-            if(!validate){
-                patient.id = id
+            if(!validar) {
 
-                let resultPatient = await patientDAO.updatePatient(patient)
-                
-                if(resultPatient.status_code){
-                    
-                    return resultPatient  //404
-                
-                }else{
-                    return MESSAGES.errorInternalServer //500
+                const validarArrayId = validateArrayId(paciente.diagnostico)
+
+                result = await usuarioDAO.postUsuario(usuario)
+
+                if(result) {
+
+                    if (result == 409) {
+                        return MESSAGES.ERROR_CONFLICT //409
+                    } else if (result == 404) {
+                        return MESSAGES.ERROR_NOT_FOUND //404
+                    } else {
+
+                        // Gera o token
+                        let tokenUser = await JWT.createJWT(result.id)
+
+                        MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_CREATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_CREATED_ITEM.message
+                        //Adiciona o token no item retornado
+                        MESSAGES.DEFAULT_HEADER.token       = tokenUser
+                        MESSAGES.DEFAULT_HEADER.items       = result
+
+                        return MESSAGES.DEFAULT_HEADER //201
+
+                    }
+
+                } else {
+                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
                 }
 
-            }else{
-                return validate //400
+            } else {
+                return validar //400 
             }
-        }else{
-            return MESSAGES.errorContentType //415
+
+        } else {
+            
+            return MESSAGES.ERROR_CONTENT_TYPE //415
+
         }
-        
+
     } catch (error) {
-         return MESSAGES.errorInternalServer //500
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
+
 }
 
-const setDeletePatient = async function (id) {
-     let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+//putPaciente
+//deletePaciente
+//getPacienteByCpf
 
-     try {
+const validateArrayId = (arrayDiagnostico) => {
 
-        if(!isNaN(id) && id != '' && id > 0){
-            let resultPatient = await patientDAO.deletePatiente(id)
-
-            if(resultPatient.status_code){  
-                return resultPatient
-
-            }else{
-                return MESSAGES.errorInternalServer //500
-            }
-
-        }else{
-            MESSAGES.errorRequiredFields.message += ' [ID Inválido]'
-            return MESSAGES.errorRequiredFields //400
-        }
+    for (let id of arrayDiagnostico) {
         
-     } catch (error){
-        return MESSAGES.errorInternalServer //500
-     }
+        if(isNaN(id) || id <= 0) {
+
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID TRANSTORNO INCORRETO]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
+
+        }
+
+    }
+
+    return false
+    
 }
 
+const validatePacientePost = (paciente) => {
 
+    for (let id of paciente.diagnostico) {
+        
+        if(isNaN(id) || id <= 0) {
 
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID TRANSTORNO INCORRETO]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
 
+        }
 
-module.exports = {
-    getPatientById,
-    getPatientByRegistNumber,
-    setPatient,
-    setPatientPsychopedagogue,
-    setPatientResponsable,
-    setUpdatePatient,
-    setDeletePatient
-}
+    }
 
+    if(!paciente.nome || paciente.nome.trim().length === 0) {
 
-const validatePatient = function(patient){
-    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [NOME INCORRETO]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    if(patient.nome == '' || patient.nome == null || patient.nome == undefined || patient.nome.length > 150){
-        MESSAGES.errorRequiredFields.message += ' [Nome Inválido]' 
-        return MESSAGES.errorRequiredFields //400
+    } else if(!paciente.cpf || paciente.cpf.trim().length === 0) {
 
-    }else if(patient.data_nascimento == '' || patient.data_nascimento == null || patient.data_nascimento == undefined || patient.data_nascimento.length != 10){
-        MESSAGES.errorRequiredFields.message += ' [Data de nascimento Inválido]' 
-        return MESSAGES.errorRequiredFields //400
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [CPF INCORRETO]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    }else if(patient.diagnostico.length > 50){
-        MESSAGES.errorRequiredFields.message += ' [Diagnóstico Inválido]' 
-        return MESSAGES.errorRequiredFields //400
+    } else if(!paciente.data_nascimento || paciente.data_nascimento.trim().length === 0) {
 
-    }else if(patient.foto.length > 255){
-        MESSAGES.errorRequiredFields.message += ' [Foto Inválido]' 
-        return MESSAGES.errorRequiredFields //400
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [DATA DE NASCIMENTO INCORRETO]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    }else if(patient.id_serie_escolar <= 0 || isNaN(patient.id_serie_escolar) || patient.id_serie_escolar == '' || patient.id_serie_escolar == null || patient.id_serie_escolar == undefined){
-        MESSAGES.errorRequiredFields.message += ' [id_serie_escolar Inválido]' 
-        return MESSAGES.errorRequiredFields //400
+    } else if(isNaN(paciente.id_serie_escolar) || paciente.id_serie_escolar <= 0) {
 
-    }else if(patient.id_grau_suporte <= 0 || isNaN(patient.id_grau_suporte) || patient.id_grau_suporte == '' || patient.id_grau_suporte == null || patient.id_grau_suporte == undefined){
-        MESSAGES.errorRequiredFields.message += ' [id_grau_suporte Inválido]' 
-        return MESSAGES.errorRequiredFields //400
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID SERIE ESCOLAR INCORRETO]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+        
+    }else if(isNaN(paciente.id_grau_suporte) || paciente.id_grau_suporte <= 0) {
 
-    }else if(patient.id_responsavel <= 0 || isNaN(patient.id_responsavel) || patient.id_responsavel == '' || patient.id_responsavel== null || patient.id_responsavel == undefined){
-        MESSAGES.errorRequiredFields.message += ' [id_responsavel Inválido]' 
-        return MESSAGES.errorRequiredFields //400
-    }else{
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID GRAU SUPORTE INCORRETO]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+
+    } else if(isNaN(paciente.id_responsavel) || paciente.id_responsavel <= 0) {
+
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID RESPONSAVEL INCORRETO]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+    
+    } else {
         return false
     }
 
-} 
-
-
-const validateUpdatePatient = function(patient){
-    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
-
-    if(patient.nome == '' || patient.nome == null || patient.nome == undefined || patient.nome.length > 150){
-        MESSAGES.errorRequiredFields.message += ' [Nome Inválido]' 
-        return MESSAGES.errorRequiredFields //400
-
-    }else if(patient.data_nascimento == '' || patient.data_nascimento == null || patient.data_nascimento == undefined || patient.data_nascimento.length != 10){
-        MESSAGES.errorRequiredFields.message += ' [Data de nascimento Inválido]' 
-        return MESSAGES.errorRequiredFields //400
-
-    }else if(patient.diagnostico.length > 50){
-        MESSAGES.errorRequiredFields.message += ' [Diagnóstico Inválido]' 
-        return MESSAGES.errorRequiredFields //400
-
-    }else if(patient.foto.length > 255){
-        MESSAGES.errorRequiredFields.message += ' [Foto Inválido]' 
-        return MESSAGES.errorRequiredFields //400
-
-    }else if(patient.id_serie_escolar <= 0 || isNaN(patient.id_serie_escolar) || patient.id_serie_escolar == '' || patient.id_serie_escolar == null || patient.id_serie_escolar == undefined){
-        MESSAGES.errorRequiredFields.message += ' [id_serie_escolar Inválido]' 
-        return MESSAGES.errorRequiredFields //400
-
-    }else if(patient.id_grau_suporte <= 0 || isNaN(patient.id_grau_suporte) || patient.id_grau_suporte == '' || patient.id_grau_suporte == null || patient.id_grau_suporte == undefined){
-        MESSAGES.errorRequiredFields.message += ' [id_grau_suporte Inválido]' 
-        return MESSAGES.errorRequiredFields //400
-
-    }else{
-        return false
-    }
-
-} 
+}
