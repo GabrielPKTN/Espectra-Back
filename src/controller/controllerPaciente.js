@@ -255,7 +255,7 @@ const getPacienteByCpf = async (cpf) => {
 
     try {
         
-        if(!paciente.cpf || paciente.cpf.trim().length === 0) {
+        if(cpf || !cpf.trim().length === 0) {
 
             result = await pacienteDAO.getPacienteByCpf(cpf)
 
@@ -291,9 +291,9 @@ const getPacienteByCpf = async (cpf) => {
 
 const validatePacientePost = (paciente) => {
 
-    for (let id of paciente.diagnostico) {
-        
-        if(isNaN(id) || id <= 0) {
+    for (let id_transtorno of paciente.diagnostico) {
+
+        if(isNaN(id_transtorno.id) || id_transtorno.id <= 0) {
 
             MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID TRANSTORNO INCORRETO]'
             return MESSAGES.ERROR_REQUIRED_FIELDS

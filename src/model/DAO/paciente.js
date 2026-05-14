@@ -27,7 +27,7 @@ const getPacienteById = async function (id) {
         const jsonObjectString = resultBanco['@resultPaciente']
         const objectParse = JSON.parse(jsonObjectString)
 
-        if(objectParse != 200) {
+        if(objectParse.status_code != 200) {
             return objectParse.status_code
         } else {
             return objectParse.data
@@ -212,7 +212,7 @@ const getPacienteByCpf = async function (cpf) {
         const jsonObjectString = resultBanco['@returnPacienteCpf']
         const objectParse = JSON.parse(jsonObjectString)
 
-        if(objectParse != 200) {
+        if(objectParse.status_code != 200) {
             return objectParse.status_code
         } else {
             return objectParse.data

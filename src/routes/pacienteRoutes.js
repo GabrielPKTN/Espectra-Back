@@ -3,97 +3,99 @@
  * Data: 30/04/2026
  * Autores: Enzo Carrilho
  * Versão: 1.0
+ * Data: 12/05/2026
+ * Developer: Gabriel Lacerda Correia
+ * Versão: 2.0
  ********************************************************************************/
 
-const express =         require('express')
-const router =          express.Router()
-const cors =            require('cors')
-const bodyParser =      require('body-parser')
+const express               = require('express')
+const router                = express.Router()
+const controllerPaciente    = require('../controller/controllerPaciente.js')
 
-const bodyParserJSON = bodyParser.json() 
+const cors       = require('cors')           // Responsável pelas permissões da API (APP)
+const bodyParser = require('body-parser')    // Responsável por gerenciar a chegada dos dados da API com o front
 
-const controllerPaciente = require('../../controller/paciente/controllerPaciente.js')
+const bodyParserJSON = bodyParser.json()
 
-router.get("/:id", async(req, res) => {
-    const id = req.params.id
-    
-    let result = await controllerPaciente.getPatientById(id)
+const JWT = require('./auth/authUser.js')
 
-    if(result.status_code)
-        res.status(result.status_code).json(result)
-    else
-        res.status(200).json(result)
-})    
+//getPacienteById
+router.get('/:id', JWT.verifyJWT, cors(), async (req, res) => {
 
-router.get("/", async(req, res) => {
-    const registNumber = req.query.regist_number
-    
-    let result = await controllerPaciente.getPatientByRegistNumber(registNumber)
+    const pacienteId = req.params.id
 
+    const paciente = await controllerPaciente.getPacienteById(pacienteId)
 
-    if(result.status_code)
-        res.status(result.status_code).json(result)
-    else
-        res.status(200).json(result)
-    
-})  
+    res.status(paciente.status_code)
+    res.json(paciente)
 
-router.post("/", cors(), bodyParserJSON, async(req, res) => {
-
-    let result
-
-    if(req.query.id_paciente && req.query.id_psicopedagogo){
-
-        const patientID = req.query.id_paciente
-        const psicopedagogoID = req.query.id_psicopedagogo
-
-        result = await controllerPaciente.setPatientPsychopedagogue(patientID, psicopedagogoID)
-
-    }else if(req.query.id_paciente && req.query.id_responsavel){
-
-        const patientID = req.query.id_paciente
-        const responsableID = req.query.id_responsavel
-
-        result = await controllerPaciente.setPatientResponsable(patientID, responsableID)
-
-    }else{
-
-        let dataBody = req.body
-        let contentType = req.headers['content-type']
-
-         result = await controllerPaciente.setPatient(dataBody, contentType)
-    }
-
-
-    if(result.status_code)
-        res.status(result.status_code).json(result)
-    else
-        res.status(200).json(result)
-    
-}) 
-
-router.put("/:id", cors(), bodyParserJSON, async(req, res) => {
-    let patientID = req.params.id
-    let dataBody = req.body
-    let contentType = req.headers['content-type']
-
-    let result = await controllerPaciente.setUpdatePatient(dataBody, patientID, contentType)
-
-    if(result.status_code)
-        res.status(result.status_code).json(result)
-    else
-        res.status(200).json(result)
-    
 })
 
-router.delete("/:id", async(req, res) => {
-    const id = req.params.id
-    
-    let result = await controllerPaciente.setDeletePatient(id)
+//getPacienteByCpf
+router.get('/', JWT.verifyJWT, cors(), async (req, res) => {
 
-    res.status(result.status_code).json(result)
-        
-}) 
+    const pacienteCpf = req.query.cpf
+
+    const paciente = await controllerPaciente.getPacienteByCpf(pacienteCpf)
+
+    res.status(paciente.status_code)
+    res.json(paciente)
+
+})
+
+//postPaciente
+router.post('/', JWT.verifyJWT, cors(), bodyParserJSON, async(req, res) => {
+
+    const dadosPaciente = req.body
+    const contentType = req.headers['content-type']
+
+    const paciente = await controllerPaciente.postPaciente(dadosPaciente, contentType)
+
+    res.status(paciente.status_code)
+    res.json(paciente)
+
+})
+
+//postPacienteUsuario
+router.post('/:id_paciente/:id_usuario', JWT.verifyJWT, cors(), async (req, res) => {
+
+    const idPaciente = req.params.id_paciente
+    const idUsuario  = req.params.id_usuario
+
+    const paciente = await controllerPaciente.postPacienteUsuario(idUsuario, idPaciente)
+
+    res.status(paciente.status_code)
+    res.json(paciente)
+
+})
+
+
+//putPaciente
+router.put('/:id_usuario', JWT.verifyJWT, cors(), bodyParserJSON, async (req, res) => {
+
+    const idUsuario = req.params.id
+    const dadosPaciente  = req.body
+    const contentType = req.headers['content-type']
+
+    const paciente = await controllerPaciente.putPaciente(idUsuario, dadosPaciente, contentType)
+
+    res.status(paciente.status_code)
+    res.json(paciente)
+
+})
+
+//deletePaciente
+router.delete('/:id_paciente/:id_usuario', JWT.verifyJWT, cors(), async (req, res) => {
+
+    const idPaciente = req.params.id_paciente
+    const idUsuario  = req.params.id_usuario
+
+    const paciente = await controllerPaciente.deletePaciente(idUsuario, idPaciente)
+
+    res.status(paciente.status_code)
+    res.json(paciente)
+
+})
 
 
 module.exports = router
