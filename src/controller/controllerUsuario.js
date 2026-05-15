@@ -200,7 +200,7 @@ const postUsuario = async (usuario, contentType) => {
 
             const validar = validateUserPost(usuario)
 
-            if(validar) {
+            if(!validar) {
 
                 result = await usuarioDAO.postUsuario(usuario)
 
@@ -257,27 +257,35 @@ const updateUsuario = async (id, usuario, contentType) => {
 
             if(!isNaN(id) && id > 0 && id != "" && id != null) {
 
-                result = await usuarioDAO.updateUsuario(id, usuario)
+                validar = validateUserUpdate(usuario)
 
-                if(result) {
+                if(!validar) {
 
-                    if (result == 404) {
-                        return MESSAGES.ERROR_NOT_FOUND //404
-                    } else if (result == 409) {
-                        return MESSAGES.ERROR_CONFLICT
+                    result = await usuarioDAO.updateUsuario(id, usuario)
+
+                    if(result) {
+
+                        if (result == 404) {
+                            return MESSAGES.ERROR_NOT_FOUND //404
+                        } else if (result == 409) {
+                            return MESSAGES.ERROR_CONFLICT
+                        } else {
+                            
+                            MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_UPDATE_ITEM.status
+                            MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATE_ITEM.status_code
+                            MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_UPDATE_ITEM.message
+                            MESSAGES.DEFAULT_HEADER.items       = result
+
+                            return MESSAGES.DEFAULT_HEADER //200
+
+                        }
+
                     } else {
-                        
-                        MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_UPDATE_ITEM.status
-                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATE_ITEM.status_code
-                        MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_UPDATE_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items       = result
-
-                        return MESSAGES.DEFAULT_HEADER //200
-
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
                     }
 
                 } else {
-                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                    return validar //400
                 }
 
             } else {
@@ -409,32 +417,32 @@ const deleteUsuario = async (dados, contentType) => {
 
 const validateUserPost = (usuario) => {
 
-    if(isNaN(usuario.nome) && usuario.nome.length > 0 && usuario.nome.trim() != "" && usuario.nome != null) {
+    if(!usuario.nome || usuario.nome.trim().length === 0) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [NOME INCORRETO]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if(isNaN(usuario.email) && usuario.email.length > 0 && usuario.email.trim() != "" && usuario.email != null) {
+    } else if(!usuario.email || usuario.email.trim().length === 0) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [EMAIL INCORRETO]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if(isNaN(usuario.senha) && usuario.senha.length > 0 && usuario.senha.trim() != "" && usuario.senha != null) {
+    } else if(!usuario.senha || usuario.senha.trim().length === 0) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [SENHA INCORRETO]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if(isNaN(usuario.data_nascimento) && usuario.data_nascimento.length > 0 && usuario.data_nascimento.trim() != "" && usuario.data_nascimento != null) {
+    } else if(!usuario.data_nascimento || usuario.data_nascimento.trim().length === 0) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [DATA DE NASCIMENTO INCORRETO]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if(isNaN(usuario.telefone) && usuario.telefone.length > 0 && usuario.telefone.trim() != "" && usuario.telefone != null) {
+    } else if(!usuario.telefone || usuario.telefone.trim().length === 0) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [TELEFONE INCORRETO]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if(!isNaN(usuario.id_tipo_usuario) && usuario.id_tipo_usuario > 0 && usuario.id_tipo_usuario != "" && usuario.id_tipo_usuario != null) {
+    } else if(isNaN(usuario.id_tipo_usuario) || usuario.id_tipo_usuario <= 0) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID TIPO USUARIO INCORRETO]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
@@ -447,22 +455,22 @@ const validateUserPost = (usuario) => {
 
 const validateUserUpdate = (usuario) => {
 
-    if(isNaN(usuario.nome) && usuario.nome.length > 0 && usuario.nome.trim() != "" && usuario.nome != null) {
+    if(!usuario.nome || usuario.nome.trim().length === 0) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [NOME INCORRETO]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if(isNaN(usuario.email) && usuario.email.length > 0 && usuario.email.trim() != "" && usuario.email != null) {
+    } else if(!usuario.email || usuario.email.trim().length === 0) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [EMAIL INCORRETO]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if(isNaN(usuario.data_nascimento) && usuario.data_nascimento.length > 0 && usuario.data_nascimento.trim() != "" && usuario.data_nascimento != null) {
+    } else if(!usuario.data_nascimento || usuario.data_nascimento.trim().length === 0) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [DATA DE NASCIMENTO INCORRETO]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if(isNaN(usuario.telefone) && usuario.telefone.length > 0 && usuario.telefone.trim() != "" && usuario.telefone != null) {
+    } else if(!usuario.telefone || usuario.telefone.trim().length === 0) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [TELEFONE INCORRETO]'
         return MESSAGES.ERROR_REQUIRED_FIELDS

@@ -12,7 +12,7 @@ module.exports = {
     connection: {
       host: '127.0.0.1',
       user: 'root',
-      password: '1234', 
+      password: '12345678', 
       database: 'db_espectra'
     }
   }
