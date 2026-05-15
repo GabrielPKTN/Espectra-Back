@@ -5,7 +5,7 @@
  * Versão: 1.0
  ******************************************************************************/
 
-const db = require("../../../database/db.js")
+const db = require("../../database/db.js")
 
 const getAttemptById = async function(id) {
     try {

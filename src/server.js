@@ -35,16 +35,12 @@ app.use(express.json());
 //EndPoint da documentação
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
-const patientRoutes = require('./routes/paciente/pacienteRoutes.js')
 
-app.use("/v1/espectra/paciente", patientRoutes)
 //Imports dos arquivos para EndPoints
-const psicopedagogoRoutes = require("./routes/psicopedagogo/psicopedagogoRoutes.js")
-const formularioRoutes = require("./routes/formulario/formularioRoutes.js")
+const usuario = require("./routes/usuarioRoutes.js")
 
 //EndPoints da Aplicação
-app.use("/v1/espectra/psicopedagogo", psicopedagogoRoutes)
-app.use("/v1/espectra/formulario", formularioRoutes)
+app.use("/v1/espectra/usuario", usuario)
 
 app.listen(PORT, () => {
     console.log(`Se você está vendo isso, comemore!\nAPI rodando na porta: ${PORT}`)
