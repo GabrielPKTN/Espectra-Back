@@ -72,14 +72,172 @@ const postAtividadePortage = async function(atividade) {
         }
 
     } catch (error) {
-        console.log(error)
+        return false
+    }
+}
+
+const postAtividadePersonalizada = async function(atividade) {
+    try {
+        // @resulAtividade retorna null
+        sql = 'CALL prc_inserir_atividade_tipo_personalizada(?, ?, ?, ?, ?, @resultInsertAtividade)'
+
+        const exec = await db.raw(
+            sql,[
+                atividade.id_usuario,
+                atividade.id_paciente,
+                atividade.comportamento,
+                atividade.valor_meses,
+                atividade.id_habilidade
+            ]
+        )
+
+
+        const resultExec = await db.raw('SELECT @resultInsertAtividade')
+
+        const requestObject = resultExec[0][0]
+        const jsonRequestString = requestObject['@resultInsertAtividade']
+
+        const requestParse = JSON.parse(jsonRequestString)
+
+        if(requestParse)
+            return requestParse.status_code
+        else
+            return false
+
+    } catch (error) {
         return false
     }
 }
 
 
+const updateAtividadePersonalizada = async function (id, atividade) {
+    
+    try {
+        // Retornando 401 mesmo mandando o usuario que criou a atividade
+        sql = 'CALL prc_atualiza_atividade_personalizada(?, ?, ?, ?, @resultUpdateAtividade)'
+
+        const exec = await db.raw(
+            sql,[
+                id,
+                atividade.id_usuario,
+                atividade.comportamento,
+                atividade.valor_meses,
+            ]
+        )
+
+        const resultExec = await db.raw('SELECT @resultUpdateAtividade')
+        const result = await db.raw('SELECT @resultAtividade')
+
+        const requestObject = resultExec[0][0]
+        const jsonRequestString = requestObject['@resultUpdateAtividade']
+
+        const requestParse = JSON.parse(jsonRequestString)
+
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@resultAtividade']
+
+        const objectParse = JSON.parse(jsonObjectString)
+
+        if(requestParse.status_code != 200) {
+
+            return requestParse.status_code
+
+        } else {
+
+            if(objectParse.status_code != 200) {
+                return objectParse.status_code
+            } else {
+                return objectParse.data
+            }
+
+        }
+
+
+    } catch (error) {
+        return false
+    }
+
+}
+
+const updateStatusAtividade = async function(id) {
+      try {
+        // Erro no p_id_paciente unknow column
+        sql = 'CALL prc_atualiza_status_atividade(?, @resultUpdateAtividade)'
+
+        const exec = await db.raw(
+            sql,[
+                id
+            ]
+        )
+
+        const resultExec = await db.raw('SELECT @resultUpdateAtividade')
+        const result = await db.raw('SELECT @resultAtividade')
+
+        const requestObject = resultExec[0][0]
+        const jsonRequestString = requestObject['@resultUpdateAtividade']
+
+        const requestParse = JSON.parse(jsonRequestString)
+
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@resultAtividade']
+
+        const objectParse = JSON.parse(jsonObjectString)
+
+        if(requestParse.status_code != 200) {
+
+            return requestParse.status_code
+
+        } else {
+
+            if(objectParse.status_code != 200) {
+                return objectParse.status_code
+            } else {
+                return objectParse.data
+            }
+
+        }
+
+
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
+const deleteAtividade = async function(id, atividade) {
+    try {
+        
+        sql = 'CALL prc_delete_atividade(?, ?, ?, @resultDeleteAtividade)'
+
+        const exec = await db.raw(
+            sql,[
+                atividade.id_usuario,
+                atividade.id_paciente,
+                id
+            ]
+        )
+
+        const result = await db.raw('SELECT @resultDeleteAtividade')
+
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@resultDeleteAtividade']
+
+        const objectParse = JSON.parse(jsonObjectString)
+
+        return objectParse.status_code
+
+
+    } catch (error) {
+        return false
+    }
+}
+
 
 module.exports = {
     selectAtividadeByPacientetIDAndAbilidadeID,
-    postAtividadePortage
+    postAtividadePortage,
+    postAtividadePersonalizada,
+    updateAtividadePersonalizada,
+    updateStatusAtividade,
+    deleteAtividade
 }
