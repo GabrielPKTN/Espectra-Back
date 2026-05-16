@@ -21,10 +21,8 @@ const getAtividadeByPacienteIDAndAbilidadeID = async function(patientID, ability
         ){
             result = await atividadeDAO.selectAtividadeByPacientetIDAndAbilidadeID(patientID, abilityID)
 
-            // Tirei essa validação pois a data pode vir null caso o paciente não tenha atividade
-            // e o retorno acabaria sendo errado - 500, enquanto deveria ser 404
 
-            //if(result){
+            if(result == false){
 
                 if(result == 404 || result == null){
                     return MESSAGES.ERROR_NOT_FOUND //404
@@ -40,9 +38,9 @@ const getAtividadeByPacienteIDAndAbilidadeID = async function(patientID, ability
 
                 }
 
-            //}else{
-                //return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
-            //}
+            }else{
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+            }
             
 
         }else{
@@ -57,6 +55,85 @@ const getAtividadeByPacienteIDAndAbilidadeID = async function(patientID, ability
      
 }
 
+// postAtividade
+const postAtividadePortage = async (atividade, contentType) => {
+
+    MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+
+    try {
+        
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+
+            const validar = validateAtividadePortage(atividade)
+
+            if(!validar) {
+
+                result = await atividadeDAO.postAtividadePortage(atividade)
+
+                if(result) {
+
+                    if (result == 409) {
+                        return MESSAGES.ERROR_CONFLICT //409
+                    } else if (result == 404) {
+                        return MESSAGES.ERROR_NOT_FOUND //404
+                    } else if(result == 401){
+                        return MESSAGES.ERROR_NON_AUTHORIZED //401
+                    } else {
+
+                        MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_CREATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_CREATED_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.items       = result
+
+                        return MESSAGES.DEFAULT_HEADER //201
+
+                    }
+
+                } else {
+                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                }
+
+            } else {
+                return validar //400 
+            }
+
+        } else {
+            
+            return MESSAGES.ERROR_CONTENT_TYPE //415
+
+        }
+
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
+    }
+
+}
+
+
+const validateAtividadePortage = (atividade) => {
+    if(isNaN(atividade.id_usuario) || Number(atividade.id_usuario) <= 0 || atividade.id_usuario == '' || atividade.id_usuario == null) {
+
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID USUARIO INCORRETO]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+
+    }else if(isNaN(atividade.id_paciente) || Number(atividade.id_paciente) <= 0 || atividade.id_paciente == '' || atividade.id_paciente == null){
+
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID PACIENTE INCORRETO]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+    
+    }else if(isNaN(atividade.id_atividade_portage) || Number(atividade.id_atividade_portage) <= 0 || atividade.id_atividade_portage == '' || atividade.id_atividade_portage == null){
+
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID ATIVIDADE PORTAGE INCORRETO]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+
+    }else {
+        return false
+    }
+}
+
+
+
 module.exports = {
-    getAtividadeByPacienteIDAndAbilidadeID
+    getAtividadeByPacienteIDAndAbilidadeID,
+    postAtividadePortage
 }

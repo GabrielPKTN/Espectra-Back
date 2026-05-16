@@ -29,4 +29,17 @@ router.get('/', JWT.verifyJWT, cors(), async (req, res) => {
 
 })
 
+// postAtividadePortage
+router.post('/portage', cors(), JWT.verifyJWT, bodyParserJSON, async (req, res) => {
+
+    const contentType = req.headers['content-type']
+    const dadosBody = req.body
+
+    const atividadePortageInsert = await controllerAtividade.postAtividadePortage(dadosBody, contentType)
+
+    res.status(atividadePortageInsert.status_code)
+    res.json(atividadePortageInsert)
+
+})
+
 module.exports = router
