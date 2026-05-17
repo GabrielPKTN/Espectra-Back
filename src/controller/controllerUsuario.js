@@ -258,26 +258,26 @@ const updateUsuario = async (id, usuario, contentType, foto) => {
 
             if(!isNaN(id) && id > 0 && id != "" && id != null) {
 
-                if(foto) {
-
-                    const picData = {
-
-                        originalName: foto.originalname,
-                        buffer: foto.buffer,
-                        size: foto.size,
-                        mimetype: foto.mimetype
-
-                    }
-
-                    const fotoUrl = await azure.uploadAzure(picData)
-
-                    usuario.foto = fotoUrl
-
-                } 
-
                 validar = validateUserUpdate(usuario)
 
                 if(!validar) {
+
+                    if(foto) {
+
+                        const picData = {
+
+                            originalName: foto.originalname,
+                            buffer: foto.buffer,
+                            size: foto.size,
+                            mimetype: foto.mimetype
+
+                        }
+
+                        const fotoUrl = await azure.uploadAzure(picData)
+
+                        usuario.foto = fotoUrl
+
+                    } 
 
                     result = await usuarioDAO.updateUsuario(id, usuario)
 

@@ -52,17 +52,34 @@ const getPacienteById = async (id) => {
 }
 
 //postPaciente
-const postPaciente = async (paciente, contentType) => {
+const postPaciente = async (paciente, contentType, foto) => {
 
     MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
     
     try {
         
-        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+        if (String(contentType).toUpperCase().startsWith('MULTIPART/FORM-DATA')) {
 
             const validar = validatePacientePost(paciente)
 
             if(!validar) {
+
+                if(foto) {
+                
+                    const picData = {
+
+                        originalName: foto.originalname,
+                        buffer: foto.buffer,
+                        size: foto.size,
+                        mimetype: foto.mimetype
+
+                    }
+
+                    const fotoUrl = await azure.uploadAzure(picData)
+
+                    paciente.foto = fotoUrl
+
+                } 
 
                 result = await pacienteDAO.postPaciente(paciente)
 

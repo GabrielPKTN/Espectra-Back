@@ -13,7 +13,6 @@ const cors       = require('cors')           // Responsável pelas permissões d
 const bodyParser = require('body-parser')    // Responsável por gerenciar a chegada dos dados da API com o front
 
 const multerConfig = require('../config/multerConfig.js')
-const azureUpload  = require('../external/azureUpload.js')
 
 const bodyParserJSON = bodyParser.json()
 
@@ -90,7 +89,7 @@ router.put('/:id', JWT.verifyJWT, multerConfig.single('foto'), cors(), async (re
     const fotoFile      = null
 
     if(req.file) {
-        fotoFile = fotoFile
+        fotoFile = req.file
     }
 
     const userUpdate    = await controllerUsuario.updateUsuario(userId, dadosBody, contentType, fotoFile)
