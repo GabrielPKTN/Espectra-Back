@@ -11,6 +11,8 @@ const defaultMessages = require('./module/defaultMessages.js')
 
 const JWT = require('../middleware/middlewareJWT.js')
 
+const azure = require('../external/azureUpload.js')
+
 // getUsuario
 const getUsuario = async (id) => {
 
@@ -183,7 +185,6 @@ const getUsuarioLogin = async (dados, contentType) => {
         }
 
     } catch (error) {
-        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 
@@ -247,15 +248,32 @@ const postUsuario = async (usuario, contentType) => {
 }
 
 // updateUsuario
-const updateUsuario = async (id, usuario, contentType) => {
+const updateUsuario = async (id, usuario, contentType, foto) => {
 
     MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
     try {
         
-        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+        if (String(contentType).toUpperCase().startsWith('MULTIPART/FORM-DATA')) {
 
             if(!isNaN(id) && id > 0 && id != "" && id != null) {
+
+                if(foto) {
+
+                    const picData = {
+
+                        originalName: foto.originalname,
+                        buffer: foto.buffer,
+                        size: foto.size,
+                        mimetype: foto.mimetype
+
+                    }
+
+                    const fotoUrl = await azure.uploadAzure(picData)
+
+                    usuario.foto = fotoUrl
+
+                } 
 
                 validar = validateUserUpdate(usuario)
 

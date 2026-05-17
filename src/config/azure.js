@@ -30,7 +30,7 @@ const validarContainer = async () => {
 
     } catch (error) {
         
-        console.error('Erro ao criar/verificar container')
+        console.error('Erro ao criar/verificar container', error)
 
     }
 

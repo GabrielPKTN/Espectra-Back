@@ -6,7 +6,7 @@
  ********************************************************************************/
 
 const configAzure = require('../config/azure.js')
-const uuid = require('uuid')
+const { v4: uuidv4 } = require('uuid')
 const path = require('path')
 
 // Responsável por enviar as fotos
@@ -14,7 +14,7 @@ const uploadAzure = async (foto) => {
 
     // Gera um UUID único + extensão original da foto
     const extensao  = path.extname(foto.originalName)
-    const nomeUnico = `${uuid.uuidv4()}${extensao}`
+    const nomeUnico = `${uuidv4()}${extensao}`
 
     // Client do blob com o nome gerado
     const clientBlob = configAzure.clientContainer.getBlockBlobClient(nomeUnico);
