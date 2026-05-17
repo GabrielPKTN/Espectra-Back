@@ -3,6 +3,9 @@
  * Data: 06/05/2026
  * Autores: Nicolas dos Santos
  * Versão: 1.0
+ * Data: 16/05/2026
+ * Autores: Gabriel Lacerda
+ * Versão: 2.0
  ********************************************************************************/
 
 const formularioDAO = require("../model/DAO/formulario.js")
@@ -14,7 +17,7 @@ const getFormByIdPaciente = async (id_usuario, id_paciente) => {
     MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
     try {
-        
+
         id_usuario = Number(id_usuario)
         id_paciente = Number(id_paciente)
 
@@ -66,56 +69,62 @@ const getFormByIdPaciente = async (id_usuario, id_paciente) => {
 }
 
 //updateForm
-const updateForm = async (id_usuario, id_paciente, form) => {
+const updateForm = async (id_usuario, id_paciente, form, contentType) => {
 
     MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
     try {
 
-        id_usuario = Number(id_usuario)
-        id_paciente = Number(id_paciente)
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-        if(Number.isInteger(id_usuario) && id_usuario > 0) {
+            id_usuario = Number(id_usuario)
+            id_paciente = Number(id_paciente)
 
-            if(Number.isInteger(id_paciente) && id_usuario > 0) {
-            
-                if(Array.isArray(form.formulario)) {
-            
-                    validaArray = validarArrayRespostas(form.formulario)
+            if(Number.isInteger(id_usuario) && id_usuario > 0) {
+
+                if(Number.isInteger(id_paciente) && id_usuario > 0) {
                 
-                    if(!validaArray) {
-                        
-                        result = await formularioDAO.updateForm(id_usuario, id_paciente, form)
-
-                        if(result) {
-
-                            if(result.status_code == 200) {
-
-                                MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_UPDATE_ITEM.status
-                                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATE_ITEM.status_code
-                                MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_UPDATE_ITEM.message
-                                MESSAGES.DEFAULT_HEADER.items       = result.data
-
-                                return MESSAGES.DEFAULT_HEADER // 200
-
-                            } else if(result.status_code == 404) {
-
-                                return MESSAGES.ERROR_NOT_FOUND //404
+                    if(Array.isArray(form.formulario)) {
+                
+                        validaArray = validarArrayRespostas(form.formulario)
+                    
+                        if(!validaArray) {
                             
-                            } else if(result.status_code == 401) {
+                            result = await formularioDAO.updateForm(id_usuario, id_paciente, form)
 
-                                return MESSAGES.ERROR_NON_AUTHORIZED //401
+                            if(result) {
 
+                                if(result.status_code == 200) {
+
+                                    MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_UPDATE_ITEM.status
+                                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATE_ITEM.status_code
+                                    MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_UPDATE_ITEM.message
+                                    MESSAGES.DEFAULT_HEADER.items       = result.data
+
+                                    return MESSAGES.DEFAULT_HEADER // 200
+
+                                } else if(result.status_code == 404) {
+
+                                    return MESSAGES.ERROR_NOT_FOUND //404
+                                
+                                } else if(result.status_code == 401) {
+
+                                    return MESSAGES.ERROR_NON_AUTHORIZED //401
+
+                                }
+
+                            } else {
+                                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                             }
 
                         } else {
-                            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+                            return validaArray //400
                         }
-
+                    
                     } else {
-                        return validaArray //400
+                        return MESSAGES.ERROR_REQUIRED_FIELDS //400
                     }
-                
+
                 } else {
                     return MESSAGES.ERROR_REQUIRED_FIELDS //400
                 }
@@ -125,7 +134,7 @@ const updateForm = async (id_usuario, id_paciente, form) => {
             }
 
         } else {
-            return MESSAGES.ERROR_REQUIRED_FIELDS //400
+            return MESSAGES.ERROR_CONTENT_TYPE //415
         }
         
     } catch (error) {
