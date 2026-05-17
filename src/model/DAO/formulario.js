@@ -20,10 +20,10 @@ const getFormByIdPaciente = async function(id_usuario, id_paciente) {
             sql,[id_usuario, id_paciente]
         )
 
-        const result = await database.raw('SELECT @resultFormulario')
-        const resultBanco = result[0][0]
-        const jsonObjectString = resultBanco['@resultFormulario']
-        const objectParse = JSON.parse(jsonObjectString)
+        const result                = await database.raw('SELECT @resultFormulario')
+        const resultBanco           = result[0][0]
+        const jsonObjectString      = resultBanco['@resultFormulario']
+        const objectParse           = JSON.parse(jsonObjectString)
 
         return objectParse
 
@@ -33,25 +33,32 @@ const getFormByIdPaciente = async function(id_usuario, id_paciente) {
 
 }
 
-const updateForm = async function(id_usuario, id_paciente, arrayRespostas) {
+const updateForm = async function(id_usuario, id_paciente, form) {
 
     try {
         
         sql = `CALL prc_atualizar_respostas_formulario(?,?,?,@resultUpdateForm)`
 
         exec = await db.raw(
-            sql,[id_usuario, id_paciente, arrayRespostas]
+            sql,[id_usuario, id_paciente, form]
         )
 
-        const result = await database.raw('SELECT @resultUpdateForm')
-        const resultBanco = result[0][0]
-        const jsonObjectString = resultBanco['@resultUpdateForm']
-        const objectParse = JSON.parse(jsonObjectString)
+        const result                = await database.raw('SELECT @resultUpdateForm')
+        const resultBanco           = result[0][0]
+        const jsonObjectString      = resultBanco['@resultUpdateForm']
+        const objectParse           = JSON.parse(jsonObjectString)
 
         return objectParse
 
     } catch (error) {
         return false
     }
+
+}
+
+module.exports = {
+
+    getFormByIdPaciente,
+    updateForm
 
 }
