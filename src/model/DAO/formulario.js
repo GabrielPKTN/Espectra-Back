@@ -16,7 +16,7 @@ const getFormByIdPaciente = async function(id_usuario, id_paciente) {
         
         sql = 'CALL prc_formulario_pelo_id_paciente(?, ?, @resultFormulario)'
 
-        exec = await db.raw(
+        exec = await database.raw(
             sql,[id_usuario, id_paciente]
         )
 
@@ -37,10 +37,13 @@ const updateForm = async function(id_usuario, id_paciente, form) {
 
     try {
         
+
+        form.formulario = JSON.stringify(form.formulario)
+
         sql = `CALL prc_atualizar_respostas_formulario(?,?,?,@resultUpdateForm)`
 
-        exec = await db.raw(
-            sql,[id_usuario, id_paciente, form]
+        exec = await database.raw(
+            sql,[id_usuario, id_paciente, form.formulario]
         )
 
         const result                = await database.raw('SELECT @resultUpdateForm')
@@ -51,6 +54,7 @@ const updateForm = async function(id_usuario, id_paciente, form) {
         return objectParse
 
     } catch (error) {
+        console.log(error)
         return false
     }
 

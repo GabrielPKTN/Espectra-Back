@@ -3,30 +3,46 @@
  * Data: 06/05/2026
  * Autores: Nicolas dos Santos
  * Versão: 1.0
+ * Data: 16/05/2026
+ * Developer: Gabriel Lacerda Correia
+ * Versão: 2.0
  ********************************************************************************/
 
-const express = require("express")
-const router =  express.Router()
-const controllerFormulario = require("../../controller/formulario/controllerFormulario.js")
+const express               = require('express')
+const router                = express.Router()
+const controllerForm    = require('../controller/controllerFormulario.js')
 
-router.get("/:id", async(req, res) => {
-    const id = req.params.id
-    let result = await controllerFormulario.listarFormularioPorPacienteId(id)
-    res.status(result.status_code).json(result)
+const cors       = require('cors')           // Responsável pelas permissões da API (APP)
+const bodyParser = require('body-parser')    // Responsável por gerenciar a chegada dos dados da API com o front
+
+const bodyParserJSON = bodyParser.json()
+
+const JWT = require('./auth/authUser.js')
+
+router.get('/:id_paciente/:id_usuario', JWT.verifyJWT, cors(), async (req, res) => {
+
+    const id_paciente = req.params.id_paciente
+    const id_usuario  = req.params.id_usuario
+
+    const form = await controllerForm.getFormByIdPaciente(id_usuario, id_paciente)
+
+    res.status(form.status_code)
+    res.json(form)
+
 })
 
-router.get("/:id/:resposta", async(req, res) => {
-    const id = req.params.id
-    const resposta = req.params.resposta
-    let result = await controllerFormulario.listarRespostasFormularioPorPacienteId(id, resposta)
-    res.status(result.status_code).json(result)
-})
+router.put('/:id_paciente/:id_usuario', JWT.verifyJWT, bodyParserJSON, cors(), async (req, res) => {
 
-router.put("/:id", async(req, res) => {
-    const idForm = req.params.id
-    const {idActivityPortage, idResponse} = req.body
-    let result = await controllerFormulario.atualizarRespostasFormulario(idForm, idActivityPortage, idResponse)
-    res.status(result.status_code).json(result)
+    const id_paciente = req.params.id_paciente
+    const id_usuario  = req.params.id_usuario
+    const dadosBody   = req.body
+    const formulario  = dadosBody.formulario
+
+    const form = await controllerForm.updateForm(id_usuario, id_paciente, dadosBody)
+    
+    res.status(form.status_code)
+    res.json(form)
+
 })
 
 module.exports = router

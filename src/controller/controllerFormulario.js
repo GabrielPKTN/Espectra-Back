@@ -9,7 +9,7 @@ const formularioDAO = require("../model/DAO/formulario.js")
 const defaultMessages = require("./module/defaultMessages.js")
 
 //getFormByIdPaciente
-const getFormByIdPaciente = (id_usuario, id_paciente) => {
+const getFormByIdPaciente = async (id_usuario, id_paciente) => {
 
     MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
@@ -79,13 +79,13 @@ const updateForm = async (id_usuario, id_paciente, form) => {
 
             if(Number.isInteger(id_paciente) && id_usuario > 0) {
             
-                if(Array.isArray(form)) {
-                    
-                    validaArray = validarArrayRespostas(form)
+                if(Array.isArray(form.formulario)) {
+            
+                    validaArray = validarArrayRespostas(form.formulario)
                 
                     if(!validaArray) {
-
-                        result = formularioDAO.updateForm(id_usuario, id_paciente, form)
+                        
+                        result = await formularioDAO.updateForm(id_usuario, id_paciente, form)
 
                         if(result) {
 
