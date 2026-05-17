@@ -143,6 +143,7 @@ const updateAtividadePersonalizada = async function (id, atividade) {
         const resultBanco = result[0][0]
         const jsonObjectString = resultBanco['@resultAtividade']
 
+
         const objectParse = JSON.parse(jsonObjectString)
 
         if(requestParse.status_code != 200) {

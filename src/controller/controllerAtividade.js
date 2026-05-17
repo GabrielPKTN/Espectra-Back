@@ -8,44 +8,46 @@
 const atividadeDAO = require('../model/DAO/atividade.js')
 const defaultMessages = require("./module/defaultMessages.js")
 
-// Retorna uma atividade filtrando pelo ID do paciente e ID da habilidade
+// Retorna atividades filtrando pelo ID do paciente e ID da habilidade
 const getAtividades = async function(id_paciente, id_habilidade) {
 
     let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
     try {
-        if(  
-            !isNaN(id_paciente) && Number(id_paciente) > 0 && id_paciente != null && id_paciente != "" &&
+        if(  !isNaN(id_paciente) && Number(id_paciente) > 0 && id_paciente != null && id_paciente != "" ){  
 
-            !isNaN(id_habilidade) && Number(id_habilidade) > 0 && id_paciente != null && id_paciente != ""
-        ){
+            if(!isNaN(id_habilidade) && Number(id_habilidade) > 0 && id_paciente != null && id_paciente != ""){
+                    
+                result = await atividadeDAO.getAtividades(id_paciente, id_habilidade)
 
-            result = await atividadeDAO.getAtividades(id_paciente, id_habilidade)
+                if(result){
 
-            if(result){
+                    if(result == 404){
 
-                if(result == 404){
+                        return MESSAGES.ERROR_NOT_FOUND //404
 
-                    return MESSAGES.ERROR_NOT_FOUND //404
+                    }else{
+
+                        MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_REQUEST.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                        MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_REQUEST.message
+                        MESSAGES.DEFAULT_HEADER.items       = result
+                        
+                        return MESSAGES.DEFAULT_HEADER //200
+
+                    }
 
                 }else{
-
-                    MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_REQUEST.status
-                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
-                    MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_REQUEST.message
-                    MESSAGES.DEFAULT_HEADER.items       = result
-                    
-                    return MESSAGES.DEFAULT_HEADER //200
-
+                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
                 }
 
-            }else{
-                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
-            }
-            
-
+            }else
+                 MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID HABILIDADE INCORRETO]'
+                return MESSAGES.ERROR_REQUIRED_FIELDS
+        
         }else{
-            return MESSAGES.ERROR_REQUIRED_FIELDS //400
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID PACIENTE INCORRETO]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
         }
             
         
@@ -218,7 +220,7 @@ const updateAtividadePersonalizada = async (id, atividade, contentType) => {
 
 }
 
-// updateAtividadePersonalizada
+
 const updateStatusAtividade = async (id) => {
 
     MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
@@ -311,7 +313,6 @@ const deleteAtividade = async (id, dados, contentType) => {
         }
 
     } catch (error) {
-        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 
@@ -319,6 +320,8 @@ const deleteAtividade = async (id, dados, contentType) => {
 
 
 const validateAtividadePortage = (atividade) => {
+    MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+
     if(isNaN(atividade.id_usuario) || Number(atividade.id_usuario) <= 0 || atividade.id_usuario == '' || atividade.id_usuario == null) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID USUARIO INCORRETO]'
@@ -340,6 +343,9 @@ const validateAtividadePortage = (atividade) => {
 }
 
 const validatePostAtividadePersonalizada = (atividade) => {
+
+    MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+
     if(isNaN(atividade.id_usuario) || Number(atividade.id_usuario) <= 0 || atividade.id_usuario == '' || atividade.id_usuario == null) {
 
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID USUARIO INCORRETO]'
@@ -372,6 +378,8 @@ const validatePostAtividadePersonalizada = (atividade) => {
 
 const validateUpdateAtividadePersonalizada = (atividade) => {
 
+    MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+
     
     if(isNaN(atividade.id_usuario) || Number(atividade.id_usuario) <= 0 || atividade.id_usuario == '' || atividade.id_usuario == null) {
 
@@ -388,7 +396,12 @@ const validateUpdateAtividadePersonalizada = (atividade) => {
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [VALOR MESES INCORRETO]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else {
+    } else if(isNaN(atividade.id_habilidade) || Number(atividade.id_habilidade) <= 0 || atividade.id_habilidade == '' || atividade.id_habilidade == null){
+        
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID HABILIDADE INCORRETO]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+
+    }else {
         return false
     }
 }

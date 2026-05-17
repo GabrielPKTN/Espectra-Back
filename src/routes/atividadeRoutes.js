@@ -55,30 +55,36 @@ router.post('/personalizada', cors(), JWT.verifyJWT, bodyParserJSON, async (req,
 
 })
 
-// updateUsuario
+// updateAtividadePersonalizada
 router.put('/personalizada/:id', JWT.verifyJWT, cors(), bodyParserJSON, async (req, res) => {
 
     const atividadeId = req.params.id
 
-    if(req.body){
-        const contentType = req.headers['content-type']
-        const dadosBody = req.body
+   
+    const contentType = req.headers['content-type']
+    const dadosBody = req.body
 
-        const resultUpdate = await controllerAtividade.updateAtividadePersonalizada(atividadeId, dadosBody, contentType)
+    const resultUpdate = await controllerAtividade.updateAtividadePersonalizada(atividadeId, dadosBody, contentType)
 
-        res.status(resultUpdate.status_code)
-        res.json(resultUpdate)
-    }
-    else{
-        const resultUpdateStatus = await controllerAtividade.updateStatusAtividade(atividadeId)
-
-        res.status(resultUpdateStatus.status_code)
-        res.json(resultUpdateStatus)
-    }
+    res.status(resultUpdate.status_code)
+    res.json(resultUpdate)
+    
 
 })
 
+// UpdateStatus
+router.put('/:id', JWT.verifyJWT, cors(), bodyParserJSON, async (req, res) => {
 
+    const atividadeId = req.params.id
+    const resultUpdateStatus = await controllerAtividade.updateStatusAtividade(atividadeId)
+
+    res.status(resultUpdateStatus.status_code)
+    res.json(resultUpdateStatus)
+    
+
+})
+
+// delete atividade
 router.delete('/:id', JWT.verifyJWT, cors(), bodyParserJSON, async (req, res) => {
     
     const id = req.params.id
