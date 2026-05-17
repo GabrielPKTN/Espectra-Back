@@ -11,7 +11,7 @@
 const database = require('../../database/db.js')
 
 const getTentativasByIdAtividade = async function(id_atividade) {
-    
+
     try {
         
         sql = 'CALL prc_tentativa(?, @resultTentativa)'
@@ -49,13 +49,29 @@ const postTentativa = async function(tentativa) {
             ]
         )
 
-        const result                = await database.raw('SELECT @resultInsertTentativa')
+        const resultExec        = await database.raw('SELECT @resultInsertTentativa')
+        const requestObject     = resultExec[0][0]
+        const jsonRequestString = requestObject['@resultInsertTentativa']
+        const requestParse      = JSON.parse(jsonRequestString)
+
+        const result                = await database.raw('SELECT @resultTentativa')
         const resultBanco           = result[0][0]
-        const jsonObjectString      = resultBanco['@resultInsertTentativa']
+        const jsonObjectString      = resultBanco['@resultTentativa']
         const objectParse           = JSON.parse(jsonObjectString)
 
-        return objectParse
 
+
+        if(requestParse.status_code != 201) {
+            
+            return requestParse
+
+        } else {
+
+            return objectParse
+
+        }
+        
+        
     } catch (error) {
         return false
     }

@@ -14,7 +14,7 @@ const defaultMessages = require('./module/defaultMessages.js')
 //getTentativasByIdAtividade
 const getTentativasByIdAtividade = async (id_atividade) => {
 
-    MESSAGES = JSON.stringify(JSON.parse(defaultMessages))
+    MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
     try {
         
@@ -54,13 +54,15 @@ const getTentativasByIdAtividade = async (id_atividade) => {
         }
 
     } catch (error) {
-        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 
 }
 
 //postTentativa
 const postTentativa = async (tentativa, contentType) => {
+
+    MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
     try {
         
@@ -70,11 +72,11 @@ const postTentativa = async (tentativa, contentType) => {
 
             if(!validar) {
 
-                result = tentativaDAO.postTentativa(tentativa)
+                result = await tentativaDAO.postTentativa(tentativa)
 
                 if(result) {
-
-                    if(result == 201) {
+                    
+                    if(result.status_code == 200) {
 
                         MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_CREATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
@@ -83,7 +85,7 @@ const postTentativa = async (tentativa, contentType) => {
 
                         return MESSAGES.DEFAULT_HEADER //201
 
-                    } else if(result == 404) {
+                    } else if(result.status_code == 404) {
                         return MESSAGES.ERROR_NOT_FOUND //404
                     } else {
                         return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
@@ -102,7 +104,7 @@ const postTentativa = async (tentativa, contentType) => {
         }
 
     } catch (error) {
-        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 
 }
@@ -111,7 +113,7 @@ const validateAttempt = function(attempt){
 
     let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
-    if(attempt.resultado == '' || attempt.resultado == null || attempt.resultado == undefined || attempt.resultado != 1 || attempt.resultado != 0 ){
+    if(attempt.resultado == '' || attempt.resultado == null || attempt.resultado == undefined || attempt.resultado > 1 || attempt.resultado < 0 ){
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [resultado Inválido]' 
         return MESSAGES.ERROR_REQUIRED_FIELDS //400
 

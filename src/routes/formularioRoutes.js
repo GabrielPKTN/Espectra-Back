@@ -37,8 +37,9 @@ router.put('/:id_paciente/:id_usuario', JWT.verifyJWT, bodyParserJSON, cors(), a
     const id_usuario  = req.params.id_usuario
     const dadosBody   = req.body
     const formulario  = dadosBody.formulario
+    const contentType = req.headers['content-type']
 
-    const form = await controllerForm.updateForm(id_usuario, id_paciente, dadosBody)
+    const form = await controllerForm.updateForm(id_usuario, id_paciente, dadosBody, contentType)
     
     res.status(form.status_code)
     res.json(form)

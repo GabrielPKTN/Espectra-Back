@@ -40,12 +40,14 @@ const usuario       = require("./routes/usuarioRoutes.js")
 const paciente      = require("./routes/pacienteRoutes.js")
 
 const formulario    = require("./routes/formularioRoutes.js")
+const tentativa     = require("./routes/tentativaRoutes.js")
 
 //EndPoints da Aplicação
 app.use("/v1/espectra/usuario", usuario)
 app.use("/v1/espectra/paciente", paciente)
 
 app.use("/v1/espectra/formulario", formulario)
+app.use("/v1/espectra/tentativa", tentativa)
 
 app.listen(PORT, () => {
     console.log(`Se você está vendo isso, comemore!\nAPI rodando na porta: ${PORT}`)
