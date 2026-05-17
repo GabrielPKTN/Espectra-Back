@@ -17,12 +17,12 @@ const bodyParserJSON = bodyParser.json()
 const JWT = require('./auth/authUser.js')
 
 // getAtividade
-router.get('/', JWT.verifyJWT, cors(), async (req, res) => {
+router.get('/:id_paciente/:id_habilidade', JWT.verifyJWT, cors(), async (req, res) => {
 
-    const pacienteId = req.query.id_paciente
-    const habilidadeId = req.query.id_habilidade
+    const pacienteId = req.params.id_paciente
+    const habilidadeId = req.params.id_habilidade
 
-    const resultGet = await controllerAtividade.getAtividadeByPacienteIDAndAbilidadeID(pacienteId, habilidadeId)
+    const resultGet = await controllerAtividade.getAtividades(pacienteId, habilidadeId)
 
     res.status(resultGet.status_code)
     res.json(resultGet)

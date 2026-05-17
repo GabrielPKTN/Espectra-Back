@@ -9,22 +9,23 @@ const atividadeDAO = require('../model/DAO/atividade.js')
 const defaultMessages = require("./module/defaultMessages.js")
 
 // Retorna uma atividade filtrando pelo ID do paciente e ID da habilidade
-const getAtividadeByPacienteIDAndAbilidadeID = async function(patientID, abilityID) {
+const getAtividades = async function(id_paciente, id_habilidade) {
+
     let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
     try {
         if(  
-            !isNaN(patientID) && Number(patientID) > 0 && patientID != null && patientID != "" &&
+            !isNaN(id_paciente) && Number(id_paciente) > 0 && id_paciente != null && id_paciente != "" &&
 
-            !isNaN(abilityID) && Number(abilityID) > 0 && patientID != null && patientID != ""
-
+            !isNaN(id_habilidade) && Number(id_habilidade) > 0 && id_paciente != null && id_paciente != ""
         ){
-            result = await atividadeDAO.selectAtividadeByPacientetIDAndAbilidadeID(patientID, abilityID)
 
+            result = await atividadeDAO.getAtividades(id_paciente, id_habilidade)
 
-            if(result == false){
+            if(result){
 
-                if(result == 404 || result == null){
+                if(result == 404){
+
                     return MESSAGES.ERROR_NOT_FOUND //404
 
                 }else{
@@ -134,7 +135,7 @@ const postAtividadePersonalizada = async (atividade, contentType) => {
                         MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_CREATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_CREATED_ITEM.message
-                        // MESSAGES.DEFAULT_HEADER.items       = result
+                        MESSAGES.DEFAULT_HEADER.items       = result
 
                         return MESSAGES.DEFAULT_HEADER //201
 
@@ -238,7 +239,7 @@ const updateStatusAtividade = async (id) => {
                         MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_UPDATE_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATE_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_UPDATE_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items       = result
+                        delete MESSAGES.DEFAULT_HEADER.items
 
                         return MESSAGES.DEFAULT_HEADER //200
 
@@ -394,7 +395,7 @@ const validateUpdateAtividadePersonalizada = (atividade) => {
 
 
 module.exports = {
-    getAtividadeByPacienteIDAndAbilidadeID,
+    getAtividades,
     postAtividadePortage,
     postAtividadePersonalizada,
     updateAtividadePersonalizada,

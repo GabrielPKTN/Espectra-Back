@@ -7,19 +7,19 @@
 
 const db = require("../../database/db.js")
 
-const selectAtividadeByPacientetIDAndAbilidadeID = async function(patientID, abilityID) {
+const getAtividades = async function(patientID, abilityID) {
+    
     try {
          sql = 'CALL prc_atividades(?, ?, @result)'
 
         const exec = await db.raw(
             sql,[patientID, abilityID]
         )
-        
+
         const result = await db.raw('SELECT @result')
         const resultBanco = result[0][0]
         const jsonObjectString = resultBanco['@result']
         const objectParse = JSON.parse(jsonObjectString)
-
 
         if(objectParse.status_code != 200) {
             return objectParse.status_code
@@ -30,11 +30,13 @@ const selectAtividadeByPacientetIDAndAbilidadeID = async function(patientID, abi
     } catch (error) {
         return false
     }
+
 } 
 
 const postAtividadePortage = async function(atividade) {
+    
     try {
-        // faltando validar se o id_atividade_portage existe na tb_atividade_portage
+
         sql = 'CALL prc_inserir_atividade_tipo_portage(?, ?, ?, @resultInsertAtividade)'
 
         const exec = await db.raw(
@@ -46,20 +48,17 @@ const postAtividadePortage = async function(atividade) {
         )
 
 
-        const resultExec = await db.raw('SELECT @resultInsertAtividade')
-        const result = await db.raw('SELECT @resultAtividade')
+        const resultExec            = await db.raw('SELECT @resultInsertAtividade')
+        const requestObject         = resultExec[0][0]
+        const jsonRequestString     = requestObject['@resultInsertAtividade']
+        const requestParse          = JSON.parse(jsonRequestString)
 
-        const requestObject = resultExec[0][0]
-        const jsonRequestString = requestObject['@resultInsertAtividade']
+        const result                = await db.raw('SELECT @resultAtividade')
+        const resultBanco           = result[0][0]
+        const jsonObjectString      = resultBanco['@resultAtividade']
+        const objectParse           = JSON.parse(jsonObjectString)
 
-        const requestParse = JSON.parse(jsonRequestString)
-
-        const resultBanco = result[0][0]
-        const jsonObjectString = resultBanco['@resultAtividade']
-
-        const objectParse = JSON.parse(jsonObjectString)
-
-        if(requestParse.status_code != 200) {
+        if(requestParse.status_code != 201) {
             return requestParse.status_code
         } else {
             
@@ -78,7 +77,7 @@ const postAtividadePortage = async function(atividade) {
 
 const postAtividadePersonalizada = async function(atividade) {
     try {
-        // @resulAtividade retorna null
+
         sql = 'CALL prc_inserir_atividade_tipo_personalizada(?, ?, ?, ?, ?, @resultInsertAtividade)'
 
         const exec = await db.raw(
@@ -93,22 +92,30 @@ const postAtividadePersonalizada = async function(atividade) {
 
 
         const resultExec = await db.raw('SELECT @resultInsertAtividade')
-
         const requestObject = resultExec[0][0]
         const jsonRequestString = requestObject['@resultInsertAtividade']
-
         const requestParse = JSON.parse(jsonRequestString)
 
-        if(requestParse)
+        const result            = await db.raw('SELECT @resultAtividade')
+        const resultBanco       = result[0][0]
+        const jsonObjectString  = resultBanco['@resultAtividade']
+        const objectParse       = JSON.parse(jsonObjectString)
+
+        if(requestParse.status_code != 201) {
             return requestParse.status_code
-        else
-            return false
+
+        } else {
+            if(objectParse.status_code != 200) {
+                return objectParse.status_code
+            } else {
+                return objectParse.data
+            }
+        }
 
     } catch (error) {
         return false
     }
 }
-
 
 const updateAtividadePersonalizada = async function (id, atividade) {
     
@@ -171,35 +178,14 @@ const updateStatusAtividade = async function(id) {
         )
 
         const resultExec = await db.raw('SELECT @resultUpdateAtividade')
-        const result = await db.raw('SELECT @resultAtividade')
-
         const requestObject = resultExec[0][0]
         const jsonRequestString = requestObject['@resultUpdateAtividade']
-
         const requestParse = JSON.parse(jsonRequestString)
 
-        const resultBanco = result[0][0]
-        const jsonObjectString = resultBanco['@resultAtividade']
-
-        const objectParse = JSON.parse(jsonObjectString)
-
-        if(requestParse.status_code != 200) {
-
-            return requestParse.status_code
-
-        } else {
-
-            if(objectParse.status_code != 200) {
-                return objectParse.status_code
-            } else {
-                return objectParse.data
-            }
-
-        }
+        return requestParse.status_code
 
 
     } catch (error) {
-        console.log(error)
         return false
     }
 }
@@ -234,7 +220,7 @@ const deleteAtividade = async function(id, atividade) {
 
 
 module.exports = {
-    selectAtividadeByPacientetIDAndAbilidadeID,
+    getAtividades,
     postAtividadePortage,
     postAtividadePersonalizada,
     updateAtividadePersonalizada,
