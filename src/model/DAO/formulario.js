@@ -54,7 +54,6 @@ const updateForm = async function(id_usuario, id_paciente, form) {
         return objectParse
 
     } catch (error) {
-        console.log(error)
         return false
     }
 
