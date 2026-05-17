@@ -7,7 +7,7 @@
 
 const jwt = require('jsonwebtoken')
 const SECRET = '&$P&C!R@'
-const EXPIRES = 1800 //1800
+const EXPIRES = 100000000000000 //1800
 
 //Gera o token
 const createJWT = async (payload) => {
