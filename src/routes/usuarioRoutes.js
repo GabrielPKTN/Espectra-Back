@@ -86,7 +86,7 @@ router.put('/:id', JWT.verifyJWT, multerConfig.single('foto'), cors(), async (re
     const userId        = req.params.id
     const contentType   = req.headers['content-type']
     const dadosBody     = req.body
-    const fotoFile      = null
+    let fotoFile      = null
 
     if(req.file) {
         fotoFile = req.file

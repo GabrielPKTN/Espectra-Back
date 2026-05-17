@@ -51,13 +51,13 @@ router.post('/', JWT.verifyJWT, multerConfig.single('foto'), cors(), async(req, 
 
     const contentType   = req.headers['content-type']
     const dadosBody     = req.body
-    const fotoFile      = null
+    let fotoFile      = null
 
     if(req.file) {
         fotoFile = req.file
     }
 
-    const paciente = await controllerPaciente.postPaciente(dadosPaciente, contentType, fotoFile)
+    const paciente = await controllerPaciente.postPaciente(dadosBody, contentType, fotoFile)
 
     res.status(paciente.status_code)
     res.json(paciente)
@@ -84,7 +84,7 @@ router.put('/:id_usuario', JWT.verifyJWT, multerConfig.single('foto'), cors(), a
     const idUsuario         = req.params.id_usuario
     const dadosPaciente     = req.body
     const contentType       = req.headers['content-type']
-    const fotoFile          = null
+    let fotoFile          = null
 
     if(req.file) {
         fotoFile = req.file

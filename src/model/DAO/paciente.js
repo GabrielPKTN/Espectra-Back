@@ -41,10 +41,10 @@ const getPacienteById = async function (id) {
 }
 
 const postPaciente = async function (paciente) {
-    
+
     try {
         
-        sql = 'CALL prc_adicionar_paciente(?,?,?,?,?,?,?,? @resultInsertPaciente)'
+        sql = 'CALL prc_adicionar_paciente(?,?,?,?,?,?,?,?, @resultInsertPaciente)'
 
         const exec = await database.raw(
             sql,[
@@ -59,7 +59,7 @@ const postPaciente = async function (paciente) {
             ]
         )
 
-        const resultExec            = await database.raw('@resultInsertPaciente')
+        const resultExec            = await database.raw('SELECT @resultInsertPaciente')
         const requestObject         = resultExec[0][0]
         const jsonRequestString     = requestObject['@resultInsertPaciente']
         const requestParse          = JSON.parse(jsonRequestString)
@@ -83,6 +83,7 @@ const postPaciente = async function (paciente) {
         }
 
     } catch (error) {
+        console.log(error)
         return false
     }
 
@@ -131,7 +132,7 @@ const putPaciente = async function (id_usuario, paciente) {
     
     try {
         
-        sql = 'CALL prc_atualizar_paciente(?,?,?,?,?,?,?,?,? @resultUpdatePaciente)'
+        sql = 'CALL prc_atualizar_paciente(?,?,?,?,?,?,?,?,?, @resultUpdatePaciente)'
 
         const exec = await database.raw(
             sql,[
@@ -147,7 +148,7 @@ const putPaciente = async function (id_usuario, paciente) {
             ]
         )
 
-        const resultExec            = await database.raw('@resultUpdatePaciente')
+        const resultExec            = await database.raw('SELECT @resultUpdatePaciente')
         const requestObject         = resultExec[0][0]
         const jsonRequestString     = requestObject['@resultUpdatePaciente']
         const requestParse          = JSON.parse(jsonRequestString)
@@ -171,6 +172,7 @@ const putPaciente = async function (id_usuario, paciente) {
         }
 
     } catch (error) {
+        console.log(error)
         return false
     }
 

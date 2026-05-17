@@ -11,6 +11,8 @@
 const pacienteDAO = require('../model/DAO/paciente.js')
 const defaultMessages = require('./module/defaultMessages.js')
 
+const azure = require('../external/azureUpload.js')
+
 //getPacienteById
 const getPacienteById = async (id) => {
 
@@ -58,6 +60,8 @@ const postPaciente = async (paciente, contentType, foto) => {
     
     try {
         
+        paciente.diagnostico = JSON.parse(paciente.diagnostico)
+
         if (String(contentType).toUpperCase().startsWith('MULTIPART/FORM-DATA')) {
 
             const validar = validatePacientePost(paciente)
@@ -80,6 +84,14 @@ const postPaciente = async (paciente, contentType, foto) => {
                     paciente.foto = fotoUrl
 
                 } 
+
+                arrayDiagnostico = validateDiagnostico(paciente.diagnostico)
+
+                if(Array.isArray(arrayDiagnostico)) {
+                    paciente.diagnostico = `[${arrayDiagnostico}]`
+                } else {
+                    return arrayDiagnostico
+                }
 
                 result = await pacienteDAO.postPaciente(paciente)
 
@@ -171,6 +183,8 @@ const putPaciente = async (id_usuario, paciente, contentType, foto) => {
     MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
     
         try {
+
+            paciente.diagnostico = JSON.parse(paciente.diagnostico)
             
             if (String(contentType).toUpperCase().startsWith('MULTIPART/FORM-DATA')) {
 
@@ -195,6 +209,14 @@ const putPaciente = async (id_usuario, paciente, contentType, foto) => {
     
                             paciente.foto = fotoUrl
     
+                        }
+
+                        arrayDiagnostico = validateDiagnostico(paciente.diagnostico)
+
+                        if(Array.isArray(arrayDiagnostico)) {
+                            paciente.diagnostico = `[${arrayDiagnostico}]`
+                        } else {
+                            return arrayDiagnostico
                         }
 
                         result = await pacienteDAO.putPaciente(id_usuario, paciente)
@@ -235,6 +257,7 @@ const putPaciente = async (id_usuario, paciente, contentType, foto) => {
             }
     
         } catch (error) {
+            console.log(error)
             return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
         }
 
@@ -322,19 +345,25 @@ const getPacienteByCpf = async (cpf) => {
 
 }
 
+validateDiagnostico = (arrayDiagnostico) => {
 
-const validatePacientePost = (paciente) => {
+    let arrayTranstorno = []
 
-    for (let id_transtorno of paciente.diagnostico) {
+    for(let id_transtorno of arrayDiagnostico) {
 
-        if(isNaN(id_transtorno.id) || id_transtorno.id <= 0) {
-
-            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID TRANSTORNO INCORRETO]'
+        if(Number(id_transtorno.id) && id_transtorno.id > 0) {
+            arrayTranstorno.push(id_transtorno.id)
+        } else {
             return MESSAGES.ERROR_REQUIRED_FIELDS
-
         }
 
     }
+
+    return arrayTranstorno
+
+}
+
+const validatePacientePost = (paciente) => {
 
     if(!paciente.nome || paciente.nome.trim().length === 0) {
 
@@ -373,23 +402,6 @@ const validatePacientePost = (paciente) => {
 }
 
 const validatePacientePut = (paciente) => {
-
-    for (let id of paciente.diagnostico) {
-        
-        if(isNaN(id) || id <= 0) {
-
-            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID TRANSTORNO INCORRETO]'
-            return MESSAGES.ERROR_REQUIRED_FIELDS
-
-        }
-
-    }
-
-    if(paciente.foto != null) {
-
-        //TODO
-
-    }
 
     if(!paciente.nome || paciente.nome.trim().length === 0) {
 
