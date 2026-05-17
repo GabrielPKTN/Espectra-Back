@@ -165,14 +165,14 @@ const postPacienteUsuario = async (id_usuario, id_paciente) => {
 }
 
 //putPaciente
-const putPaciente = async (id_usuario, paciente, contentType) => {
+const putPaciente = async (id_usuario, paciente, contentType, foto) => {
 
 
     MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
     
         try {
             
-            if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+            if (String(contentType).toUpperCase().startsWith('MULTIPART/FORM-DATA')) {
 
                 if(!isNaN(id_usuario) && id_usuario > 0 && id_usuario != "" && id_usuario != null) {
 
@@ -180,6 +180,23 @@ const putPaciente = async (id_usuario, paciente, contentType) => {
 
                     if(!validar) {
     
+                        if(foto) {
+                        
+                            const picData = {
+    
+                                originalName: foto.originalname,
+                                buffer: foto.buffer,
+                                size: foto.size,
+                                mimetype: foto.mimetype
+    
+                            }
+    
+                            const fotoUrl = await azure.uploadAzure(picData)
+    
+                            paciente.foto = fotoUrl
+    
+                        }
+
                         result = await pacienteDAO.putPaciente(id_usuario, paciente)
     
                         if(result) {
