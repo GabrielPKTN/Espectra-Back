@@ -15,9 +15,12 @@ const controllerPaciente    = require('../controller/controllerPaciente.js')
 const cors       = require('cors')           // Responsável pelas permissões da API (APP)
 const bodyParser = require('body-parser')    // Responsável por gerenciar a chegada dos dados da API com o front
 
+const multerConfig = require('../config/multerConfig.js')
+
 const bodyParserJSON = bodyParser.json()
 
 const JWT = require('./auth/authUser.js')
+const multer = require('multer')
 
 //getPacienteById
 router.get('/:id', JWT.verifyJWT, cors(), async (req, res) => {
@@ -44,12 +47,17 @@ router.get('/', JWT.verifyJWT, cors(), async (req, res) => {
 })
 
 //postPaciente
-router.post('/', JWT.verifyJWT, cors(), bodyParserJSON, async(req, res) => {
+router.post('/', JWT.verifyJWT, multerConfig.single('foto'), cors(), async(req, res) => {
 
-    const dadosPaciente = req.body
-    const contentType = req.headers['content-type']
+    const contentType   = req.headers['content-type']
+    const dadosBody     = req.body
+    let fotoFile      = null
 
-    const paciente = await controllerPaciente.postPaciente(dadosPaciente, contentType)
+    if(req.file) {
+        fotoFile = req.file
+    }
+
+    const paciente = await controllerPaciente.postPaciente(dadosBody, contentType, fotoFile)
 
     res.status(paciente.status_code)
     res.json(paciente)
@@ -71,13 +79,18 @@ router.post('/:id_paciente/:id_usuario', JWT.verifyJWT, cors(), async (req, res)
 
 
 //putPaciente
-router.put('/:id_usuario', JWT.verifyJWT, cors(), bodyParserJSON, async (req, res) => {
+router.put('/:id_usuario', JWT.verifyJWT, multerConfig.single('foto'), cors(), async (req, res) => {
 
-    const idUsuario = req.params.id
-    const dadosPaciente  = req.body
-    const contentType = req.headers['content-type']
+    const idUsuario         = req.params.id_usuario
+    const dadosPaciente     = req.body
+    const contentType       = req.headers['content-type']
+    let fotoFile          = null
 
-    const paciente = await controllerPaciente.putPaciente(idUsuario, dadosPaciente, contentType)
+    if(req.file) {
+        fotoFile = req.file
+    }
+
+    const paciente = await controllerPaciente.putPaciente(idUsuario, dadosPaciente, contentType, fotoFile)
 
     res.status(paciente.status_code)
     res.json(paciente)

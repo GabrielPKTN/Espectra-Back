@@ -6,6 +6,9 @@
  * Versão: 1.0.0
  *********************************************************************/
 
+//Acesso ao env
+require('dotenv').config();
+
 //Responsável pelo funcionamento da API
 const express           = require('express')
 
