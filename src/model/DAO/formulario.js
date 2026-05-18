@@ -3,64 +3,65 @@
  * Data: 06/05/2026
  * Autores: Nicolas dos Santos 
  * Versão: 1.0
+ * Data: 16/05/2026
+ * Autores: Gabriel Lacerda
+ * Versão: 2.0
  ******************************************************************************/
 
-const db = require("../../database/db")
+const database = require('../../database/db.js')
 
-const getFormByIdPatient = async function(id) {
+const getFormByIdPaciente = async function(id_usuario, id_paciente) {
+    
     try {
-        const result = await db.raw(
-            'SELECT * FROM vw_formulario_paciente_id WHERE id_paciente = ?', [id]
+        
+        sql = 'CALL prc_formulario_pelo_id_paciente(?, ?, @resultFormulario)'
+
+        exec = await database.raw(
+            sql,[id_usuario, id_paciente]
         )
 
-        return result[0][0] || false
+        const result                = await database.raw('SELECT @resultFormulario')
+        const resultBanco           = result[0][0]
+        const jsonObjectString      = resultBanco['@resultFormulario']
+        const objectParse           = JSON.parse(jsonObjectString)
+
+        return objectParse
+
     } catch (error) {
-        console.log(error)
         return false
     }
+
 }
 
-const getResponseFormByFilter = async function(id, resposta) {
+const updateForm = async function(id_usuario, id_paciente, form) {
+
     try {
-        let sql = `SELECT * FROM vw_resposta_formulario_paciente_id WHERE id_paciente = ?`
-        let params = [id]
+        
 
-        if(resposta === 'null'){
-            sql += ` AND resposta IS NULL`
-        } else {
-            sql += ` AND resposta = ?`
-            params.push(resposta)
-        }
+        form.formulario = JSON.stringify(form.formulario)
 
-        const result = await db.raw(sql, params)
+        sql = `CALL prc_atualizar_respostas_formulario(?,?,?,@resultUpdateForm)`
 
-        if(Array.isArray(result[0]) && result[0].length > 0)
-            return result[0]
-        else
-            return false
+        exec = await database.raw(
+            sql,[id_usuario, id_paciente, form.formulario]
+        )
+
+        const result                = await database.raw('SELECT @resultUpdateForm')
+        const resultBanco           = result[0][0]
+        const jsonObjectString      = resultBanco['@resultUpdateForm']
+        const objectParse           = JSON.parse(jsonObjectString)
+
+        return objectParse
+
     } catch (error) {
-        console.log(error)
         return false
     }
-} 
 
-const setUpdateResponseForm = async function(idForm, idActivityPortage, idResponse) {
-    try {
-        await db.raw('SET @resposta = NULL')
-        await db.raw('CALL prc_atualizar_respostas_formulario(?, ?, ?, @resposta)', [idForm, idActivityPortage, idResponse])
-        const result = await db.raw('SELECT @resposta AS resposta')
-
-        const resposta = result[0][0].resposta
-
-        return typeof resposta === "string" ? JSON.parse(resposta) : resposta
-    } catch (error) {
-        console.log(error)
-        return false
-    }
 }
 
 module.exports = {
-    getFormByIdPatient,
-    getResponseFormByFilter,
-    setUpdateResponseForm
+
+    getFormByIdPaciente,
+    updateForm
+
 }

@@ -3,135 +3,148 @@
  * Data: 07/04/2026
  * Autores: Enzo Carrilho
  * Versão: 1.0
+ * Data: 16/05/2026
+ * Autores: Gabriel Lacerda
+ * Versão: 2.0
  **********************************************************************************************/
 
-const attemptDAO = require('../../model/DAO/tentativa/tentativa.js')
-const defaultMessages = require('../modulo/defaultMessages.js')
+const tentativaDAO = require('../model/DAO/tentativa.js')
+const defaultMessages = require('./module/defaultMessages.js')
 
-const selectAttemptById = async function(id) {
-    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+//getTentativasByIdAtividade
+const getTentativasByIdAtividade = async (id_atividade) => {
+
+    MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
     try {
+        
+        id_atividade = Number(id_atividade)
 
-        if(!isNaN(id) && id != '' && Number(id) > 0){
-            let resultAttempt = await attemptDAO
-           
-            if(resultAttempt){
-                const attempt = resultAttempt.data
-                
-                if(patient != null){
-                    return attempt //200
+        if (Number.isInteger(id_atividade) && id_atividade > 0) {
 
-                }else{
-                    return MESSAGES.errorNotFound //404
+            result = await tentativaDAO.getTentativasByIdAtividade(id_atividade)
+
+            if(result) {
+
+                if(result.status_code == 200) {
+
+                    MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_REQUEST.message
+                    MESSAGES.DEFAULT_HEADER.items       = result.data
+
+                    return MESSAGES.DEFAULT_HEADER //200
+
+                } else if(result.status_code == 404) {
+
+                    return MESSAGES.ERROR_NOT_FOUND //404
+
+                } else {
+
+                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+
                 }
 
-            }else{
-                return MESSAGES.errorInternalServer//500
+            } else {
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
             }
 
-        }else{
-            MESSAGES.errorRequiredFields.message += ' [ID Inválido]'
-            return MESSAGES.errorRequiredFields //400
+        } else {
+            return MESSAGES.ERROR_REQUIRED_FIELDS //500
         }
+
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
+    }
+
+}
+
+//postTentativa
+const postTentativa = async (tentativa, contentType) => {
+
+    MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+
+    try {
         
-    } catch (error) {
-        return MESSAGES.errorInternalServer //500
-    }
-}
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-const selectAttemptByActivityId = async function(activityID){
-    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+            validar = validateAttempt(tentativa)
 
-    try {
-        if(!isNaN(activityID) && activityID != '' && activityID.length == 10){
-            let resultAttempt = await resultAttempt.selectAttemptByActivityId(activityID)
+            if(!validar) {
 
-            if(resultAttempt){
-                
-                if(resultAttempt != null && resultAttempt.length > 0)
-                    return resultAttempt[0]
-                else 
-                    return MESSAGES.errorNotFound //404
+                result = await tentativaDAO.postTentativa(tentativa)
 
-            }else{
-               return MESSAGES.errorInternalServer //500
-            }
-
-        }else{
-            MESSAGES.errorRequiredFields.message += ' [Número de Registro Inválido]' 
-            return MESSAGES.errorRequiredFields //400
-        }
-
-    } catch (error) {
-        return MESSAGES.errorInternalServer //500
-    }
-}
-
-
-const setAttempt = async function(attempt, contentType) {
-    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
-
-    try {
-
-        if(String(contentType).toUpperCase() == 'APPLICATION/JSON'){
-            let validate = await validateAttempt(attempt)
-            
-            if(!validate){
-                let resultAttempt = await attemptDAO.insertAttempt(attempt)
-
-                if(resultAttempt.status_code){
+                if(result) {
                     
-                    if(resultAttempt.status_code == 200){         
-                        return resultAttempt.data //200
-                    }
-                    else{
-                        return resultAttempt  // 400 | 409
+                    if(result.status_code == 200) {
+
+                        MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_CREATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_CREATED_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.items       = result.data
+
+                        return MESSAGES.DEFAULT_HEADER //201
+
+                    } else if(result.status_code == 404) {
+                        return MESSAGES.ERROR_NOT_FOUND //404
+                    } else {
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
                     }
 
-                }else{
-                    return MESSAGES.errorInternalServer //500
+                } else {
+                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
                 }
 
-            }else{
-                return validate //400
+            } else {
+                return validar //400
             }
-        }else{
-            return MESSAGES.errorContentType //415
-        }
-        
-    } catch (error) {
-         return MESSAGES.errorInternalServer //500
-    }
-}
 
-module.exports = {
-    selectAttemptById,
-    selectAttemptByActivityId,
-    setAttempt
+        } else {
+            return MESSAGES.ERROR_CONTENT_TYPE //415
+        }
+
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
+    }
+
 }
 
 const validateAttempt = function(attempt){
+
     let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
-    if(attempt.resultado == '' || attempt.resultado == null || attempt.resultado == undefined || attempt.resultado != 1 || attempt.resultado != 0 ){
-        MESSAGES.errorRequiredFields.message += ' [resultado Inválido]' 
-        return MESSAGES.errorRequiredFields //400
+    if(attempt.resultado == '' || attempt.resultado == null || attempt.resultado == undefined || attempt.resultado > 1 || attempt.resultado < 0 ){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [resultado Inválido]' 
+        return MESSAGES.ERROR_REQUIRED_FIELDS //400
 
-    }else if(attempt.data == '' || attempt.data == null || attempt.data == undefined || attempt.data.length != 10){
-        MESSAGES.errorRequiredFields.message += ' [Data Inválido]' 
-        return MESSAGES.errorRequiredFields //400
+    }else if(attempt.data_tentativa == '' || attempt.data_tentativa == null || attempt.data_tentativa == undefined || attempt.data_tentativa.length != 10){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Data Inválido]' 
+        return MESSAGES.ERROR_REQUIRED_FIELDS //400
+
+    }else if(attempt.observacao != null) {
+
+        if(!isNaN(attempt.observacao) && attempt.observacao.length > 1500) {
+
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [OBSERVAÇÃO INVÁLIDA]' 
+            return MESSAGES.ERROR_REQUIRED_FIELDS //400
+
+        }
     
-    }else if(attempt.id_tipo_aplicacao <= 0 || isNaN(attempt.id_tipo_aplicacao) || attempt.id_tipo_aplicacao == '' || attempt.id_tipo_aplicacao == null || attempt.id_tipo_aplicacao == undefined){
-        MESSAGES.errorRequiredFields.message += ' [id_tipo_aplicacao Inválido]' 
-        return MESSAGES.errorRequiredFields //400
+    }else if(attempt.id_auxilio <= 0 || isNaN(attempt.id_auxilio) || attempt.id_auxilio == '' || attempt.id_auxilio == null || attempt.id_auxilio == undefined){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [id_tipo_aplicacao Inválido]' 
+        return MESSAGES.ERROR_REQUIRED_FIELDS //400
 
     }else if(attempt.id_atividade <= 0 || isNaN(attempt.id_atividade) || attempt.id_atividade == '' || attempt.id_atividade == null || attempt.id_atividade == undefined){
-        MESSAGES.errorRequiredFields.message += ' [id_atividade Inválido]' 
-        return MESSAGES.errorRequiredFields //400
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [id_atividade Inválido]' 
+        return MESSAGES.ERROR_REQUIRED_FIELDS //400
 
     }else{
         return false
     }
 
 } 
+
+module.exports = {
+    getTentativasByIdAtividade,
+    postTentativa
+}

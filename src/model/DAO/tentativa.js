@@ -3,69 +3,84 @@
  * Data: 07/05/2026
  * Autores: Nicolas dos Santos 
  * Versão: 1.0
+ * Data: 16/05/2026
+ * Autores: Gabriel Lacerda
+ * Versão: 2.0
  ******************************************************************************/
 
-const db = require("../../database/db.js")
+const database = require('../../database/db.js')
 
-const getAttemptById = async function(id) {
+const getTentativasByIdAtividade = async function(id_atividade) {
+
     try {
-        const result = await db.raw(
-            'SELECT * FROM vw_tentativa_id WHERE id_tentativa = ?', [id]
+        
+        sql = 'CALL prc_tentativa(?, @resultTentativa)'
+
+        exec = await database.raw(
+            sql,[id_atividade]
         )
 
-        return result [0][0] || false
+        const result                = await database.raw('SELECT @resultTentativa')
+        const resultBanco           = result[0][0]
+        const jsonObjectString      = resultBanco['@resultTentativa']
+        const objectParse           = JSON.parse(jsonObjectString)
+
+        return objectParse
+
     } catch (error) {
-        console.log(error)
         return false
     }
+
 }
 
-const getAttemptByActivityId = async function(id) {
+const postTentativa = async function(tentativa) {
+
     try {
-         const result = await db('tb_tentativa').where('id_atividade', '=', id).select('*')
-        
-        if(Array.isArray(result))
-            return result
-        else
-            return false
 
-    } catch (error) {
-        return false
-    }
-}
+        sql = `CALL prc_inserir_tentativa(?,?,?,?,?,@resultInsertTentativa)`
 
-const insertAttempt = async function(attempt) {
-     try {
-
-        await db.raw(
-            'CALL prc_inserir_tentativa(?, ?, ?, ?, ?, @msg)', 
-            [
-                attempt.tipo_aplicacao_id, 
-                attempt.atividade_id, 
-                attempt.resultado, 
-                attempt.observacao, 
-                attempt.data
+        exec = await database.raw(
+            sql,[
+                tentativa.id_auxilio,
+                tentativa.id_atividade,
+                tentativa.resultado,
+                tentativa.observacao,
+                tentativa.data_tentativa
             ]
         )
 
-        const [result] = await db.raw('SELECT @msg as msg')
+        const resultExec        = await database.raw('SELECT @resultInsertTentativa')
+        const requestObject     = resultExec[0][0]
+        const jsonRequestString = requestObject['@resultInsertTentativa']
+        const requestParse      = JSON.parse(jsonRequestString)
 
-        const message = result[0].msg
+        const result                = await database.raw('SELECT @resultTentativa')
+        const resultBanco           = result[0][0]
+        const jsonObjectString      = resultBanco['@resultTentativa']
+        const objectParse           = JSON.parse(jsonObjectString)
 
-        const parsedMessage = typeof message === "string" ? JSON.parse(message) : message
 
-        if(parsedMessage)
-            return parsedMessage
-        else
-            return false
 
+        if(requestParse.status_code != 201) {
+            
+            return requestParse
+
+        } else {
+
+            return objectParse
+
+        }
+        
+        
     } catch (error) {
         return false
     }
+
 }
 
 module.exports = {
-    getAttemptById,
-    getAttemptByActivityId,
-    insertAttempt
+
+    getTentativasByIdAtividade,
+    postTentativa
+
 }
