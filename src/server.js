@@ -41,14 +41,14 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 //Imports dos arquivos para EndPoints
 const usuario       = require("./routes/usuarioRoutes.js")
 const paciente      = require("./routes/pacienteRoutes.js")
-
 const formulario    = require("./routes/formularioRoutes.js")
 const tentativa     = require("./routes/tentativaRoutes.js")
+const atividade     = require("./routes/atividadeRoutes.js")
 
 //EndPoints da Aplicação
 app.use("/v1/espectra/usuario", usuario)
 app.use("/v1/espectra/paciente", paciente)
-
+app.use("/v1/espectra/atividade", atividade)
 app.use("/v1/espectra/formulario", formulario)
 app.use("/v1/espectra/tentativa", tentativa)
 
