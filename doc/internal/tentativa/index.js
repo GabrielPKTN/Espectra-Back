@@ -9,11 +9,6 @@ module.exports = {
 
     "v1/espectra/tentativa/{id}": {
         ...getById
-    },
-
-     "v1/espectra/tentativa/{atividade_id}": {
-        ...getByAtividadeId
     }
-
 
 }
