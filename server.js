@@ -17,7 +17,7 @@ const cors              = require('cors')
 
 // Import das dependências para a documentação dos EndPoints da API 
 const swaggerUi         = require('swagger-ui-express')
-const swaggerDocument   = require('../doc/index.js')
+const swaggerDocument   = require('./doc/index.js')
 
 // Retorna a porta do servidor atual ou colocamos uma porta local
 const PORT = process.env.PORT || 8080
@@ -29,7 +29,7 @@ const app = express()
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-access-token']
 }))
 
 // Middleware para permitir JSON no body
@@ -39,11 +39,11 @@ app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 //Imports dos arquivos para EndPoints
-const usuario       = require("./routes/usuarioRoutes.js")
-const paciente      = require("./routes/pacienteRoutes.js")
-const formulario    = require("./routes/formularioRoutes.js")
-const tentativa     = require("./routes/tentativaRoutes.js")
-const atividade     = require("./routes/atividadeRoutes.js")
+const usuario       = require("./src/routes/usuarioRoutes.js")
+const paciente      = require("./src/routes/pacienteRoutes.js")
+const formulario    = require("./src/routes/formularioRoutes.js")
+const tentativa     = require("./src/routes/tentativaRoutes.js")
+const atividade     = require("./src/routes/atividadeRoutes.js")
 
 //EndPoints da Aplicação
 app.use("/v1/espectra/usuario", usuario)
