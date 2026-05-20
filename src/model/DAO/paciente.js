@@ -187,18 +187,40 @@ const deletePaciente = async function (id_paciente, id_usuario) {
 
 const getPacienteByCpf = async function (cpf) {
 
-    sql = 'CALL prc_retorna_paciente_pelo_cpf(?, @returnPacienteCpf)'
+    try {
 
-    const exec = await database.raw(
-        sql, [cpf]
-    )
+        sql = 'CALL prc_retorna_paciente_pelo_cpf(?, @returnPacienteCpf)'
 
-    const result = await database.raw('SELECT @returnPacienteCpf')
-    const resultBanco = result[0][0]
-    const jsonObjectString = resultBanco['@returnPacienteCpf']
-    const objectParse = JSON.parse(jsonObjectString)
+        const exec = await database.raw(
+            sql, [cpf]
+        )
 
-    return objectParse
+
+        const resultExec = await database.raw('SELECT @returnPacienteCpf')
+        const requestObject = resultExec[0][0]
+        const jsonRequestString = requestObject['@returnPacienteCpf']
+        const requestParse = JSON.parse(jsonRequestString)
+
+        const result = await database.raw('SELECT @resultPaciente')
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@resultPaciente']
+        const objectParse = JSON.parse(jsonObjectString)
+
+        if (requestParse.status_code != 200) {
+
+            return requestParse
+
+        } else {
+
+            return objectParse
+
+        }
+
+    } catch (error) {
+        return false
+    }
+
+
 
 }
 
