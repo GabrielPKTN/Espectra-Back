@@ -9,25 +9,21 @@
 const database = require("../../database/db")
 
 const getUsuario = async function (id) {
-    
+
     try {
-        
+
         sql = 'CALL prc_usuario(?, @resultUsuario)'
 
         const exec = await database.raw(
-            sql,[id]
+            sql, [id]
         )
-        
+
         const result = await database.raw('SELECT @resultUsuario')
         const resultBanco = result[0][0]
         const jsonObjectString = resultBanco['@resultUsuario']
         const objectParse = JSON.parse(jsonObjectString)
 
-        if(objectParse.status_code != 200) {
-            return objectParse.status_code
-        } else {
-            return objectParse.data
-        }
+        return objectParse
 
     } catch (error) {
         return false
@@ -36,13 +32,13 @@ const getUsuario = async function (id) {
 }
 
 const getHomeUsuario = async function (id) {
-    
+
     try {
-        
+
         sql = "CALL prc_home(?, @resultHomeUsuario)"
 
         const exec = await database.raw(
-            sql,[id]
+            sql, [id]
         )
 
         const result = await database.raw('SELECT @resultHomeUsuario')
@@ -50,11 +46,7 @@ const getHomeUsuario = async function (id) {
         const jsonObjectString = resultBanco['@resultHomeUsuario']
         const objectParse = JSON.parse(jsonObjectString)
 
-        if (objectParse.status_code != 200) {
-            return objectParse.status_code
-        } else {
-            return objectParse.data
-        }
+        return objectParse
 
     } catch (error) {
         return false
@@ -65,11 +57,11 @@ const getHomeUsuario = async function (id) {
 const getRedefinicaoSenha = async function (email) {
 
     try {
-        
-        sql =  'CALL prc_solicita_redefinicao_senha(?, @resultSolicitacao)'
+
+        sql = 'CALL prc_solicita_redefinicao_senha(?, @resultSolicitacao)'
 
         const exec = await database.raw(
-            sql,[email]
+            sql, [email]
         )
 
         const result = await database.raw('SELECT @resultSolicitacao')
@@ -77,7 +69,7 @@ const getRedefinicaoSenha = async function (email) {
         const jsonObjectString = resultBanco['@resultSolicitacao']
         const objectParse = JSON.parse(jsonObjectString)
 
-        return objectParse.status_code
+        return objectParse
 
     } catch (error) {
         return false
@@ -85,14 +77,14 @@ const getRedefinicaoSenha = async function (email) {
 
 }
 
-const getUsuarioLogin = async function (email, senha)  {
+const getUsuarioLogin = async function (email, senha) {
 
     try {
-        
+
         sql = 'CALL prc_usuario_login(?, ?, @idUsuarioLogin, @resultUsuarioLogin)'
 
         const exec = await database.raw(
-            sql,[ email, senha ]
+            sql, [email, senha]
         )
 
         const resultExec = await database.raw('SELECT @resultUsuarioLogin')
@@ -109,15 +101,12 @@ const getUsuarioLogin = async function (email, senha)  {
         const objectParse = JSON.parse(jsonObjectString)
 
         if (requestParse.status_code != 200) {
-            return requestParse.status_code
-        
+
+            return requestParse
+
         } else {
 
-            if (objectParse.status_code != 200) {
-                return objectParse.status_code
-            } else {
-                return objectParse.data
-            }
+            return objectParse
 
         }
 
@@ -130,18 +119,18 @@ const getUsuarioLogin = async function (email, senha)  {
 const postUsuario = async function (usuario) {
 
     try {
-        
+
         sql = 'CALL prc_cria_usuario(?, ?, ?, ?, ?, ?, @resultCreateUsuario)'
 
         const exec = await database.raw(
-            sql,[
-                usuario.nome,
-                usuario.email,
-                usuario.senha,
-                usuario.data_nascimento,
-                usuario.telefone,
-                usuario.id_tipo_usuario
-            ]
+            sql, [
+            usuario.nome,
+            usuario.email,
+            usuario.senha,
+            usuario.data_nascimento,
+            usuario.telefone,
+            usuario.id_tipo_usuario
+        ]
         )
 
         const resultExec = await database.raw('SELECT @resultCreateUsuario')
@@ -157,15 +146,13 @@ const postUsuario = async function (usuario) {
 
         const objectParse = JSON.parse(jsonObjectString)
 
-        if(requestParse.status_code != 201) {
-            return requestParse.status_code
+        if (requestParse.status_code != 201) {
+
+            return requestParse
+
         } else {
-            
-            if(objectParse.status_code != 200) {
-                return objectParse.status_code
-            } else {
-                return objectParse.data
-            }
+
+            return objectParse
 
         }
 
@@ -176,20 +163,20 @@ const postUsuario = async function (usuario) {
 }
 
 const updateUsuario = async function (id, usuario) {
-    
+
     try {
-        
+
         sql = 'CALL prc_atualiza_usuario(?, ?, ?, ?, ?, ?, @resultUpdateUsuario)'
 
         const exec = await database.raw(
-            sql,[
-                id,
-                usuario.foto,
-                usuario.nome,
-                usuario.email,
-                usuario.data_nascimento,
-                usuario.telefone
-            ]
+            sql, [
+            id,
+            usuario.foto,
+            usuario.nome,
+            usuario.email,
+            usuario.data_nascimento,
+            usuario.telefone
+        ]
         )
 
         const resultExec = await database.raw('SELECT @resultUpdateUsuario')
@@ -205,17 +192,13 @@ const updateUsuario = async function (id, usuario) {
 
         const objectParse = JSON.parse(jsonObjectString)
 
-        if(requestParse.status_code != 200) {
+        if (requestParse.status_code != 200) {
 
-            return requestParse.status_code
+            return requestParse
 
         } else {
 
-            if(objectParse.status_code != 200) {
-                return objectParse.status_code
-            } else {
-                return objectParse.data
-            }
+            return objectParse
 
         }
 
@@ -229,14 +212,14 @@ const updateUsuario = async function (id, usuario) {
 const updateUsuarioSenha = async function (id, senha) {
 
     try {
-        
+
         sql = 'CALL prc_atualiza_senha_usuario(?, ?, @resultUpdateSenhaUsuario)'
 
         const exec = await database.raw(
-            sql,[
-                id,
-                senha
-            ]
+            sql, [
+            id,
+            senha
+        ]
         )
 
         const resultExec = await database.raw('SELECT @resultUpdateSenhaUsuario')
@@ -252,17 +235,13 @@ const updateUsuarioSenha = async function (id, senha) {
 
         const objectParse = JSON.parse(jsonObjectString)
 
-        if(requestParse.status_code != 200) {
+        if (requestParse.status_code != 200) {
 
-            return requestParse.status_code
+            return requestParse
 
         } else {
 
-            if(objectParse.status_code != 200) {
-                return objectParse.status_code
-            } else {
-                return objectParse.data
-            }
+            return objectParse
 
         }
 
@@ -276,14 +255,14 @@ const updateUsuarioSenha = async function (id, senha) {
 const deleteUsuario = async function (id, senha) {
 
     try {
-        
+
         sql = 'CALL prc_deleta_usuario(?, ?, @resultDeleteUsuario)'
 
         const exec = await database.raw(
-            sql,[
-                id,
-                senha
-            ]
+            sql, [
+            id,
+            senha
+        ]
         )
 
         const result = await database.raw('SELECT @resultDeleteUsuario')
@@ -293,7 +272,7 @@ const deleteUsuario = async function (id, senha) {
 
         const objectParse = JSON.parse(jsonObjectString)
 
-        return objectParse.status_code
+        return objectParse
 
 
     } catch (error) {
