@@ -65,7 +65,7 @@ const postPaciente = async function (paciente) {
         const jsonObjectString = resultBanco['@resultPaciente']
         const objectParse = JSON.parse(jsonObjectString)
 
-        if (requestParse.status_code != 200) {
+        if (requestParse.status_code != 201) {
 
             return requestParse
 
@@ -91,7 +91,7 @@ const postPacienteUsuario = async function (id_usuario, id_paciente) {
             sql, [id_paciente, id_usuario]
         )
 
-        const resultExec = await database.raw('@resultInsertRelation')
+        const resultExec = await database.raw('SELECT @resultInsertRelation')
         const requestObject = resultExec[0][0]
         const jsonRequestString = requestObject['@resultInsertRelation']
         const requestParse = JSON.parse(jsonRequestString)
@@ -101,7 +101,7 @@ const postPacienteUsuario = async function (id_usuario, id_paciente) {
         const jsonObjectString = resultBanco['@resultPaciente']
         const objectParse = JSON.parse(jsonObjectString)
 
-        if (requestParse.status_code != 200) {
+        if (requestParse.status_code != 201) {
 
             return requestParse
 
