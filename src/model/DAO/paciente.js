@@ -15,11 +15,11 @@ const database = require("../../database/db.js")
 const getPacienteById = async function (id) {
 
     try {
-        
+
         sql = 'CALL prc_buscar_paciente_completo(?, @resultPaciente)'
 
         const exec = await database.raw(
-            sql,[id]
+            sql, [id]
         )
 
         const result = await database.raw('SELECT @resultPaciente')
@@ -27,63 +27,55 @@ const getPacienteById = async function (id) {
         const jsonObjectString = resultBanco['@resultPaciente']
         const objectParse = JSON.parse(jsonObjectString)
 
-        if(objectParse.status_code != 200) {
-            return objectParse.status_code
-        } else {
-            return objectParse.data
-        }
+        return objectParse
 
 
     } catch (error) {
         return false
     }
-    
+
 }
 
 const postPaciente = async function (paciente) {
 
     try {
-        
+
         sql = 'CALL prc_adicionar_paciente(?,?,?,?,?,?,?,?, @resultInsertPaciente)'
 
         const exec = await database.raw(
-            sql,[
-                paciente.foto,
-                paciente.nome,
-                paciente.diagnostico,
-                paciente.cpf,
-                paciente.data_nascimento,
-                paciente.id_serie_escolar,
-                paciente.id_grau_suporte,
-                paciente.id_responsavel
-            ]
+            sql, [
+            paciente.foto,
+            paciente.nome,
+            paciente.diagnostico,
+            paciente.cpf,
+            paciente.data_nascimento,
+            paciente.id_serie_escolar,
+            paciente.id_grau_suporte,
+            paciente.id_responsavel
+        ]
         )
 
-        const resultExec            = await database.raw('SELECT @resultInsertPaciente')
-        const requestObject         = resultExec[0][0]
-        const jsonRequestString     = requestObject['@resultInsertPaciente']
-        const requestParse          = JSON.parse(jsonRequestString)
+        const resultExec = await database.raw('SELECT @resultInsertPaciente')
+        const requestObject = resultExec[0][0]
+        const jsonRequestString = requestObject['@resultInsertPaciente']
+        const requestParse = JSON.parse(jsonRequestString)
 
-        const result            = await database.raw('SELECT @resultPaciente')
-        const resultBanco       = result[0][0]
-        const jsonObjectString  = resultBanco['@resultPaciente']
-        const objectParse       = JSON.parse(jsonObjectString)
+        const result = await database.raw('SELECT @resultPaciente')
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@resultPaciente']
+        const objectParse = JSON.parse(jsonObjectString)
 
         if (requestParse.status_code != 200) {
-            return requestParse.status_code
-        
+
+            return requestParse
+
         } else {
 
-            if (objectParse.status_code != 200) {
-                return objectParse.status_code
-            } else {
-                return objectParse.data
-            }
+            return objectParse
 
         }
 
     } catch (error) {
-        console.log(error)
         return false
     }
 
@@ -92,87 +84,79 @@ const postPaciente = async function (paciente) {
 const postPacienteUsuario = async function (id_usuario, id_paciente) {
 
     try {
-        
+
         sql = 'CALL prc_inserir_relacao_usuario_paciente(?,?, @resultInsertRelation)'
 
         const exec = await database.raw(
-            sql,[id_paciente, id_usuario]
+            sql, [id_paciente, id_usuario]
         )
 
-        const resultExec            = await database.raw('@resultInsertRelation')
-        const requestObject         = resultExec[0][0]
-        const jsonRequestString     = requestObject['@resultInsertRelation']
-        const requestParse          = JSON.parse(jsonRequestString)
+        const resultExec = await database.raw('@resultInsertRelation')
+        const requestObject = resultExec[0][0]
+        const jsonRequestString = requestObject['@resultInsertRelation']
+        const requestParse = JSON.parse(jsonRequestString)
 
-        const result            = await database.raw('SELECT @resultPaciente')
-        const resultBanco       = result[0][0]
-        const jsonObjectString  = resultBanco['@resultPaciente']
-        const objectParse       = JSON.parse(jsonObjectString)
+        const result = await database.raw('SELECT @resultPaciente')
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@resultPaciente']
+        const objectParse = JSON.parse(jsonObjectString)
 
         if (requestParse.status_code != 200) {
-            return requestParse.status_code
-        
+
+            return requestParse
+
         } else {
 
-            if (objectParse.status_code != 200) {
-                return objectParse.status_code
-            } else {
-                return objectParse.data
-            }
+            return objectParse
 
         }
 
     } catch (error) {
         return false
     }
-    
+
 }
 
 const putPaciente = async function (id_usuario, paciente) {
-    
+
     try {
-        
+
         sql = 'CALL prc_atualizar_paciente(?,?,?,?,?,?,?,?,?, @resultUpdatePaciente)'
 
         const exec = await database.raw(
-            sql,[
-                id_usuario,
-                paciente.id,
-                paciente.nome,
-                paciente.foto,
-                paciente.data_nascimento,
-                paciente.diagnostico,
-                paciente.cpf,
-                paciente.id_serie_escolar,
-                paciente.id_grau_suporte
-            ]
+            sql, [
+            id_usuario,
+            paciente.id,
+            paciente.nome,
+            paciente.foto,
+            paciente.data_nascimento,
+            paciente.diagnostico,
+            paciente.cpf,
+            paciente.id_serie_escolar,
+            paciente.id_grau_suporte
+        ]
         )
 
-        const resultExec            = await database.raw('SELECT @resultUpdatePaciente')
-        const requestObject         = resultExec[0][0]
-        const jsonRequestString     = requestObject['@resultUpdatePaciente']
-        const requestParse          = JSON.parse(jsonRequestString)
+        const resultExec = await database.raw('SELECT @resultUpdatePaciente')
+        const requestObject = resultExec[0][0]
+        const jsonRequestString = requestObject['@resultUpdatePaciente']
+        const requestParse = JSON.parse(jsonRequestString)
 
-        const result            = await database.raw('SELECT @resultPaciente')
-        const resultBanco       = result[0][0]
-        const jsonObjectString  = resultBanco['@resultPaciente']
-        const objectParse       = JSON.parse(jsonObjectString)
+        const result = await database.raw('SELECT @resultPaciente')
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@resultPaciente']
+        const objectParse = JSON.parse(jsonObjectString)
 
         if (requestParse.status_code != 200) {
-            return requestParse.status_code
-        
+            return requestParse
+
         } else {
 
-            if (objectParse.status_code != 200) {
-                return objectParse.status_code
-            } else {
-                return objectParse.data
-            }
+            return objectParse
 
         }
 
     } catch (error) {
-        console.log(error)
         return false
     }
 
@@ -181,11 +165,11 @@ const putPaciente = async function (id_usuario, paciente) {
 const deletePaciente = async function (id_paciente, id_usuario) {
 
     try {
-        
+
         sql = 'CALL proc_delete_paciente(?,?, @resultDeletePaciente)'
 
         const exec = await database.raw(
-            sql,[id_usuario, id_paciente]
+            sql, [id_usuario, id_paciente]
         )
 
         const result = await database.raw('SELECT @resultDeletePaciente')
@@ -193,32 +177,28 @@ const deletePaciente = async function (id_paciente, id_usuario) {
         const jsonObjectString = resultBanco['@resultDeletePaciente']
         const objectParse = JSON.parse(jsonObjectString)
 
-        return objectParse.status_code
+        return objectParse
 
     } catch (error) {
         return false
     }
-    
+
 }
 
 const getPacienteByCpf = async function (cpf) {
-    
+
     sql = 'CALL prc_retorna_paciente_pelo_cpf(?, @returnPacienteCpf)'
 
-        const exec = await database.raw(
-            sql,[cpf]
-        )
+    const exec = await database.raw(
+        sql, [cpf]
+    )
 
-        const result = await database.raw('SELECT @returnPacienteCpf')
-        const resultBanco = result[0][0]
-        const jsonObjectString = resultBanco['@returnPacienteCpf']
-        const objectParse = JSON.parse(jsonObjectString)
+    const result = await database.raw('SELECT @returnPacienteCpf')
+    const resultBanco = result[0][0]
+    const jsonObjectString = resultBanco['@returnPacienteCpf']
+    const objectParse = JSON.parse(jsonObjectString)
 
-        if(objectParse.status_code != 200) {
-            return objectParse.status_code
-        } else {
-            return objectParse.data
-        }
+    return objectParse
 
 }
 
