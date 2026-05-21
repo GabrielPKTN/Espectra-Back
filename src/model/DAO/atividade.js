@@ -7,6 +7,52 @@
 
 const db = require("../../database/db.js")
 
+const getAtividadeById = async function (id_atividade, id_usuario) {
+
+    try {
+
+        sql = 'CALL prc_atividade(?, ?, @resultAtividade)'
+
+        const exec = await db.raw(
+            sql, [id_atividade, id_usuario]
+        )
+
+        const result = await db.raw('SELECT @resultAtividade')
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@resultAtividade']
+        const objectParse = JSON.parse(jsonObjectString)
+
+        return objectParse
+
+    } catch (error) {
+        return false
+    }
+
+}
+
+const getAllAtividadesFalse = async function (id_paciente, id_habilidade) {
+
+    try {
+
+        sql = 'CALL prc_atividade_portage_nao_desenvolvida(?, ?, @resultAtividadesFalse)'
+
+        const exec = await db.raw(
+            sql, [id_paciente, id_habilidade]
+        )
+
+        const result = await db.raw('SELECT @resultAtividadesFalse')
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@resultAtividadesFalse']
+        const objectParse = JSON.parse(jsonObjectString)
+
+        return objectParse
+
+    } catch (error) {
+        return false
+    }
+
+}
+
 const getAtividades = async function (patientID, abilityID) {
 
     try {
