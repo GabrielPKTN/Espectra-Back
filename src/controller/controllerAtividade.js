@@ -4,11 +4,126 @@
  * Data: 16/05/2026
  * Autores: Enzo Carrilho
  * Versão: 1.0
+ * Data: 21/06/2026
+ * Developer: Gabriel Lacerda
+ * Versão: 1.0.1
  ********************************************************************************/
 const atividadeDAO = require('../model/DAO/atividade.js')
 const defaultMessages = require("./module/defaultMessages.js")
 
-// Retorna atividades filtrando pelo ID do paciente e ID da habilidade
+
+const getAtividadeById = async (id_atividade, id_usuario) => {
+
+    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+
+    try {
+
+        id_atividade = Number(id_atividade)
+        id_usuario = Number(id_usuario)
+
+        if (Number.isInteger(id_atividade) && id_atividade > 0) {
+
+            if (Number.isInteger(id_usuario) && id_usuario > 0) {
+
+                result = await atividadeDAO.getAtividadeById(id_atividade, id_usuario)
+
+                if (result) {
+
+                    if (result.status_code == 200) {
+
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.message
+                        MESSAGES.DEFAULT_HEADER.items = result.data
+
+                        return MESSAGES.DEFAULT_HEADER //200
+
+                    } else if (result.status_code == 404) {
+
+                        return MESSAGES.ERROR_NOT_FOUND //404
+
+                    } else if (result.status_code == 401) {
+
+                        return MESSAGES.ERROR_NON_AUTHORIZED //401
+
+                    } else {
+                        MESSAGES.ERROR_INTERNAL_SERVER_MODEL.message + " [PROCEDURE]"
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                    }
+
+                } else {
+                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                }
+
+            } else
+                MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID USUÁRIO INCORRETO]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
+
+        } else {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID ATIVIDADE INCORRETO]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
+        }
+
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
+    }
+
+}
+
+const getAllAtividadesFalse = async (id_paciente, id_habilidade) => {
+
+    let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
+
+    try {
+
+        id_paciente = Number(id_paciente)
+        id_habilidade = Number(id_habilidade)
+
+        if (Number.isInteger(id_paciente) && id_paciente > 0) {
+
+            if (Number.isInteger(id_habilidade) && id_habilidade > 0) {
+
+                result = await atividadeDAO.getAllAtividadesFalse(id_paciente, id_habilidade)
+
+                if (result) {
+
+                    if (result.status_code == 200) {
+
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.message
+                        MESSAGES.DEFAULT_HEADER.items = result.data
+
+                        return MESSAGES.DEFAULT_HEADER //200
+
+                    } else if (result.status_code == 404) {
+
+                        return MESSAGES.ERROR_NOT_FOUND //404
+
+                    } else {
+                        MESSAGES.ERROR_INTERNAL_SERVER_MODEL.message + " [PROCEDURE]"
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                    }
+
+                } else {
+                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                }
+
+            } else
+                MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID PACIENTE INCORRETO]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
+
+        } else {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID HABILIDADE INCORRETO]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
+        }
+
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
+    }
+
+}
+
 const getAtividades = async function (id_paciente, id_habilidade) {
 
     let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
@@ -52,8 +167,6 @@ const getAtividades = async function (id_paciente, id_habilidade) {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID PACIENTE INCORRETO]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
-
-
 
     } catch (error) {
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
@@ -127,7 +240,6 @@ const postAtividadePortage = async (atividade, contentType) => {
 
 }
 
-
 const postAtividadePersonalizada = async (atividade, contentType) => {
 
     MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
@@ -187,8 +299,6 @@ const postAtividadePersonalizada = async (atividade, contentType) => {
     }
 
 }
-
-
 
 const updateAtividadePersonalizada = async (id, atividade, contentType) => {
 
@@ -255,7 +365,6 @@ const updateAtividadePersonalizada = async (id, atividade, contentType) => {
     }
 
 }
-
 
 const updateStatusAtividade = async (id) => {
 

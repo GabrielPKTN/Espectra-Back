@@ -3,6 +3,9 @@
  * Data: 16/05/2026
  * Developer: Enzo Carrilho
  * Versão: 1.0.0
+ * Data: 21/06/2026
+ * Developer: Gabriel Lacerda
+ * Versão: 1.0.1
  *******************************************************************************/
 
 const db = require("../../database/db.js")
@@ -256,6 +259,8 @@ const deleteAtividade = async function (id, atividade) {
 
 
 module.exports = {
+    getAtividadeById,
+    getAllAtividadesFalse,
     getAtividades,
     postAtividadePortage,
     postAtividadePersonalizada,
