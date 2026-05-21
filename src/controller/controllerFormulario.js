@@ -21,32 +21,33 @@ const getFormByIdPaciente = async (id_usuario, id_paciente) => {
         id_usuario = Number(id_usuario)
         id_paciente = Number(id_paciente)
 
-        if(Number.isInteger(id_usuario) && id_usuario > 0) {
+        if (Number.isInteger(id_usuario) && id_usuario > 0) {
 
-            if(Number.isInteger(id_paciente) && id_usuario > 0) {
+            if (Number.isInteger(id_paciente) && id_usuario > 0) {
 
                 result = await formularioDAO.getFormByIdPaciente(id_usuario, id_paciente)
 
-                if(result) {
+                if (result) {
 
                     if (result.status_code == 200) {
-                        
-                        MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_REQUEST.status
+
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
-                        MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_REQUEST.message
-                        MESSAGES.DEFAULT_HEADER.items       = result.data
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.message
+                        MESSAGES.DEFAULT_HEADER.items = result.data
 
                         return MESSAGES.DEFAULT_HEADER //200
 
-                    } else if(result.status_code == 404) {
+                    } else if (result.status_code == 404) {
 
                         return MESSAGES.ERROR_NOT_FOUND //404
 
-                    } else if(result.status_code == 401) {
+                    } else if (result.status_code == 401) {
 
                         return MESSAGES.ERROR_NON_AUTHORIZED //401
 
                     } else {
+                        MESSAGES.ERROR_INTERNAL_SERVER_MODEL.message + " [PROCEDURE]"
                         return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
                     }
 
@@ -80,47 +81,48 @@ const updateForm = async (id_usuario, id_paciente, form, contentType) => {
             id_usuario = Number(id_usuario)
             id_paciente = Number(id_paciente)
 
-            if(Number.isInteger(id_usuario) && id_usuario > 0) {
+            if (Number.isInteger(id_usuario) && id_usuario > 0) {
 
-                if(Number.isInteger(id_paciente) && id_usuario > 0) {
-                
-                    if(Array.isArray(form.formulario)) {
-                
+                if (Number.isInteger(id_paciente) && id_usuario > 0) {
+
+                    if (Array.isArray(form.formulario)) {
+
                         validaArray = validarArrayRespostas(form.formulario)
-                    
-                        if(!validaArray) {
-                            
+
+                        if (!validaArray) {
+
                             result = await formularioDAO.updateForm(id_usuario, id_paciente, form)
 
-                            if(result) {
+                            if (result) {
 
-                                if(result.status_code == 200) {
+                                if (result.status_code == 200) {
 
-                                    MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_UPDATE_ITEM.status
+                                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATE_ITEM.status
                                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATE_ITEM.status_code
-                                    MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_UPDATE_ITEM.message
-                                    MESSAGES.DEFAULT_HEADER.items       = result.data
+                                    MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATE_ITEM.message
+                                    MESSAGES.DEFAULT_HEADER.items = result.data
 
                                     return MESSAGES.DEFAULT_HEADER // 200
 
-                                } else if(result.status_code == 404) {
+                                } else if (result.status_code == 404) {
 
                                     return MESSAGES.ERROR_NOT_FOUND //404
-                                
-                                } else if(result.status_code == 401) {
+
+                                } else if (result.status_code == 401) {
 
                                     return MESSAGES.ERROR_NON_AUTHORIZED //401
 
                                 }
 
                             } else {
-                                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+                                MESSAGES.ERROR_INTERNAL_SERVER_MODEL.message + " [PROCEDURE]"
+                                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
                             }
 
                         } else {
                             return validaArray //400
                         }
-                    
+
                     } else {
                         return MESSAGES.ERROR_REQUIRED_FIELDS //400
                     }
@@ -136,7 +138,7 @@ const updateForm = async (id_usuario, id_paciente, form, contentType) => {
         } else {
             return MESSAGES.ERROR_CONTENT_TYPE //415
         }
-        
+
     } catch (error) {
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
@@ -145,14 +147,14 @@ const updateForm = async (id_usuario, id_paciente, form, contentType) => {
 
 const validarArrayRespostas = (form) => {
 
-    for(resposta of form) {
+    for (resposta of form) {
 
         try {
-            
-            let id_atividade_portage = Number(resposta.id_atividade_portage)
-            let id_resposta          = Number(resposta.id_resposta)
 
-            if(!Number.isInteger(id_atividade_portage) || id_atividade_portage <= 0) {
+            let id_atividade_portage = Number(resposta.id_atividade_portage)
+            let id_resposta = Number(resposta.id_resposta)
+
+            if (!Number.isInteger(id_atividade_portage) || id_atividade_portage <= 0) {
 
                 return MESSAGES.ERROR_REQUIRED_FIELDS //400
 
@@ -160,7 +162,7 @@ const validarArrayRespostas = (form) => {
 
             if (id_resposta !== null) {
 
-                if(!Number.isInteger(id_resposta) || id_resposta <= 0 || id_resposta === undefined) {
+                if (!Number.isInteger(id_resposta) || id_resposta <= 0 || id_resposta === undefined) {
 
                     return MESSAGES.ERROR_REQUIRED_FIELDS //400
 
@@ -172,7 +174,7 @@ const validarArrayRespostas = (form) => {
             return MESSAGES.ERROR_REQUIRED_FIELDS //400
         }
 
-        
+
     }
 
     return false
