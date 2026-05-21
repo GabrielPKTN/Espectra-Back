@@ -564,6 +564,8 @@ const validateUpdateAtividadePersonalizada = (atividade) => {
 
 
 module.exports = {
+    getAllAtividadesFalse,
+    getAtividadeById,
     getAtividades,
     postAtividadePortage,
     postAtividadePersonalizada,
