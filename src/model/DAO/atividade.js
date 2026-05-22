@@ -3,9 +3,58 @@
  * Data: 16/05/2026
  * Developer: Enzo Carrilho
  * Versão: 1.0.0
+ * Data: 21/06/2026
+ * Developer: Gabriel Lacerda
+ * Versão: 1.0.1
  *******************************************************************************/
 
 const db = require("../../database/db.js")
+
+const getAtividadeById = async function (id_atividade, id_usuario) {
+
+    try {
+
+        sql = 'CALL prc_atividade(?, ?, @resultAtividade)'
+
+        const exec = await db.raw(
+            sql, [id_atividade, id_usuario]
+        )
+
+        const result = await db.raw('SELECT @resultAtividade')
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@resultAtividade']
+        const objectParse = JSON.parse(jsonObjectString)
+
+        return objectParse
+
+    } catch (error) {
+        return false
+    }
+
+}
+
+const getAllAtividadesFalse = async function (id_paciente, id_habilidade) {
+
+    try {
+
+        sql = 'CALL prc_atividade_portage_nao_desenvolvida(?, ?, @resultAtividadesFalse)'
+
+        const exec = await db.raw(
+            sql, [id_paciente, id_habilidade]
+        )
+
+        const result = await db.raw('SELECT @resultAtividadesFalse')
+        const resultBanco = result[0][0]
+        const jsonObjectString = resultBanco['@resultAtividadesFalse']
+        const objectParse = JSON.parse(jsonObjectString)
+
+        return objectParse
+
+    } catch (error) {
+        return false
+    }
+
+}
 
 const getAtividades = async function (patientID, abilityID) {
 
@@ -210,6 +259,8 @@ const deleteAtividade = async function (id, atividade) {
 
 
 module.exports = {
+    getAtividadeById,
+    getAllAtividadesFalse,
     getAtividades,
     postAtividadePortage,
     postAtividadePersonalizada,

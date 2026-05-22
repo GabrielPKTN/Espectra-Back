@@ -3,20 +3,48 @@
  * Data: 16/05/2026
  * Developer: Enzo Carrilho
  * Versão: 1.0.0
+ * Data: 21/06/2026
+ * Developer: Gabriel Lacerda
+ * Versão: 1.0.1
  *********************************************************************/
 
-const express               = require('express')
-const router                = express.Router()
-const controllerAtividade   = require('../controller/controllerAtividade.js')
+const express = require('express')
+const router = express.Router()
+const controllerAtividade = require('../controller/controllerAtividade.js')
 
-const cors       = require('cors')           
-const bodyParser = require('body-parser')    
+const cors = require('cors')
+const bodyParser = require('body-parser')
 
 const bodyParserJSON = bodyParser.json()
 
 const JWT = require('./auth/authUser.js')
 
-// getAtividade
+router.get('/', JWT.verifyJWT, cors(), async (req, res) => {
+
+    const id_atividade = req.query.id_atividade
+    const id_usuario = req.query.id_usuario
+
+    const resultGet = await controllerAtividade.getAtividadeById(id_atividade, id_usuario)
+
+    res.status(resultGet.status_code)
+    res.json(resultGet)
+
+})
+
+router.get('/competencias/:id_paciente/:id_habilidade', JWT.verifyJWT, cors(), async (req, res) => {
+
+    const id_paciente = req.params.id_paciente
+    const id_habilidade = req.params.id_habilidade
+
+    const resultGet = await controllerAtividade.getAllAtividadesFalse(id_paciente, id_habilidade)
+
+    res.status(resultGet.status_code)
+    res.json(resultGet)
+
+})
+
+
+// getAtividades
 router.get('/:id_paciente/:id_habilidade', JWT.verifyJWT, cors(), async (req, res) => {
 
     const pacienteId = req.params.id_paciente
@@ -60,7 +88,7 @@ router.put('/personalizada/:id', JWT.verifyJWT, cors(), bodyParserJSON, async (r
 
     const atividadeId = req.params.id
 
-   
+
     const contentType = req.headers['content-type']
     const dadosBody = req.body
 
@@ -68,7 +96,7 @@ router.put('/personalizada/:id', JWT.verifyJWT, cors(), bodyParserJSON, async (r
 
     res.status(resultUpdate.status_code)
     res.json(resultUpdate)
-    
+
 
 })
 
@@ -80,13 +108,13 @@ router.put('/:id', JWT.verifyJWT, cors(), bodyParserJSON, async (req, res) => {
 
     res.status(resultUpdateStatus.status_code)
     res.json(resultUpdateStatus)
-    
+
 
 })
 
 // delete atividade
 router.delete('/:id', JWT.verifyJWT, cors(), bodyParserJSON, async (req, res) => {
-    
+
     const id = req.params.id
     const dadosBody = req.body
     const contentType = req.headers['content-type']
