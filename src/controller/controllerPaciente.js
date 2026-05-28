@@ -110,7 +110,7 @@ const postPaciente = async (paciente, contentType, foto) => {
 
                 if (result) {
 
-                    if (result.status_code == 201) {
+                    if (result.status_code == 200) {
 
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
