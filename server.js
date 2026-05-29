@@ -44,6 +44,7 @@ const paciente      = require("./src/routes/pacienteRoutes.js")
 const formulario    = require("./src/routes/formularioRoutes.js")
 const tentativa     = require("./src/routes/tentativaRoutes.js")
 const atividade     = require("./src/routes/atividadeRoutes.js")
+const diagnostico   = require("./src/routes/diagnosticoRoutes.js")
 
 //EndPoints da Aplicação
 app.use("/v1/espectra/usuario", usuario)
@@ -51,6 +52,7 @@ app.use("/v1/espectra/paciente", paciente)
 app.use("/v1/espectra/atividade", atividade)
 app.use("/v1/espectra/formulario", formulario)
 app.use("/v1/espectra/tentativa", tentativa)
+app.use("/v1/espectra/diagnostico", diagnostico)
 
 app.listen(PORT, () => {
     console.log(`Se você está vendo isso, comemore!\nAPI rodando na porta: ${PORT}`)

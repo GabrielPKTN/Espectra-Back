@@ -12,7 +12,7 @@ module.exports = {
     connection: {
       host: '127.0.0.1',
       user: 'root',
-      password: process.env.DATABASE_PASS, 
+      password: '12345678', 
       database: 'db_espectra'
     }
   }
