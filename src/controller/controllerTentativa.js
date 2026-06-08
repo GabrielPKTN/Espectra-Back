@@ -110,6 +110,7 @@ const postTentativa = async (tentativa, contentType) => {
         }
 
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 
@@ -119,34 +120,31 @@ const validateAttempt = function (attempt) {
 
     let MESSAGES = JSON.parse(JSON.stringify(defaultMessages))
 
-    if (attempt.resultado == '' || attempt.resultado == null || attempt.resultado == undefined || attempt.resultado > 1 || attempt.resultado < 0) {
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [resultado Inválido]'
-        return MESSAGES.ERROR_REQUIRED_FIELDS //400
+    const isInvalidValue = (value) => value === '' || value === null || value === undefined;
 
-    } else if (attempt.data_tentativa == '' || attempt.data_tentativa == null || attempt.data_tentativa == undefined || attempt.data_tentativa.length != 10) {
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Data Inválido]'
-        return MESSAGES.ERROR_REQUIRED_FIELDS //400
+    const { resultado, data_tentativa, observacao, id_auxilio, id_atividade } = attempt;
 
-    } else if (attempt.observacao != null) {
-
-        if (!isNaN(attempt.observacao) && attempt.observacao.length > 1500) {
-
-            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [OBSERVAÇÃO INVÁLIDA]'
-            return MESSAGES.ERROR_REQUIRED_FIELDS //400
-
-        }
-
-    } else if (attempt.id_auxilio <= 0 || isNaN(attempt.id_auxilio) || attempt.id_auxilio == '' || attempt.id_auxilio == null || attempt.id_auxilio == undefined) {
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [id_tipo_aplicacao Inválido]'
-        return MESSAGES.ERROR_REQUIRED_FIELDS //400
-
-    } else if (attempt.id_atividade <= 0 || isNaN(attempt.id_atividade) || attempt.id_atividade == '' || attempt.id_atividade == null || attempt.id_atividade == undefined) {
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [id_atividade Inválido]'
-        return MESSAGES.ERROR_REQUIRED_FIELDS //400
-
-    } else {
-        return false
+    if (resultado !== 0 && resultado !== 1) {
+        return createErrorResponse(MESSAGES.ERROR_REQUIRED_FIELDS, '[RESULTADO INVÁLIDO]');
     }
+
+    if (isInvalidValue(data_tentativa) || data_tentativa.length !== 10) {
+        return createErrorResponse(MESSAGES.ERROR_REQUIRED_FIELDS, '[DATA INVÁLIDA]');
+    }
+
+    if (observacao !== null && !isNaN(observacao) && observacao.length > 1500) {
+        return createErrorResponse(MESSAGES.ERROR_REQUIRED_FIELDS, '[OBSERVAÇÃO INVÁLIDA]');
+    }
+
+    if (isInvalidValue(id_auxilio) || isNaN(id_auxilio) || id_auxilio <= 0) {
+        return createErrorResponse(MESSAGES.ERROR_REQUIRED_FIELDS, '[ID TIPO APLICAÇÃO INVÁLIDO]');
+    }
+
+    if (isInvalidValue(id_atividade) || isNaN(id_atividade) || id_atividade <= 0) {
+        return createErrorResponse(MESSAGES.ERROR_REQUIRED_FIELDS, '[ID ATIVIDADE INVÁLIDO]');
+    }
+
+    return false;
 
 }
 
