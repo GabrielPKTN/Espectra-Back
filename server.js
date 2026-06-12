@@ -34,7 +34,6 @@ app.use(cors({
 
 // Middleware para permitir JSON no body
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 //EndPoint da documentação
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
