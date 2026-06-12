@@ -75,7 +75,7 @@ router.post('/', cors(), bodyParserJSON, async (req, res) => {
 
     const userInsert = await controllerUsuario.postUsuario(dadosBody, contentType)
 
-    console.log(userInsert, "post")
+    userInsert.erro_aqui = "post"
 
     res.status(userInsert.status_code)
     res.json(userInsert)
