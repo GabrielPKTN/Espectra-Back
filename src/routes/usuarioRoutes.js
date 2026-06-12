@@ -55,7 +55,7 @@ router.get('/', cors(), async (req, res) => {
 })
 
 // getUsuarioLogin
-router.post('/login', cors(), async (req, res) => {
+router.post('/login', bodyParserJSON, cors(), async (req, res) => {
 
     const contentType = req.headers['content-type']
     let dadosBody = req.body
