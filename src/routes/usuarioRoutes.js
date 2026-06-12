@@ -60,6 +60,8 @@ router.post('/login', cors(), bodyParserJSON, async (req, res) => {
     const contentType = req.headers['content-type']
     dadosBody = req.body
 
+    console.log(dadosBody)
+
     const userRequest = await controllerUsuario.getUsuarioLogin(dadosBody, contentType)
 
     res.status(userRequest.status_code)
