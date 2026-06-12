@@ -55,10 +55,10 @@ router.get('/', cors(), async (req, res) => {
 })
 
 // getUsuarioLogin
-router.post('/login/paralelepipedo', cors(), bodyParserJSON, async (req, res) => {
+router.post('/login', cors(), async (req, res) => {
 
     const contentType = req.headers['content-type']
-    dadosBody = req.body
+    let dadosBody = req.body
 
     const userRequest = await controllerUsuario.getUsuarioLogin(dadosBody, contentType)
 
