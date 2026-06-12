@@ -57,10 +57,10 @@ router.get('/', cors(), async (req, res) => {
 // getUsuarioLogin
 router.post('/login', cors(), bodyParserJSON, async (req, res) => {
 
+    console.log(req.body)
+
     const contentType = req.headers['content-type']
     dadosBody = req.body
-
-    console.log(dadosBody)
 
     const userRequest = await controllerUsuario.getUsuarioLogin(dadosBody, contentType)
 
@@ -71,6 +71,8 @@ router.post('/login', cors(), bodyParserJSON, async (req, res) => {
 
 // postUsuario
 router.post('/', cors(), bodyParserJSON, async (req, res) => {
+
+    console.log(req.body)
 
     const contentType = req.headers['content-type']
     const dadosBody = req.body
