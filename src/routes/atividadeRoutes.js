@@ -63,6 +63,8 @@ router.post('/portage', cors(), JWT.verifyJWT, bodyParserJSON, async (req, res) 
     const contentType = req.headers['content-type']
     const dadosBody = req.body
 
+    console.log(req.body)
+
     const resultInsert = await controllerAtividade.postAtividadePortage(dadosBody, contentType)
 
     res.status(resultInsert.status_code)
