@@ -9,226 +9,169 @@
  * Versão: 2.0.0
  ***************************************************************************************/
 
-
-const database = require("../../database/db.js")
+const database = require("../../database/db.js");
 
 const getPacienteById = async function (id) {
+  try {
+    sql = "CALL prc_buscar_paciente_completo(?, @resultPaciente)";
 
-    try {
+    const exec = await database.raw(sql, [id]);
 
-        sql = 'CALL prc_buscar_paciente_completo(?, @resultPaciente)'
+    const result = await database.raw("SELECT @resultPaciente");
+    const resultBanco = result[0][0];
+    const jsonObjectString = resultBanco["@resultPaciente"];
+    const objectParse = JSON.parse(jsonObjectString);
 
-        const exec = await database.raw(
-            sql, [id]
-        )
-
-        const result = await database.raw('SELECT @resultPaciente')
-        const resultBanco = result[0][0]
-        const jsonObjectString = resultBanco['@resultPaciente']
-        const objectParse = JSON.parse(jsonObjectString)
-
-        return objectParse
-
-
-    } catch (error) {
-        return false
-    }
-
-}
+    return objectParse;
+  } catch (error) {
+    return false;
+  }
+};
 
 const postPaciente = async function (paciente) {
+  try {
+    sql = "CALL prc_adicionar_paciente(?,?,?,?,?,?,?,?, @resultInsertPaciente)";
 
-    try {
+    const exec = await database.raw(sql, [
+      paciente.foto,
+      paciente.nome,
+      paciente.diagnostico,
+      paciente.cpf,
+      paciente.data_nascimento,
+      paciente.id_serie_escolar,
+      paciente.id_grau_suporte,
+      paciente.id_responsavel,
+    ]);
 
-        sql = 'CALL prc_adicionar_paciente(?,?,?,?,?,?,?,?, @resultInsertPaciente)'
+    const resultExec = await database.raw("SELECT @resultInsertPaciente");
+    const requestObject = resultExec[0][0];
+    const jsonRequestString = requestObject["@resultInsertPaciente"];
+    const requestParse = JSON.parse(jsonRequestString);
 
-        const exec = await database.raw(
-            sql, [
-            paciente.foto,
-            paciente.nome,
-            paciente.diagnostico,
-            paciente.cpf,
-            paciente.data_nascimento,
-            paciente.id_serie_escolar,
-            paciente.id_grau_suporte,
-            paciente.id_responsavel
-        ]
-        )
+    const result = await database.raw("SELECT @resultPaciente");
+    const resultBanco = result[0][0];
+    const jsonObjectString = resultBanco["@resultPaciente"];
+    const objectParse = JSON.parse(jsonObjectString);
 
-        const resultExec = await database.raw('SELECT @resultInsertPaciente')
-        const requestObject = resultExec[0][0]
-        const jsonRequestString = requestObject['@resultInsertPaciente']
-        const requestParse = JSON.parse(jsonRequestString)
-
-        const result = await database.raw('SELECT @resultPaciente')
-        const resultBanco = result[0][0]
-        const jsonObjectString = resultBanco['@resultPaciente']
-        const objectParse = JSON.parse(jsonObjectString)
-
-        if (requestParse.status_code != 201) {
-
-            return requestParse
-
-        } else {
-
-            return objectParse
-
-        }
-
-    } catch (error) {
-        return false
+    if (requestParse.status_code != 201) {
+      return requestParse;
+    } else {
+      return objectParse;
     }
-
-}
+  } catch (error) {
+    return false;
+  }
+};
 
 const postPacienteUsuario = async function (id_usuario, id_paciente) {
+  try {
+    sql =
+      "CALL prc_inserir_relacao_usuario_paciente(?,?, @resultInsertRelation)";
 
-    try {
+    const exec = await database.raw(sql, [id_paciente, id_usuario]);
 
-        sql = 'CALL prc_inserir_relacao_usuario_paciente(?,?, @resultInsertRelation)'
+    const resultExec = await database.raw("SELECT @resultInsertRelation");
+    const requestObject = resultExec[0][0];
+    const jsonRequestString = requestObject["@resultInsertRelation"];
+    const requestParse = JSON.parse(jsonRequestString);
 
-        const exec = await database.raw(
-            sql, [id_paciente, id_usuario]
-        )
+    const result = await database.raw("SELECT @resultPaciente");
+    const resultBanco = result[0][0];
+    const jsonObjectString = resultBanco["@resultPaciente"];
+    const objectParse = JSON.parse(jsonObjectString);
 
-        const resultExec = await database.raw('SELECT @resultInsertRelation')
-        const requestObject = resultExec[0][0]
-        const jsonRequestString = requestObject['@resultInsertRelation']
-        const requestParse = JSON.parse(jsonRequestString)
-
-        const result = await database.raw('SELECT @resultPaciente')
-        const resultBanco = result[0][0]
-        const jsonObjectString = resultBanco['@resultPaciente']
-        const objectParse = JSON.parse(jsonObjectString)
-
-        if (requestParse.status_code != 201) {
-
-            return requestParse
-
-        } else {
-
-            return objectParse
-
-        }
-
-    } catch (error) {
-        return false
+    if (requestParse.status_code != 201) {
+      return requestParse;
+    } else {
+      return objectParse;
     }
-
-}
+  } catch (error) {
+    return false;
+  }
+};
 
 const putPaciente = async function (id_usuario, paciente) {
+  try {
+    sql =
+      "CALL prc_atualizar_paciente(?,?,?,?,?,?,?,?,?, @resultUpdatePaciente)";
 
-    try {
+    const exec = await database.raw(sql, [
+      id_usuario,
+      paciente.id,
+      paciente.nome,
+      paciente.foto,
+      paciente.data_nascimento,
+      paciente.diagnostico,
+      paciente.cpf,
+      paciente.id_serie_escolar,
+      paciente.id_grau_suporte,
+    ]);
 
-        sql = 'CALL prc_atualizar_paciente(?,?,?,?,?,?,?,?,?, @resultUpdatePaciente)'
+    const resultExec = await database.raw("SELECT @resultUpdatePaciente");
+    const requestObject = resultExec[0][0];
+    const jsonRequestString = requestObject["@resultUpdatePaciente"];
+    const requestParse = JSON.parse(jsonRequestString);
 
-        const exec = await database.raw(
-            sql, [
-            id_usuario,
-            paciente.id,
-            paciente.nome,
-            paciente.foto,
-            paciente.data_nascimento,
-            paciente.diagnostico,
-            paciente.cpf,
-            paciente.id_serie_escolar,
-            paciente.id_grau_suporte
-        ]
-        )
+    const result = await database.raw("SELECT @resultPaciente");
+    const resultBanco = result[0][0];
+    const jsonObjectString = resultBanco["@resultPaciente"];
+    const objectParse = JSON.parse(jsonObjectString);
 
-        const resultExec = await database.raw('SELECT @resultUpdatePaciente')
-        const requestObject = resultExec[0][0]
-        const jsonRequestString = requestObject['@resultUpdatePaciente']
-        const requestParse = JSON.parse(jsonRequestString)
-
-        const result = await database.raw('SELECT @resultPaciente')
-        const resultBanco = result[0][0]
-        const jsonObjectString = resultBanco['@resultPaciente']
-        const objectParse = JSON.parse(jsonObjectString)
-
-        if (requestParse.status_code != 200) {
-            return requestParse
-
-        } else {
-
-            return objectParse
-
-        }
-
-    } catch (error) {
-        return false
+    if (requestParse.status_code != 200) {
+      return requestParse;
+    } else {
+      return objectParse;
     }
-
-}
+  } catch (error) {
+    return false;
+  }
+};
 
 const deletePaciente = async function (id_paciente, id_usuario) {
+  try {
+    sql = "CALL proc_delete_paciente(?,?, @resultDeletePaciente)";
 
-    try {
+    const exec = await database.raw(sql, [id_usuario, id_paciente]);
 
-        sql = 'CALL proc_delete_paciente(?,?, @resultDeletePaciente)'
+    const result = await database.raw("SELECT @resultDeletePaciente");
+    const resultBanco = result[0][0];
+    const jsonObjectString = resultBanco["@resultDeletePaciente"];
+    const objectParse = JSON.parse(jsonObjectString);
 
-        const exec = await database.raw(
-            sql, [id_usuario, id_paciente]
-        )
-
-        const result = await database.raw('SELECT @resultDeletePaciente')
-        const resultBanco = result[0][0]
-        const jsonObjectString = resultBanco['@resultDeletePaciente']
-        const objectParse = JSON.parse(jsonObjectString)
-
-        return objectParse
-
-    } catch (error) {
-        return false
-    }
-
-}
+    return objectParse;
+  } catch (error) {
+    return false;
+  }
+};
 
 const getPacienteByCpf = async function (cpf) {
+  try {
+    sql = "CALL prc_retorna_paciente_pelo_cpf(?, @returnPacienteCpf)";
 
-    try {
+    const exec = await database.raw(sql, [cpf]);
 
-        sql = 'CALL prc_retorna_paciente_pelo_cpf(?, @returnPacienteCpf)'
+    const resultExec = await database.raw("SELECT @returnPacienteCpf");
+    const requestObject = resultExec[0][0];
+    const jsonRequestString = requestObject["@returnPacienteCpf"];
+    const requestParse = JSON.parse(jsonRequestString);
 
-        const exec = await database.raw(
-            sql, [cpf]
-        )
+    const objectParse = requestParse;
 
-
-        const resultExec = await database.raw('SELECT @returnPacienteCpf')
-        const requestObject = resultExec[0][0]
-        const jsonRequestString = requestObject['@returnPacienteCpf']
-        const requestParse = JSON.parse(jsonRequestString)
-
-        const result = await database.raw('SELECT @resultPaciente')
-        const resultBanco = result[0][0]
-        const jsonObjectString = resultBanco['@resultPaciente']
-        const objectParse = JSON.parse(jsonObjectString)
-
-        if (requestParse.status_code != 200) {
-
-            return requestParse
-
-        } else {
-
-            return objectParse
-
-        }
-
-    } catch (error) {
-        return false
+    if (requestParse.status_code != 200) {
+      return requestParse;
+    } else {
+      return objectParse;
     }
-
-
-
-}
+  } catch (error) {
+    return false;
+  }
+};
 
 module.exports = {
-    getPacienteById,
-    postPaciente,
-    postPacienteUsuario,
-    putPaciente,
-    deletePaciente,
-    getPacienteByCpf
-}
+  getPacienteById,
+  postPaciente,
+  postPacienteUsuario,
+  putPaciente,
+  deletePaciente,
+  getPacienteByCpf,
+};
